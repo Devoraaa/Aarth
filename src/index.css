@@ -2485,8 +2485,8 @@ button {
    Strictly Zero Border Radius, Sticky Large Image, Center Gallery, Accordions
    ========================================================================== */
 .product-detail-page-container {
-  padding-top: 100px;
-  padding-bottom: 80px;
+  padding-top: 84px;
+  padding-bottom: 60px;
   min-height: 100vh;
   position: relative;
   background-color: transparent;
@@ -2497,10 +2497,10 @@ button {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-top: 20px;
-  padding-bottom: 24px;
+  padding-top: 8px;
+  padding-bottom: 12px;
   border-bottom: 1px solid var(--border-antique);
-  margin-bottom: 36px;
+  margin-bottom: 16px;
 }
 
 .pdp-back-btn {

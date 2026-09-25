@@ -31,10 +31,25 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
   const [washCareOpen, setWashCareOpen] = useState(false);
   const [shippingOpen, setShippingOpen] = useState(false);
 
-  // Exact Point-of-Cursor Magnifier Zoom
+  // Precision Vintage Magnifier Loupe State
   const imgBoxRef = useRef<HTMLDivElement>(null);
-  const [isZoomed, setIsZoomed] = useState(false);
-  const [zoomPos, setZoomPos] = useState({ x: 50, y: 50 });
+  const [loupe, setLoupe] = useState<{
+    active: boolean;
+    x: number;
+    y: number;
+    bgX: number;
+    bgY: number;
+    bgW: number;
+    bgH: number;
+  }>({
+    active: false,
+    x: 0,
+    y: 0,
+    bgX: 0,
+    bgY: 0,
+    bgW: 0,
+    bgH: 0,
+  });
 
   // Scroll to top when product changes
   useEffect(() => {
@@ -42,7 +57,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
     setActiveImgIdx(0);
     setQuantity(1);
     setSelectedVariantId(product.variants[0]?.id || "");
-    setIsZoomed(false);
+    setLoupe((prev) => ({ ...prev, active: false }));
   }, [product.id]);
 
   const currentVariant: ShopifyVariant | undefined =
@@ -77,18 +92,42 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
 
   const mainImage = images[activeImgIdx] || images[0];
 
-  // Point-of-Cursor Magnifier Handler: exact percentage alignment
+  // Mathematical precision magnifier loupe anchored right under cursor
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!imgBoxRef.current) return;
     const rect = imgBoxRef.current.getBoundingClientRect();
-    const x = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
-    const y = Math.max(0, Math.min(100, ((e.clientY - rect.top) / rect.height) * 100));
-    setZoomPos({ x, y });
-    if (!isZoomed) setIsZoomed(true);
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const zoom = 2.6;
+    const loupeSize = 170; // 170px square loupe
+
+    // Total width & height of the magnified image background
+    const bgW = rect.width * zoom;
+    const bgH = rect.height * zoom;
+
+    // Shift background so the exact point (x, y) is in the center of the loupe
+    const bgX = -(x * zoom - loupeSize / 2);
+    const bgY = -(y * zoom - loupeSize / 2);
+
+    setLoupe({
+      active: true,
+      x,
+      y,
+      bgX,
+      bgY,
+      bgW,
+      bgH,
+    });
   };
 
-  const handleMouseEnter = () => setIsZoomed(true);
-  const handleMouseLeave = () => setIsZoomed(false);
+  const handleMouseEnter = () => {
+    setLoupe((prev) => ({ ...prev, active: true }));
+  };
+
+  const handleMouseLeave = () => {
+    setLoupe((prev) => ({ ...prev, active: false }));
+  };
 
   // Add to Bag handler
   const handleAddToCart = async () => {
@@ -129,10 +168,10 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
 
   return (
     <div className="product-detail-page-container">
-      {/* Top Breadcrumb Bar */}
+      {/* Top Breadcrumb Bar (Tight & Compact Spacing) */}
       <div className="pdp-top-bar container-wide">
         <button className="pdp-back-btn" onClick={onBack}>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <line x1="19" y1="12" x2="5" y2="12"></line>
             <polyline points="12 19 5 12 12 5"></polyline>
           </svg>
@@ -151,7 +190,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
       {/* Main 3-Column Showcase Container */}
       <div className="pdp-showcase-container container-wide">
         <div className="pdp-three-column-grid">
-          {/* COLUMN 1: LEFT LARGE STICKY IMAGE WITH PRECISE POINT-OF-CURSOR ZOOM */}
+          {/* COLUMN 1: LEFT LARGE STICKY IMAGE WITH EXACT POINT LOUPE ZOOM */}
           <div className="pdp-col-large-sticky">
             <div
               ref={imgBoxRef}
@@ -164,13 +203,6 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
                 src={mainImage.url}
                 alt={mainImage.altText || product.title}
                 className="pdp-large-main-img"
-                style={{
-                  transform: isZoomed ? "scale(2.5)" : "scale(1)",
-                  transformOrigin: `${zoomPos.x}% ${zoomPos.y}%`,
-                  transition: isZoomed
-                    ? "transform 0.08s ease-out"
-                    : "transform 0.35s cubic-bezier(0.16, 1, 0.3, 1)",
-                }}
               />
 
               {/* Antique Corner Registration Marks */}
@@ -179,16 +211,26 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
               <span className="magnifier-corner bottom-left">⌞</span>
               <span className="magnifier-corner bottom-right">⌟</span>
 
-              {/* Subtle Point-of-Zoom Focus Stamp */}
-              {isZoomed && (
-                <div className="pdp-zoom-active-indicator">
-                  <span>✦ 2.5X DETAIL ZOOM ACTIVE ✦</span>
+              {/* Vintage Magnifying Loupe Lens (Anchored Exactly to Cursor Position) */}
+              {loupe.active && (
+                <div
+                  className="vintage-fabric-loupe"
+                  style={{
+                    left: `${loupe.x}px`,
+                    top: `${loupe.y}px`,
+                    backgroundImage: `url(${mainImage.url})`,
+                    backgroundPosition: `${loupe.bgX}px ${loupe.bgY}px`,
+                    backgroundSize: `${loupe.bgW}px ${loupe.bgH}px`,
+                  }}
+                >
+                  <div className="loupe-crosshair">✦</div>
+                  <div className="loupe-tag">WEAVE 2.6X</div>
                 </div>
               )}
             </div>
 
             <div className="magnifier-hint-badge">
-              <span>✦ MOVE CURSOR OVER SILHOUETTE FOR PRECISE POINT ZOOM (2.5X) ✦</span>
+              <span>✦ MOVE CURSOR OVER SILHOUETTE FOR POINT-ACCURATE WEAVE LOUPE (2.6X) ✦</span>
             </div>
           </div>
 
