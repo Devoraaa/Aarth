@@ -186,16 +186,24 @@ function StorefrontContent() {
               className="nav-link"
               onClick={() => setSelectedProduct(null)}
             >
-              Collection
+              <span className="nav-link-num">01</span>
+              <span className="nav-link-text">Collection</span>
+              <span className="nav-link-flourish">✦</span>
             </a>
             <a 
               href="#stories" 
               className="nav-link"
               onClick={() => setSelectedProduct(null)}
             >
-              Stories
+              <span className="nav-link-num">02</span>
+              <span className="nav-link-text">Stories</span>
+              <span className="nav-link-flourish">✦</span>
             </a>
-            <a href="#contact" className="nav-link">Contact</a>
+            <a href="#contact" className="nav-link">
+              <span className="nav-link-num">03</span>
+              <span className="nav-link-text">Contact</span>
+              <span className="nav-link-flourish">✦</span>
+            </a>
           </div>
         </div>
 
@@ -209,33 +217,42 @@ function StorefrontContent() {
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
           >
-            <img src="/assets/aarth-logo.png" alt="AARTH Logo" className="brand-logo-img" />
+            <div className="brand-logo-box">
+              <img src="/assets/aarth-logo.png" alt="AARTH Logo" className="brand-logo-img" />
+              <span className="brand-sub-badge">HERITAGE SILHOUETTES</span>
+            </div>
           </a>
         </div>
 
         <div className="nav-right">
           <button 
-            className="search-toggle-btn nav-icon" 
+            className="search-toggle-btn nav-icon nav-action-btn" 
             aria-label="Search the archive"
             onClick={() => setSearchOpen(true)}
             title="Search Archive (Motif, Silhouette, Craft)"
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="nav-svg-icon"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <span className="nav-icon-tooltip">SEARCH</span>
           </button>
-          <a href="#contact" className="nav-icon desktop-account-link" aria-label="Account">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          <a href="#contact" className="nav-icon desktop-account-link nav-action-btn" aria-label="Account" title="Atelier Account">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="nav-svg-icon"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <span className="nav-icon-tooltip">ATELIER</span>
           </a>
           <button 
-            className="cart-toggle-btn nav-link" 
+            className="cart-toggle-btn nav-link-cart" 
             onClick={openCart}
             aria-label={`Open shopping cart with ${cart?.totalQuantity || 0} items`}
           >
-            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
-              <span className="cart-label">Cart [{cart?.totalQuantity || 0}]</span>
+            <span className="cart-btn-inner">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="cart-svg-tote"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+              <span className="cart-label">Bag</span>
+              <span className={`cart-count-badge ${(cart?.totalQuantity || 0) > 0 ? 'has-items' : ''}`}>[{cart?.totalQuantity || 0}]</span>
             </span>
           </button>
         </div>
+
+        {/* Animated Loom Weave Thread Shimmer */}
+        <div className="navbar-weave-shimmer" aria-hidden="true" />
       </nav>
 
       {/* Mobile Drawer Navigation */}
@@ -339,8 +356,8 @@ function StorefrontContent() {
             <div 
               className="hero-image-wrapper"
               style={{
-                transform: `translate3d(${heroParallax.x * -16}px, ${heroParallax.y * -12}px, 0) scale(1.03)`,
-                transition: 'transform 0.15s ease-out'
+                transform: `translate3d(${heroParallax.x * -8}px, ${heroParallax.y * -6}px, 0)`,
+                transition: 'transform 0.18s cubic-bezier(0.16, 1, 0.3, 1)'
               }}
             >
               <picture className="hero-picture">
