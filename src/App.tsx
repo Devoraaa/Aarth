@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import ComingSoon from './ComingSoon';
 import { CartProvider, useCart } from './context/CartContext';
 import { CartDrawer } from './components/CartDrawer';
-import { ProductModal } from './components/ProductModal';
+import { ProductDetailPage } from './components/ProductDetailPage';
 import { SearchModal } from './components/SearchModal';
 import { ProductCard } from './components/ProductCard';
 import { CustomCursor } from './components/CustomCursor';
@@ -63,7 +63,9 @@ function StorefrontContent() {
       priceRange: { minVariantPrice: { amount: "35.00", currencyCode: "GBP" } },
       images: [
         { url: "/assets/product-1.jpg", altText: "Cacao Kurta" },
-        { url: "/assets/product-2.jpg", altText: "Cacao Kurta Back" }
+        { url: "/assets/product-2.jpg", altText: "Cacao Kurta Back" },
+        { url: "/assets/product-3.jpg", altText: "Cacao Kurta Detail" },
+        { url: "/assets/product-4.jpg", altText: "Cacao Kurta Texture" }
       ],
       variants: [{ id: "mock-v-1", title: "Default", availableForSale: true, price: { amount: "35.00", currencyCode: "GBP" } }]
     },
@@ -77,7 +79,8 @@ function StorefrontContent() {
       priceRange: { minVariantPrice: { amount: "35.00", currencyCode: "GBP" } },
       images: [
         { url: "/assets/product-2.jpg", altText: "Taupe Kimono" },
-        { url: "/assets/product-3.jpg", altText: "Taupe Kimono Detail" }
+        { url: "/assets/product-3.jpg", altText: "Taupe Kimono Detail" },
+        { url: "/assets/product-1.jpg", altText: "Taupe Kimono Texture" }
       ],
       variants: [{ id: "mock-v-2", title: "Default", availableForSale: true, price: { amount: "35.00", currencyCode: "GBP" } }]
     },
@@ -91,7 +94,8 @@ function StorefrontContent() {
       priceRange: { minVariantPrice: { amount: "35.00", currencyCode: "GBP" } },
       images: [
         { url: "/assets/product-3.jpg", altText: "Pearl Tunic" },
-        { url: "/assets/product-4.jpg", altText: "Pearl Tunic Texture" }
+        { url: "/assets/product-4.jpg", altText: "Pearl Tunic Texture" },
+        { url: "/assets/product-2.jpg", altText: "Pearl Tunic Back" }
       ],
       variants: [{ id: "mock-v-3", title: "Default", availableForSale: true, price: { amount: "35.00", currencyCode: "GBP" } }]
     },
@@ -105,7 +109,8 @@ function StorefrontContent() {
       priceRange: { minVariantPrice: { amount: "35.00", currencyCode: "GBP" } },
       images: [
         { url: "/assets/product-4.jpg", altText: "Relaxed Trousers" },
-        { url: "/assets/product-1.jpg", altText: "Relaxed Trousers Model" }
+        { url: "/assets/product-1.jpg", altText: "Relaxed Trousers Model" },
+        { url: "/assets/product-3.jpg", altText: "Relaxed Trousers Detail" }
       ],
       variants: [{ id: "mock-v-4", title: "Default", availableForSale: true, price: { amount: "35.00", currencyCode: "GBP" } }]
     }
@@ -176,14 +181,34 @@ function StorefrontContent() {
 
           {/* Desktop navigation links */}
           <div className="desktop-nav-links">
-            <a href="#collection" className="nav-link">Collection</a>
-            <a href="#stories" className="nav-link">Stories</a>
+            <a 
+              href="#collection" 
+              className="nav-link"
+              onClick={() => setSelectedProduct(null)}
+            >
+              Collection
+            </a>
+            <a 
+              href="#stories" 
+              className="nav-link"
+              onClick={() => setSelectedProduct(null)}
+            >
+              Stories
+            </a>
             <a href="#contact" className="nav-link">Contact</a>
           </div>
         </div>
 
         <div className="nav-center">
-          <a href="#" className="brand-logo-link">
+          <a 
+            href="#" 
+            className="brand-logo-link"
+            onClick={(e) => {
+              e.preventDefault();
+              setSelectedProduct(null);
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+          >
             <img src="/assets/aarth-logo.png" alt="AARTH Logo" className="brand-logo-img" />
           </a>
         </div>
@@ -242,13 +267,31 @@ function StorefrontContent() {
               >
                 <span>00</span> Search Archive
               </a>
-              <a href="#collection" className="mobile-drawer-link" onClick={() => setMobileMenuOpen(false)}>
+              <a 
+                href="#collection" 
+                className="mobile-drawer-link" 
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  setSelectedProduct(null);
+                }}
+              >
                 <span>01</span> Collection
               </a>
-              <a href="#stories" className="mobile-drawer-link" onClick={() => setMobileMenuOpen(false)}>
+              <a 
+                href="#stories" 
+                className="mobile-drawer-link" 
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  setSelectedProduct(null);
+                }}
+              >
                 <span>02</span> Stories & Loom
               </a>
-              <a href="#contact" className="mobile-drawer-link" onClick={() => setMobileMenuOpen(false)}>
+              <a 
+                href="#contact" 
+                className="mobile-drawer-link" 
+                onClick={() => setMobileMenuOpen(false)}
+              >
                 <span>03</span> Contact & Atelier
               </a>
               <a 
@@ -272,106 +315,122 @@ function StorefrontContent() {
         </div>
       )}
 
-      <main>
-        {/* Hero Section with Interactive Parallax */}
-        <section 
-          className="hero-section" 
-          id="hero"
-          onMouseMove={handleHeroMouseMove}
-        >
-          <div 
-            className="hero-image-wrapper"
-            style={{
-              transform: `translate3d(${heroParallax.x * -16}px, ${heroParallax.y * -12}px, 0) scale(1.03)`,
-              transition: 'transform 0.15s ease-out'
+      {/* MAIN CONTENT: Conditional Product Detail Page vs Homepage */}
+      {selectedProduct ? (
+        <main>
+          <ProductDetailPage
+            product={selectedProduct}
+            allProducts={displayProducts}
+            onBack={() => {
+              setSelectedProduct(null);
+              window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
+            onSelectProduct={(p) => setSelectedProduct(p)}
+          />
+        </main>
+      ) : (
+        <main>
+          {/* Hero Section with Interactive Parallax */}
+          <section 
+            className="hero-section" 
+            id="hero"
+            onMouseMove={handleHeroMouseMove}
           >
-            <picture className="hero-picture">
-              <source media="(max-width: 768px)" srcSet="/assets/hero-banner-mobile-transparent.png" />
-              <img src="/assets/hero-banner-transparent.png" alt="AARTH Heritage Handloom Silhouettes" className="hero-image" />
-            </picture>
-          </div>
-          
-          <div className="hero-bottom-mark">
-            <span>AARTH</span>
-            <div className="hero-scroll-line"></div>
-          </div>
-        </section>
-
-        {/* Collection Section with Interactive 3D Product Cards */}
-        <section className="products-section" id="collection">
-          <div className="container-wide">
-            <header className="section-header-antique">
-              <div className="section-header-flourish">❦ — ✦ — ❧</div>
-              <div className="section-eyebrow">Handloom Edition • No. 01</div>
-              <h2 className="section-title">The Curated Archive</h2>
-              <div className="section-divider-line">
-                <span></span>
-                <i>
-                  {loadingProducts 
-                    ? "Accessing Loom Archive..." 
-                    : `Selected Silhouettes [${displayProducts.length} of ${displayProducts.length}]`}
-                </i>
-                <span></span>
-              </div>
-            </header>
-
-            <div className="products-grid-4">
-              {displayProducts.map((product, idx) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  index={idx}
-                  onSelect={(p) => setSelectedProduct(p)}
-                  onQuickAdd={handleQuickAdd}
-                  loading={cartLoading}
-                />
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Moving Design Reel with Interactive Play/Pause */}
-        <section className="moving-design-section" id="stories">
-          <div className="video-container">
-            <video 
-              ref={videoRef}
-              className="bg-video" 
-              autoPlay 
-              muted 
-              loop 
-              playsInline
-            >
-              <source src="/assets/fashion-moving-seamless.mp4" type="video/mp4" />
-            </video>
-            <div className="video-overlay"></div>
-          </div>
-
-          <div className="video-content">
-            <span className="video-caption-eyebrow">Atelier in Motion • Loom & Thread</span>
-            <h2 className="video-caption-title">The Drape of Living Tradition</h2>
-            <button 
-              className="btn-stories"
-              onClick={() => {
-                const el = document.getElementById("collection");
-                if (el) el.scrollIntoView({ behavior: 'smooth' });
+            <div 
+              className="hero-image-wrapper"
+              style={{
+                transform: `translate3d(${heroParallax.x * -16}px, ${heroParallax.y * -12}px, 0) scale(1.03)`,
+                transition: 'transform 0.15s ease-out'
               }}
             >
-              Explore Collection
+              <picture className="hero-picture">
+                <source media="(max-width: 768px)" srcSet="/assets/hero-banner-mobile-transparent.png" />
+                <img src="/assets/hero-banner-transparent.png" alt="AARTH Heritage Handloom Silhouettes" className="hero-image" />
+              </picture>
+            </div>
+            
+            <div className="hero-bottom-mark">
+              <span>AARTH</span>
+              <div className="hero-scroll-line"></div>
+            </div>
+          </section>
+
+          {/* Collection Section with Interactive 3D Product Cards */}
+          <section className="products-section" id="collection">
+            <div className="container-wide">
+              <header className="section-header-antique">
+                <div className="section-header-flourish">❦ — ✦ — ❧</div>
+                <div className="section-eyebrow">Handloom Edition • No. 01</div>
+                <h2 className="section-title">The Curated Archive</h2>
+                <div className="section-divider-line">
+                  <span></span>
+                  <i>
+                    {loadingProducts 
+                      ? "Accessing Loom Archive..." 
+                      : `Selected Silhouettes [${displayProducts.length} of ${displayProducts.length}]`}
+                  </i>
+                  <span></span>
+                </div>
+              </header>
+
+              <div className="products-grid-4">
+                {displayProducts.map((product, idx) => (
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    index={idx}
+                    onSelect={(p) => setSelectedProduct(p)}
+                    onQuickAdd={handleQuickAdd}
+                    loading={cartLoading}
+                  />
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* Moving Design Reel with Interactive Play/Pause */}
+          <section className="moving-design-section" id="stories">
+            <div className="video-container">
+              <video 
+                ref={videoRef}
+                className="bg-video" 
+                autoPlay 
+                muted 
+                loop 
+                playsInline
+              >
+                <source src="/assets/fashion-moving-seamless.mp4" type="video/mp4" />
+              </video>
+              <div className="video-overlay"></div>
+            </div>
+
+            <div className="video-content">
+              <span className="video-caption-eyebrow">Atelier in Motion • Loom & Thread</span>
+              <h2 className="video-caption-title">The Drape of Living Tradition</h2>
+              <button 
+                className="btn-stories"
+                onClick={() => {
+                  const el = document.getElementById("collection");
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
+                Explore Collection
+              </button>
+            </div>
+
+            <button 
+              className="video-control-pill"
+              onClick={toggleVideo}
+              aria-label={isPlayingVideo ? "Pause video reel" : "Play video reel"}
+            >
+              <span>{isPlayingVideo ? "❚❚" : "▶"}</span>
+              <span>{isPlayingVideo ? "PAUSE REEL" : "RESUME REEL"}</span>
             </button>
-          </div>
+          </section>
+        </main>
+      )}
 
-          <button 
-            className="video-control-pill"
-            onClick={toggleVideo}
-            aria-label={isPlayingVideo ? "Pause video reel" : "Play video reel"}
-          >
-            <span>{isPlayingVideo ? "❚❚" : "▶"}</span>
-            <span>{isPlayingVideo ? "PAUSE REEL" : "RESUME REEL"}</span>
-          </button>
-        </section>
-      </main>
-
+      {/* Global Site Footer */}
       <footer className="site-footer" id="contact">
         <div className="container">
           <div className="footer-grid">
@@ -386,9 +445,30 @@ function StorefrontContent() {
             <div className="footer-col">
               <h4>Atelier</h4>
               <ul className="footer-nav">
-                <li><a href="#collection">Collection 01</a></li>
-                <li><a href="#stories">The Process</a></li>
-                <li><a href="#hero">Our Silhouettes</a></li>
+                <li>
+                  <a 
+                    href="#collection"
+                    onClick={() => setSelectedProduct(null)}
+                  >
+                    Collection 01
+                  </a>
+                </li>
+                <li>
+                  <a 
+                    href="#stories"
+                    onClick={() => setSelectedProduct(null)}
+                  >
+                    The Process
+                  </a>
+                </li>
+                <li>
+                  <a 
+                    href="#hero"
+                    onClick={() => setSelectedProduct(null)}
+                  >
+                    Our Silhouettes
+                  </a>
+                </li>
               </ul>
             </div>
             <div className="footer-col">
@@ -416,12 +496,6 @@ function StorefrontContent() {
 
       {/* Slide-over Cart Drawer */}
       <CartDrawer />
-
-      {/* Product Quick View / Detail Modal with 3.2X Fabric Texture Magnifier */}
-      <ProductModal 
-        product={selectedProduct} 
-        onClose={() => setSelectedProduct(null)} 
-      />
 
       {/* Interactive Live Search & Filter Modal */}
       <SearchModal
