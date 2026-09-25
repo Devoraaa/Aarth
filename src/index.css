@@ -2422,35 +2422,15 @@ button {
 /* The Magnifier Inspection Loupe */
 .vintage-fabric-loupe {
   position: absolute;
-  width: 170px;
-  height: 170px;
+  width: 180px;
+  height: 180px;
   pointer-events: none;
   transform: translate(-50%, -50%);
   border: 1.5px solid var(--color-amber-gold);
-  box-shadow: 0 0 0 1px rgba(18, 16, 14, 0.4), 0 12px 32px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 0 0 1px rgba(24, 22, 20, 0.4), 0 8px 24px rgba(0, 0, 0, 0.35);
   background-repeat: no-repeat;
   z-index: 20;
   border-radius: 0 !important;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  backdrop-filter: contrast(1.1);
-}
-
-.vintage-fabric-loupe::before {
-  content: '';
-  position: absolute;
-  inset: 5px;
-  border: 1px dashed rgba(184, 146, 58, 0.6);
-  pointer-events: none;
-}
-
-.loupe-crosshair {
-  color: var(--color-amber-gold);
-  font-size: 12px;
-  opacity: 0.85;
-  text-shadow: 0 0 4px rgba(0,0,0,0.8);
-  pointer-events: none;
 }
 
 .loupe-tag {

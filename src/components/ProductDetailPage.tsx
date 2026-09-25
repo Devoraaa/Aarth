@@ -99,8 +99,8 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
-    const zoom = 2.6;
-    const loupeSize = 170; // 170px square loupe
+    const zoom = 1.6; // Amazon-style natural, comfortable zoom level
+    const loupeSize = 180;
 
     // Total width & height of the magnified image background
     const bgW = rect.width * zoom;
@@ -223,14 +223,13 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
                     backgroundSize: `${loupe.bgW}px ${loupe.bgH}px`,
                   }}
                 >
-                  <div className="loupe-crosshair">✦</div>
-                  <div className="loupe-tag">WEAVE 2.6X</div>
+                  <div className="loupe-tag">1.6X ZOOM</div>
                 </div>
               )}
             </div>
 
             <div className="magnifier-hint-badge">
-              <span>✦ MOVE CURSOR OVER SILHOUETTE FOR POINT-ACCURATE WEAVE LOUPE (2.6X) ✦</span>
+              <span>✦ HOVER SILHOUETTE TO ZOOM (1.6X) ✦</span>
             </div>
           </div>
 
