@@ -10,9 +10,9 @@ export default function ComingSoon() {
 
   const content = {
     title: "COMING SOON",
-    instagramHandle: "@aarth.in",
-    instagramUrl: "https://instagram.com/aarth.in",
-    email: "atelier@aarth.in",
+    instagramHandle: "@aarth.uk",
+    instagramUrl: "https://www.instagram.com/aarth.uk?stkn=ZWgwNWUza3E3czk5",
+    email: "Hello@aarth.uk",
     modalTitle: "Atelier Access",
     modalDescription: "Enter passphrase to unlock the AARTH Storefront preview.",
   };
@@ -103,16 +103,17 @@ export default function ComingSoon() {
         </motion.div>
       </main>
 
-      {/* ── Bottom Bar: Luminous white rule and high-contrast Left Socials ─────────────────────────────────── */}
+      {/* ── Bottom Bar: Luminous white rule, Left Insta & Right Email ─────────────────────────────────── */}
       <footer className="relative z-20 w-full px-5 md:px-12 pb-6 md:pb-8 pt-2">
         {/* Crisp white horizontal line */}
         <div className="w-full h-[1.5px] bg-white/70 shadow-[0_1px_8px_rgba(255,255,255,0.3)] mb-4 md:mb-5" />
         
-        {/* Left-aligned Socials */}
+        {/* Left-aligned Instagram & Right-aligned Email */}
         <div 
-          className="flex flex-wrap items-center justify-start gap-6 md:gap-8 text-xs sm:text-sm md:text-base font-medium text-white"
+          className="flex items-center justify-between w-full text-xs sm:text-sm md:text-base font-medium text-white"
           style={{ fontFamily: "var(--font-mono)", letterSpacing: "0.15em" }}
         >
+          {/* Left: Instagram */}
           <a 
             href={content.instagramUrl} 
             target="_blank" 
@@ -126,6 +127,8 @@ export default function ComingSoon() {
             </svg>
             <span>{content.instagramHandle}</span>
           </a>
+
+          {/* Right: Email */}
           <a 
             href={`mailto:${content.email}`} 
             className="flex items-center gap-2 md:gap-2.5 text-white/95 hover:text-white transition-all hover:scale-105 drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]"
