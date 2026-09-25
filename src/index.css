@@ -2465,22 +2465,28 @@ button {
    Strictly Zero Border Radius, Sticky Large Image, Center Gallery, Accordions
    ========================================================================== */
 .product-detail-page-container {
-  padding-top: 84px;
+  padding-top: 0;
   padding-bottom: 60px;
   min-height: 100vh;
   position: relative;
   background-color: transparent;
 }
 
-/* Top Navigation / Breadcrumb Bar */
+/* Top Navigation / Breadcrumb Bar (Sticky under Navbar with zero gap) */
 .pdp-top-bar {
+  position: sticky;
+  top: var(--nav-height);
+  z-index: 45;
+  background-color: #f7f2e9;
+  background-image: url('/assets/new-paper.png');
+  border-bottom: 1px solid var(--border-antique);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-top: 8px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--border-antique);
+  padding-top: 10px;
+  padding-bottom: 10px;
   margin-bottom: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
 }
 
 .pdp-back-btn {
@@ -2540,7 +2546,7 @@ button {
 /* 1. LEFT COLUMN: LARGE STICKY IMAGE WITH TEXTURE ZOOM */
 .pdp-col-large-sticky {
   position: sticky;
-  top: 110px;
+  top: calc(var(--nav-height) + 56px);
   align-self: start;
   z-index: 10;
 }
@@ -2692,7 +2698,7 @@ button {
 /* 3. RIGHT COLUMN: PRODUCT DETAILS & ACTIONS */
 .pdp-col-right-details {
   position: sticky;
-  top: 110px;
+  top: calc(var(--nav-height) + 56px);
   align-self: start;
 }
 
