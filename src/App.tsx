@@ -25,13 +25,28 @@ function StorefrontContent() {
   const [heroParallax, setHeroParallax] = useState({ x: 0, y: 0 });
 
   const { cart, openCart, addItem, loading: cartLoading } = useCart();
+  const [firstScrollTriggered, setFirstScrollTriggered] = useState(false);
+  const prevScrolledRef = useRef(false);
 
   useEffect(() => {
+    let timer: number | null = null;
     const handleScroll = () => {
-      setScrolled(window.scrollY > 40);
+      const isScrolled = window.scrollY > 25;
+      if (isScrolled !== prevScrolledRef.current) {
+        if (isScrolled) {
+          setFirstScrollTriggered(true);
+          if (timer) clearTimeout(timer);
+          timer = window.setTimeout(() => setFirstScrollTriggered(false), 1400);
+        }
+        prevScrolledRef.current = isScrolled;
+        setScrolled(isScrolled);
+      }
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (timer) clearTimeout(timer);
+    };
   }, []);
 
   useEffect(() => {
@@ -152,7 +167,21 @@ function StorefrontContent() {
       {/* Rotating Archival Heritage Seal */}
       <ArchivalSeal />
 
-      <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
+      <nav 
+        className={`navbar ${scrolled ? 'scrolled' : ''} ${firstScrollTriggered ? 'first-scroll-active' : ''}`}
+      >
+        {/* Antique Corner Registration Marks */}
+        <span className="nav-corner top-left" aria-hidden="true">⌜</span>
+        <span className="nav-corner top-right" aria-hidden="true">⌝</span>
+        <span className="nav-corner bottom-left" aria-hidden="true">⌞</span>
+        <span className="nav-corner bottom-right" aria-hidden="true">⌟</span>
+
+        {/* Vintage First-Scroll Wax Seal Flash & Golden Thread Sweep */}
+        <div className="nav-scroll-wax-wave" aria-hidden="true" />
+        <div className="nav-first-scroll-ribbon" aria-hidden="true">
+          <span>✦ ATELIER ARCHIVE • EST. 2026 ✦</span>
+        </div>
+
         <div className="nav-left">
           {/* Mobile hamburger toggle */}
           <button 
@@ -167,7 +196,7 @@ function StorefrontContent() {
             </svg>
           </button>
 
-          {/* Desktop navigation links */}
+          {/* Desktop navigation links with Running Stitch */}
           <div className="desktop-nav-links">
             <a 
               href="#collection" 
@@ -177,6 +206,7 @@ function StorefrontContent() {
               <span className="nav-link-num">01</span>
               <span className="nav-link-text">Collection</span>
               <span className="nav-link-flourish">✦</span>
+              <span className="nav-running-stitch" aria-hidden="true" />
             </a>
             <a 
               href="#stories" 
@@ -186,11 +216,13 @@ function StorefrontContent() {
               <span className="nav-link-num">02</span>
               <span className="nav-link-text">Stories</span>
               <span className="nav-link-flourish">✦</span>
+              <span className="nav-running-stitch" aria-hidden="true" />
             </a>
             <a href="#contact" className="nav-link">
               <span className="nav-link-num">03</span>
               <span className="nav-link-text">Contact</span>
               <span className="nav-link-flourish">✦</span>
+              <span className="nav-running-stitch" aria-hidden="true" />
             </a>
           </div>
         </div>
@@ -206,6 +238,8 @@ function StorefrontContent() {
             }}
           >
             <div className="brand-logo-box">
+              {/* Antique Loom Compass Wheel behind Monogram */}
+              <div className="logo-loom-ring" aria-hidden="true" />
               <img src="/assets/aarth-logo.png" alt="AARTH Logo" className="brand-logo-img" />
               <span className="brand-sub-badge">HERITAGE SILHOUETTES</span>
             </div>

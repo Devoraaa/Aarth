@@ -114,7 +114,11 @@ button {
   padding: 0 36px;
 }
 
-/* Navbar */
+/* ==========================================================================
+   VINTAGE ATELIER NAVBAR & FIRST-SCROLL ANIMATIONS
+   ========================================================================== */
+
+/* Navbar Base */
 .navbar {
   position: sticky;
   top: 0;
@@ -128,8 +132,12 @@ button {
   background-color: transparent;
   border-bottom: 1px solid var(--border-antique);
   z-index: 100;
-  transition: all var(--transition-smooth);
+  transition: background-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), 
+              border-color 0.4s ease, 
+              box-shadow 0.5s ease;
 }
+
+/* Scrolled State: Rich Cacao Brown */
 .navbar.scrolled {
   background-color: rgba(74, 59, 50, 0.97); /* Rich Cacao Brown */
   backdrop-filter: blur(10px);
@@ -147,7 +155,110 @@ button {
   filter: brightness(0) invert(0.96);
 }
 
-/* 1. Animated Gold Weave Thread Shimmer along Navbar Bottom */
+/* 1. FIRST-SCROLL VINTAGE TRANSFORMATION MOMENT */
+.navbar.first-scroll-active {
+  animation: vintageNavbarUnroll 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes vintageNavbarUnroll {
+  0% {
+    box-shadow: 0 0 0 rgba(184, 146, 58, 0);
+  }
+  30% {
+    box-shadow: 0 6px 36px rgba(184, 146, 58, 0.5), inset 0 0 24px rgba(184, 146, 58, 0.25);
+  }
+  100% {
+    box-shadow: 0 8px 32px rgba(45, 34, 28, 0.35);
+  }
+}
+
+.first-scroll-active .brand-logo-box {
+  animation: letterpressStamp 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes letterpressStamp {
+  0% { transform: scale(1); }
+  25% { transform: scale(0.88); filter: drop-shadow(0 0 4px rgba(184, 146, 58, 0.3)); }
+  50% { transform: scale(1.08); filter: drop-shadow(0 0 18px rgba(184, 146, 58, 0.8)); }
+  100% { transform: scale(1); }
+}
+
+/* Golden Wax Pulse Wave on First Scroll */
+.nav-scroll-wax-wave {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(184, 146, 58, 0.3) 0%, transparent 70%);
+  pointer-events: none;
+  opacity: 0;
+  transform: scaleX(0);
+}
+.first-scroll-active .nav-scroll-wax-wave {
+  animation: waxPulseWave 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes waxPulseWave {
+  0% { opacity: 0; transform: scaleX(0); }
+  35% { opacity: 0.9; transform: scaleX(1); }
+  100% { opacity: 0; transform: scaleX(1.2); }
+}
+
+/* Archival Hallmark Ribbon that reveals on first scroll */
+.nav-first-scroll-ribbon {
+  position: absolute;
+  bottom: -13px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-6px);
+  background: rgba(74, 59, 50, 0.96);
+  border: 1px solid var(--color-amber-gold);
+  padding: 2px 12px;
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: var(--color-amber-gold);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 102;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+.first-scroll-active .nav-first-scroll-ribbon {
+  animation: ribbonHallmarkSlide 1.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes ribbonHallmarkSlide {
+  0% { opacity: 0; transform: translateX(-50%) translateY(-8px); }
+  30% { opacity: 1; transform: translateX(-50%) translateY(0); }
+  80% { opacity: 1; transform: translateX(-50%) translateY(0); }
+  100% { opacity: 0; transform: translateX(-50%) translateY(6px); }
+}
+
+/* 2. Antique Corner Registration Marks (⌜ ⌝ ⌞ ⌟) */
+.nav-corner {
+  position: absolute;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-amber-gold);
+  opacity: 0.35;
+  pointer-events: none;
+  transition: all 0.4s ease;
+  line-height: 1;
+  z-index: 101;
+}
+.nav-corner.top-left { top: 8px; left: 18px; }
+.nav-corner.top-right { top: 8px; right: 18px; }
+.nav-corner.bottom-left { bottom: 8px; left: 18px; }
+.nav-corner.bottom-right { bottom: 8px; right: 18px; }
+.navbar:hover .nav-corner,
+.navbar.scrolled .nav-corner {
+  opacity: 0.75;
+}
+.first-scroll-active .nav-corner {
+  animation: cornerGleam 1.2s ease-in-out;
+}
+@keyframes cornerGleam {
+  0%, 100% { opacity: 0.35; transform: scale(1); }
+  50% { opacity: 1; color: #f2e9dc; transform: scale(1.3); text-shadow: 0 0 8px var(--color-amber-gold); }
+}
+
+/* 3. Animated Gold Weave Thread Shimmer along Navbar Bottom */
 .navbar-weave-shimmer {
   position: absolute;
   bottom: 0;
@@ -171,7 +282,7 @@ button {
   100% { background-position: 200% 0; }
 }
 
-/* 2. Desktop Navigation Links with Flourish & Expansion */
+/* 4. Desktop Navigation Links with Running Stitch */
 .nav-left, .nav-right {
   display: flex;
   align-items: center;
@@ -197,7 +308,7 @@ button {
   text-transform: uppercase;
   color: #111111;
   position: relative;
-  padding: 8px 4px;
+  padding: 8px 6px;
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -222,17 +333,28 @@ button {
   transform: scale(0) rotate(-45deg);
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.nav-link::after {
-  content: '';
+
+/* Authentic Handloom Running Stitch Line */
+.nav-running-stitch {
   position: absolute;
   bottom: 0;
-  left: 50%;
-  width: 0%;
-  height: 1.5px;
-  background: linear-gradient(90deg, transparent, var(--color-amber-gold), transparent);
-  transform: translateX(-50%);
-  transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--color-amber-gold) 0,
+    var(--color-amber-gold) 4px,
+    transparent 4px,
+    transparent 8px
+  );
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
 }
+
 .nav-link:hover {
   color: var(--color-amber-gold);
 }
@@ -242,16 +364,23 @@ button {
 }
 .nav-link:hover .nav-link-text {
   letter-spacing: 0.28em;
+  text-shadow: 0 1px 2px rgba(184, 146, 58, 0.3);
 }
 .nav-link:hover .nav-link-flourish {
   opacity: 1;
   transform: scale(1) rotate(0deg);
 }
-.nav-link:hover::after {
-  width: 100%;
+.nav-link:hover .nav-running-stitch {
+  opacity: 1;
+  transform: scaleX(1);
+  animation: stitchMarch 0.7s linear infinite;
+}
+@keyframes stitchMarch {
+  0% { background-position: 0 0; }
+  100% { background-position: 16px 0; }
 }
 
-/* 3. Center Brand Logo Hover & Sub-Badge */
+/* 5. Center Brand Logo with Antique Loom Gear Wheel */
 .brand-logo-link {
   text-decoration: none;
   display: flex;
@@ -263,11 +392,48 @@ button {
   flex-direction: column;
   align-items: center;
   position: relative;
+  padding: 6px 12px;
 }
+
+/* Delicate rotating astronomical/pitloom gear ring */
+.logo-loom-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 66px;
+  height: 66px;
+  margin-top: -33px;
+  margin-left: -33px;
+  border: 1px dashed rgba(184, 146, 58, 0.28);
+  border-radius: 50% !important;
+  animation: loomRotate 45s linear infinite;
+  pointer-events: none;
+  opacity: 0.5;
+  transition: all 0.4s ease;
+}
+.logo-loom-ring::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border: 1px dotted rgba(184, 146, 58, 0.2);
+  border-radius: 50% !important;
+  animation: loomRotateCounter 30s linear infinite;
+}
+@keyframes loomRotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+@keyframes loomRotateCounter {
+  0% { transform: rotate(360deg); }
+  100% { transform: rotate(0deg); }
+}
+
 .brand-logo-img {
   height: 56px;
   width: auto;
   object-fit: contain;
+  position: relative;
+  z-index: 2;
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
 }
 .brand-sub-badge {
@@ -283,20 +449,28 @@ button {
   position: absolute;
   bottom: -10px;
   white-space: nowrap;
+  z-index: 2;
 }
+
 .brand-logo-link:hover .brand-logo-img {
   transform: translateY(-2px) scale(1.03);
-  filter: drop-shadow(0 4px 12px rgba(184, 146, 58, 0.35));
+  filter: drop-shadow(0 4px 14px rgba(184, 146, 58, 0.4));
 }
-.navbar.scrolled .brand-logo-link:hover .brand-logo-img {
-  filter: brightness(0) invert(0.96) drop-shadow(0 4px 12px rgba(184, 146, 58, 0.45));
+.brand-logo-link:hover .logo-loom-ring {
+  opacity: 1;
+  border-color: var(--color-amber-gold);
+  filter: drop-shadow(0 0 6px rgba(184, 146, 58, 0.5));
 }
 .brand-logo-link:hover .brand-sub-badge {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* 4. Action Buttons (Search, Account, Bag) */
+.navbar.scrolled .brand-logo-link:hover .brand-logo-img {
+  filter: brightness(0) invert(0.96) drop-shadow(0 4px 14px rgba(184, 146, 58, 0.5));
+}
+
+/* 6. Action Buttons (Search, Account, Bag) */
 .nav-action-btn {
   background: none;
   border: none;
@@ -331,8 +505,8 @@ button {
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 .navbar.scrolled .nav-icon-tooltip {
-  background: #1e1b18;
-  color: var(--color-pearl);
+  background: #3c2e26;
+  color: #f7f2e9;
   border-color: var(--color-amber-gold);
 }
 .nav-action-btn:hover .nav-icon-tooltip {
@@ -348,7 +522,7 @@ button {
   stroke: var(--color-amber-gold);
 }
 
-/* Cart / Bag Button Animation */
+/* Cart / Bag Button as Vintage Brass Tag */
 .cart-toggle-btn.nav-link-cart {
   background: transparent;
   border: 1px solid var(--border-antique);
@@ -369,6 +543,7 @@ button {
 }
 .navbar.scrolled .cart-toggle-btn.nav-link-cart {
   border-color: rgba(184, 146, 58, 0.45);
+  background: rgba(45, 34, 28, 0.4);
 }
 .navbar.scrolled .cart-toggle-btn.nav-link-cart::before {
   background: var(--color-amber-gold);
@@ -388,7 +563,7 @@ button {
   transition: color 0.3s ease;
 }
 .navbar.scrolled .cart-btn-inner {
-  color: #f2e9dc;
+  color: #f7f2e9;
 }
 .cart-svg-tote {
   transition: transform 0.35s ease;
@@ -400,11 +575,14 @@ button {
   color: #f7f2e9;
 }
 .navbar.scrolled .cart-toggle-btn.nav-link-cart:hover .cart-btn-inner {
-  color: #111111;
+  color: #242220;
 }
 .cart-toggle-btn.nav-link-cart:hover .cart-svg-tote {
   animation: toteSway 0.6s ease-in-out;
   stroke: var(--color-amber-gold);
+}
+.navbar.scrolled .cart-toggle-btn.nav-link-cart:hover .cart-svg-tote {
+  stroke: #242220;
 }
 @keyframes toteSway {
   0% { transform: rotate(0deg); }
@@ -428,7 +606,7 @@ button {
   50% { transform: scale(1.15); color: #e6c564; }
 }
 
-/* 5. Mobile Hamburger Button Animation */
+/* 7. Mobile Hamburger Button Animation */
 .mobile-menu-btn {
   transition: transform 0.3s ease, color 0.3s ease;
 }
