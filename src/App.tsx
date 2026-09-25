@@ -7,7 +7,6 @@ import { SearchModal } from './components/SearchModal';
 import { ProductCard } from './components/ProductCard';
 import { CustomCursor } from './components/CustomCursor';
 import { ArchivalSeal } from './components/ArchivalSeal';
-import { ArchivalTicker } from './components/ArchivalTicker';
 import { getProducts, type ShopifyProduct } from './lib/shopify';
 
 function StorefrontContent() {
@@ -153,17 +152,6 @@ function StorefrontContent() {
       {/* Rotating Archival Heritage Seal */}
       <ArchivalSeal />
 
-      <div className="announcement-bar">
-        <span className="announcement-text-mobile">Atelier Edition 01 — London & Gujarat</span>
-        <div className="announcement-full-desktop">
-          <span>Complimentary UK Dispatch On Orders Above £50</span>
-          <span className="ticker-flourish">✦</span>
-          <ArchivalTicker />
-          <span className="ticker-flourish">✦</span>
-          <span>Est. 2026 — The Archival Record</span>
-        </div>
-      </div>
-
       <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
         <div className="nav-left">
           {/* Mobile hamburger toggle */}
@@ -260,7 +248,7 @@ function StorefrontContent() {
         <div className="mobile-drawer-overlay" onClick={() => setMobileMenuOpen(false)}>
           <div className="mobile-drawer-content" onClick={(e) => e.stopPropagation()}>
             <div className="mobile-drawer-header">
-              <img src="/assets/aarth-logo.png" alt="AARTH" className="mobile-drawer-logo" />
+              <img src="/assets/aarth-logo-white.png" alt="AARTH Logo" className="mobile-drawer-logo" />
               <button 
                 className="mobile-drawer-close" 
                 onClick={() => setMobileMenuOpen(false)}
@@ -452,7 +440,7 @@ function StorefrontContent() {
         <div className="container">
           <div className="footer-grid">
             <div className="footer-col">
-              <img src="/assets/aarth-logo.png" alt="AARTH Logo" className="footer-logo" />
+              <img src="/assets/aarth-logo-white.png" alt="AARTH Logo" className="footer-logo" />
               <p className="footer-text">Preserving the unyielding craft of the subcontinent through structured silhouettes and botanical dyes.</p>
               <div className="newsletter-form">
                 <input type="email" placeholder="Join the Archive" className="newsletter-input" />

@@ -20,8 +20,7 @@
   --font-mono: 'Barlow Condensed', monospace;
 
   --nav-height: 86px;
-  --announcement-height: 38px;
-  --top-bars-total: calc(var(--announcement-height) + var(--nav-height));
+  --top-bars-total: var(--nav-height);
   --transition-smooth: 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -115,30 +114,6 @@ button {
   padding: 0 36px;
 }
 
-/* Announcement Bar */
-.announcement-bar {
-  background-color: var(--color-cacao);
-  color: var(--color-pearl);
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  padding: 0 24px;
-  height: var(--announcement-height);
-  border-bottom: 1px solid rgba(184, 146, 58, 0.35);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  z-index: 105;
-  box-sizing: border-box;
-}
-.ticker-flourish {
-  color: var(--color-amber-gold);
-  font-size: 12px;
-  margin: 0 24px;
-}
-
 /* Navbar */
 .navbar {
   position: sticky;
@@ -156,20 +131,20 @@ button {
   transition: all var(--transition-smooth);
 }
 .navbar.scrolled {
-  background-color: rgba(24, 22, 20, 0.95);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background-color: rgba(74, 59, 50, 0.97); /* Rich Cacao Brown */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-bottom-color: var(--color-amber-gold);
+  box-shadow: 0 8px 32px rgba(45, 34, 28, 0.35);
 }
 .navbar.scrolled .nav-link,
 .navbar.scrolled .search-toggle-btn,
 .navbar.scrolled .cart-toggle-btn,
 .navbar.scrolled .nav-icon {
-  color: #f2e9dc;
+  color: #f7f2e9;
 }
 .navbar.scrolled .brand-logo-img {
-  mix-blend-mode: normal;
-  filter: invert(90%) sepia(10%) hue-rotate(180deg) brightness(1.2);
+  filter: brightness(0) invert(0.96);
 }
 
 /* 1. Animated Gold Weave Thread Shimmer along Navbar Bottom */
@@ -290,10 +265,9 @@ button {
   position: relative;
 }
 .brand-logo-img {
-  height: 48px;
+  height: 56px;
   width: auto;
   object-fit: contain;
-  mix-blend-mode: multiply;
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
 }
 .brand-sub-badge {
@@ -313,6 +287,9 @@ button {
 .brand-logo-link:hover .brand-logo-img {
   transform: translateY(-2px) scale(1.03);
   filter: drop-shadow(0 4px 12px rgba(184, 146, 58, 0.35));
+}
+.navbar.scrolled .brand-logo-link:hover .brand-logo-img {
+  filter: brightness(0) invert(0.96) drop-shadow(0 4px 12px rgba(184, 146, 58, 0.45));
 }
 .brand-logo-link:hover .brand-sub-badge {
   opacity: 1;
@@ -829,9 +806,10 @@ button {
 }
 
 .footer-logo {
-  height: 54px;
+  height: 68px;
+  width: auto;
+  object-fit: contain;
   margin-bottom: 24px;
-  filter: invert(1);
 }
 
 .footer-text {
@@ -965,9 +943,9 @@ button {
 }
 
 .mobile-drawer-logo {
-  height: 40px;
+  height: 46px;
   width: auto;
-  filter: invert(1);
+  object-fit: contain;
 }
 
 .mobile-drawer-close {
@@ -1065,26 +1043,7 @@ button {
 @media (max-width: 768px) {
   :root {
     --nav-height: 64px;
-    --announcement-height: 34px;
-    --top-bars-total: calc(var(--announcement-height) + var(--nav-height));
-  }
-
-  /* Announcement bar */
-  .announcement-bar {
-    padding: 0 14px;
-    height: 34px;
-    font-size: 10px;
-    letter-spacing: 0.18em;
-  }
-  .announcement-text-mobile {
-    display: block;
-    text-align: center;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .announcement-full-desktop {
-    display: none;
+    --top-bars-total: var(--nav-height);
   }
 
   /* Navbar */
@@ -1109,7 +1068,9 @@ button {
     display: none;
   }
   .brand-logo-img {
-    height: 36px;
+    height: 42px;
+    width: auto;
+    object-fit: contain;
   }
   .brand-sub-badge {
     display: none;
@@ -1126,9 +1087,9 @@ button {
 
   /* Hero Section - Fits mobile viewport perfectly without scrolling */
   .hero-section {
-    height: calc(100vh - 98px);
-    height: calc(100dvh - 98px);
-    max-height: calc(100dvh - 98px);
+    height: calc(100vh - var(--nav-height));
+    height: calc(100dvh - var(--nav-height));
+    max-height: calc(100dvh - var(--nav-height));
     min-height: 420px;
     position: relative;
     display: flex;
@@ -1276,7 +1237,9 @@ button {
     margin-bottom: 40px;
   }
   .footer-logo {
-    height: 40px;
+    height: 48px;
+    width: auto;
+    object-fit: contain;
     margin-bottom: 16px;
   }
   .footer-text {
