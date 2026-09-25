@@ -2422,8 +2422,8 @@ button {
 /* The Magnifier Inspection Loupe */
 .vintage-fabric-loupe {
   position: absolute;
-  width: 180px;
-  height: 180px;
+  width: 250px;
+  height: 250px;
   pointer-events: none;
   transform: translate(-50%, -50%);
   border: 1.5px solid var(--color-amber-gold);

@@ -100,7 +100,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
     const y = e.clientY - rect.top;
 
     const zoom = 1.6; // Amazon-style natural, comfortable zoom level
-    const loupeSize = 180;
+    const loupeSize = 250;
 
     // Total width & height of the magnified image background
     const bgW = rect.width * zoom;
