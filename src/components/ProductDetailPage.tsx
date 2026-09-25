@@ -31,21 +31,10 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
   const [washCareOpen, setWashCareOpen] = useState(false);
   const [shippingOpen, setShippingOpen] = useState(false);
 
-  // Large Image Magnifier Zoom State
+  // Exact Point-of-Cursor Magnifier Zoom
   const imgBoxRef = useRef<HTMLDivElement>(null);
-  const [zoomState, setZoomState] = useState<{
-    active: boolean;
-    x: number;
-    y: number;
-    percentX: number;
-    percentY: number;
-  }>({
-    active: false,
-    x: 0,
-    y: 0,
-    percentX: 50,
-    percentY: 50,
-  });
+  const [isZoomed, setIsZoomed] = useState(false);
+  const [zoomPos, setZoomPos] = useState({ x: 50, y: 50 });
 
   // Scroll to top when product changes
   useEffect(() => {
@@ -53,6 +42,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
     setActiveImgIdx(0);
     setQuantity(1);
     setSelectedVariantId(product.variants[0]?.id || "");
+    setIsZoomed(false);
   }, [product.id]);
 
   const currentVariant: ShopifyVariant | undefined =
@@ -69,31 +59,36 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
   }${parseFloat(price.amount).toFixed(2)}`;
 
   // Product images list
-  const images = product.images.length > 0 ? product.images : [{ url: "/assets/product-1.jpg", altText: product.title }];
+  const baseImages =
+    product.images.length > 0
+      ? product.images
+      : [{ url: "/assets/product-1.jpg", altText: product.title }];
+
+  // If product has 2 images, create a curated 4-angle gallery so middle column has rich scrolling
+  const images =
+    baseImages.length === 2
+      ? [
+          baseImages[0],
+          baseImages[1],
+          { url: baseImages[0].url, altText: `${product.title} - Silhouette Study` },
+          { url: baseImages[1].url, altText: `${product.title} - Weave & Motif Detail` },
+        ]
+      : baseImages;
+
   const mainImage = images[activeImgIdx] || images[0];
 
-  // Magnifier mouse move handler
+  // Point-of-Cursor Magnifier Handler: exact percentage alignment
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!imgBoxRef.current) return;
     const rect = imgBoxRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
-    const percentX = Math.max(0, Math.min(100, (x / rect.width) * 100));
-    const percentY = Math.max(0, Math.min(100, (y / rect.height) * 100));
-
-    setZoomState({
-      active: true,
-      x,
-      y,
-      percentX,
-      percentY,
-    });
+    const x = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
+    const y = Math.max(0, Math.min(100, ((e.clientY - rect.top) / rect.height) * 100));
+    setZoomPos({ x, y });
+    if (!isZoomed) setIsZoomed(true);
   };
 
-  const handleMouseLeave = () => {
-    setZoomState((prev) => ({ ...prev, active: false }));
-  };
+  const handleMouseEnter = () => setIsZoomed(true);
+  const handleMouseLeave = () => setIsZoomed(false);
 
   // Add to Bag handler
   const handleAddToCart = async () => {
@@ -153,22 +148,29 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
         </div>
       </div>
 
-      {/* Main 3-Column Product Showcase */}
+      {/* Main 3-Column Showcase Container */}
       <div className="pdp-showcase-container container-wide">
         <div className="pdp-three-column-grid">
-          {/* COLUMN 1: LEFT LARGE STICKY IMAGE WITH TEXTURE ZOOM */}
+          {/* COLUMN 1: LEFT LARGE STICKY IMAGE WITH PRECISE POINT-OF-CURSOR ZOOM */}
           <div className="pdp-col-large-sticky">
             <div
               ref={imgBoxRef}
               className="pdp-large-img-box magnifier-target-box"
               onMouseMove={handleMouseMove}
-              onMouseEnter={() => setZoomState((prev) => ({ ...prev, active: true }))}
+              onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
             >
               <img
                 src={mainImage.url}
                 alt={mainImage.altText || product.title}
                 className="pdp-large-main-img"
+                style={{
+                  transform: isZoomed ? "scale(2.5)" : "scale(1)",
+                  transformOrigin: `${zoomPos.x}% ${zoomPos.y}%`,
+                  transition: isZoomed
+                    ? "transform 0.08s ease-out"
+                    : "transform 0.35s cubic-bezier(0.16, 1, 0.3, 1)",
+                }}
               />
 
               {/* Antique Corner Registration Marks */}
@@ -177,34 +179,24 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
               <span className="magnifier-corner bottom-left">⌞</span>
               <span className="magnifier-corner bottom-right">⌟</span>
 
-              {/* 3.2X Texture Magnifier Loupe */}
-              {zoomState.active && (
-                <div
-                  className="vintage-fabric-loupe"
-                  style={{
-                    left: `${zoomState.x}px`,
-                    top: `${zoomState.y}px`,
-                    backgroundImage: `url(${mainImage.url})`,
-                    backgroundPosition: `${zoomState.percentX}% ${zoomState.percentY}%`,
-                    backgroundSize: "320%",
-                  }}
-                >
-                  <div className="loupe-crosshair">✦</div>
-                  <div className="loupe-tag">WEAVE 3.2X</div>
+              {/* Subtle Point-of-Zoom Focus Stamp */}
+              {isZoomed && (
+                <div className="pdp-zoom-active-indicator">
+                  <span>✦ 2.5X DETAIL ZOOM ACTIVE ✦</span>
                 </div>
               )}
             </div>
 
             <div className="magnifier-hint-badge">
-              <span>✦ HOVER SILHOUETTE TO INSPECT WEAVE & TEXTURE (3.2X) ✦</span>
+              <span>✦ MOVE CURSOR OVER SILHOUETTE FOR PRECISE POINT ZOOM (2.5X) ✦</span>
             </div>
           </div>
 
-          {/* COLUMN 2: CENTER SCROLLABLE OTHER PRODUCT IMAGES */}
+          {/* COLUMN 2: CENTER SCROLLABLE OTHER PRODUCT IMAGES (SCROLLS WITH PAGE) */}
           <div className="pdp-col-center-gallery">
             <div className="pdp-gallery-header">
               <span>ARCHIVE ANGLES [{images.length}]</span>
-              <span className="pdp-scroll-hint">SCROLL 🡓</span>
+              <span className="pdp-scroll-hint">SCROLL WITH PAGE 🡓</span>
             </div>
 
             <div className="pdp-center-images-stack">
@@ -213,16 +205,19 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
                   key={idx}
                   className={`pdp-stack-thumb-box ${activeImgIdx === idx ? "active-thumb" : ""}`}
                   onClick={() => setActiveImgIdx(idx)}
-                  title={`View angle ${idx + 1}`}
+                  title={`View angle 0${idx + 1}`}
                 >
                   <img src={img.url} alt={`${product.title} angle ${idx + 1}`} loading="lazy" />
                   <span className="pdp-thumb-number">0{idx + 1}</span>
+                  {activeImgIdx === idx && (
+                    <span className="pdp-active-badge">VIEWING ON LEFT</span>
+                  )}
                 </div>
               ))}
             </div>
           </div>
 
-          {/* COLUMN 3: RIGHT PRODUCT META & ACTIONS */}
+          {/* COLUMN 3: RIGHT STICKY PRODUCT DETAILS & ACTIONS */}
           <div className="pdp-col-right-details">
             <div className="pdp-details-sticky-wrap">
               {/* Product Header: Name & Price */}
