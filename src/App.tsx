@@ -3,6 +3,7 @@ import ComingSoon from './ComingSoon';
 import { CartProvider, useCart } from './context/CartContext';
 import { CartDrawer } from './components/CartDrawer';
 import { ProductModal } from './components/ProductModal';
+import { SearchModal } from './components/SearchModal';
 import { ProductCard } from './components/ProductCard';
 import { CustomCursor } from './components/CustomCursor';
 import { ArchivalSeal } from './components/ArchivalSeal';
@@ -12,6 +13,7 @@ import { getProducts, type ShopifyProduct } from './lib/shopify';
 function StorefrontContent() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const [products, setProducts] = useState<ShopifyProduct[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState<ShopifyProduct | null>(null);
@@ -189,11 +191,9 @@ function StorefrontContent() {
         <div className="nav-right">
           <button 
             className="search-toggle-btn nav-icon" 
-            aria-label="Search"
-            onClick={() => {
-              const el = document.getElementById("collection");
-              if (el) el.scrollIntoView({ behavior: 'smooth' });
-            }}
+            aria-label="Search the archive"
+            onClick={() => setSearchOpen(true)}
+            title="Search Archive (Motif, Silhouette, Craft)"
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
           </button>
@@ -231,6 +231,17 @@ function StorefrontContent() {
             <div className="mobile-drawer-flourish">❦ — ✦ — ❧</div>
 
             <nav className="mobile-drawer-nav">
+              <a 
+                href="#search" 
+                className="mobile-drawer-link" 
+                onClick={(e) => {
+                  e.preventDefault();
+                  setMobileMenuOpen(false);
+                  setSearchOpen(true);
+                }}
+              >
+                <span>00</span> Search Archive
+              </a>
               <a href="#collection" className="mobile-drawer-link" onClick={() => setMobileMenuOpen(false)}>
                 <span>01</span> Collection
               </a>
@@ -406,10 +417,19 @@ function StorefrontContent() {
       {/* Slide-over Cart Drawer */}
       <CartDrawer />
 
-      {/* Product Quick View / Detail Modal */}
+      {/* Product Quick View / Detail Modal with 3.2X Fabric Texture Magnifier */}
       <ProductModal 
         product={selectedProduct} 
         onClose={() => setSelectedProduct(null)} 
+      />
+
+      {/* Interactive Live Search & Filter Modal */}
+      <SearchModal
+        isOpen={searchOpen}
+        onClose={() => setSearchOpen(false)}
+        products={displayProducts}
+        onSelectProduct={(p) => setSelectedProduct(p)}
+        onQuickAdd={handleQuickAdd}
       />
     </>
   );
