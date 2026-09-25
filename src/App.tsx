@@ -1,8 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ComingSoon from './ComingSoon';
 import { CartProvider, useCart } from './context/CartContext';
 import { CartDrawer } from './components/CartDrawer';
 import { ProductModal } from './components/ProductModal';
+import { ProductCard } from './components/ProductCard';
+import { CustomCursor } from './components/CustomCursor';
+import { ArchivalSeal } from './components/ArchivalSeal';
+import { ArchivalTicker } from './components/ArchivalTicker';
 import { getProducts, type ShopifyProduct } from './lib/shopify';
 
 function StorefrontContent() {
@@ -11,6 +15,13 @@ function StorefrontContent() {
   const [products, setProducts] = useState<ShopifyProduct[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState<ShopifyProduct | null>(null);
+
+  // Video Reel Interactive Play/Pause
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isPlayingVideo, setIsPlayingVideo] = useState(true);
+
+  // Hero Mouse Parallax
+  const [heroParallax, setHeroParallax] = useState({ x: 0, y: 0 });
 
   const { cart, openCart, addItem, loading: cartLoading } = useCart();
 
@@ -39,7 +50,7 @@ function StorefrontContent() {
   }, []);
 
   // Fallback curated mock products if Shopify store has no products yet
-  const fallbackProducts = [
+  const fallbackProducts: ShopifyProduct[] = [
     {
       id: "mock-1",
       handle: "cacao-handloom-raw-silk-kurta",
@@ -48,7 +59,10 @@ function StorefrontContent() {
       descriptionHtml: "<p>Pitloom Silk • Bhagalpur. Hand-spun raw silk with natural luster.</p>",
       tags: ["Pitloom Silk • Bhagalpur"],
       priceRange: { minVariantPrice: { amount: "35.00", currencyCode: "GBP" } },
-      images: [{ url: "/assets/product-1.jpg", altText: "Cacao Kurta" }],
+      images: [
+        { url: "/assets/product-1.jpg", altText: "Cacao Kurta" },
+        { url: "/assets/product-2.jpg", altText: "Cacao Kurta Back" }
+      ],
       variants: [{ id: "mock-v-1", title: "Default", availableForSale: true, price: { amount: "35.00", currencyCode: "GBP" } }]
     },
     {
@@ -59,7 +73,10 @@ function StorefrontContent() {
       descriptionHtml: "<p>Bagru Mud-Resist • Handloom Cotton. Traditional mud-resist hand-block print.</p>",
       tags: ["Bagru Mud-Resist • Handloom Cotton"],
       priceRange: { minVariantPrice: { amount: "35.00", currencyCode: "GBP" } },
-      images: [{ url: "/assets/product-2.jpg", altText: "Taupe Kimono" }],
+      images: [
+        { url: "/assets/product-2.jpg", altText: "Taupe Kimono" },
+        { url: "/assets/product-3.jpg", altText: "Taupe Kimono Detail" }
+      ],
       variants: [{ id: "mock-v-2", title: "Default", availableForSale: true, price: { amount: "35.00", currencyCode: "GBP" } }]
     },
     {
@@ -70,7 +87,10 @@ function StorefrontContent() {
       descriptionHtml: "<p>Chanderi Weave • Pure Zari Thread. Ethereal drape with delicate gold zari.</p>",
       tags: ["Chanderi Weave • Pure Zari Thread"],
       priceRange: { minVariantPrice: { amount: "35.00", currencyCode: "GBP" } },
-      images: [{ url: "/assets/product-3.jpg", altText: "Pearl Tunic" }],
+      images: [
+        { url: "/assets/product-3.jpg", altText: "Pearl Tunic" },
+        { url: "/assets/product-4.jpg", altText: "Pearl Tunic Texture" }
+      ],
       variants: [{ id: "mock-v-3", title: "Default", availableForSale: true, price: { amount: "35.00", currencyCode: "GBP" } }]
     },
     {
@@ -81,7 +101,10 @@ function StorefrontContent() {
       descriptionHtml: "<p>Iron-Vat Fermented • Structured Drape. Fermented botanical dye tailored trousers.</p>",
       tags: ["Iron-Vat Fermented • Structured Drape"],
       priceRange: { minVariantPrice: { amount: "35.00", currencyCode: "GBP" } },
-      images: [{ url: "/assets/product-4.jpg", altText: "Relaxed Trousers" }],
+      images: [
+        { url: "/assets/product-4.jpg", altText: "Relaxed Trousers" },
+        { url: "/assets/product-1.jpg", altText: "Relaxed Trousers Model" }
+      ],
       variants: [{ id: "mock-v-4", title: "Default", availableForSale: true, price: { amount: "35.00", currencyCode: "GBP" } }]
     }
   ];
@@ -96,17 +119,42 @@ function StorefrontContent() {
     }
   };
 
+  const handleHeroMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    setHeroParallax({ x, y });
+  };
+
+  const toggleVideo = () => {
+    if (videoRef.current) {
+      if (videoRef.current.paused) {
+        videoRef.current.play();
+        setIsPlayingVideo(true);
+      } else {
+        videoRef.current.pause();
+        setIsPlayingVideo(false);
+      }
+    }
+  };
+
   return (
     <>
+      {/* Custom Vintage Crosshair & Loom Follower */}
+      <CustomCursor />
+
+      {/* Rotating Archival Heritage Seal */}
+      <ArchivalSeal />
+
       <div className="announcement-bar">
-        <span className="announcement-text-mobile">Atelier Edition 01 — Heirloom Silks & Tees</span>
-        <span className="announcement-full-desktop">
+        <span className="announcement-text-mobile">Atelier Edition 01 — London & Gujarat</span>
+        <div className="announcement-full-desktop">
           <span>Complimentary UK Dispatch On Orders Above £50</span>
           <span className="ticker-flourish">✦</span>
-          <span>Atelier Edition 01 — Heirloom Silks & Botanical Dyes</span>
+          <ArchivalTicker />
           <span className="ticker-flourish">✦</span>
           <span>Est. 2026 — The Archival Record</span>
-        </span>
+        </div>
       </div>
 
       <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
@@ -214,8 +262,19 @@ function StorefrontContent() {
       )}
 
       <main>
-        <section className="hero-section" id="hero">
-          <div className="hero-image-wrapper">
+        {/* Hero Section with Interactive Parallax */}
+        <section 
+          className="hero-section" 
+          id="hero"
+          onMouseMove={handleHeroMouseMove}
+        >
+          <div 
+            className="hero-image-wrapper"
+            style={{
+              transform: `translate3d(${heroParallax.x * -16}px, ${heroParallax.y * -12}px, 0) scale(1.03)`,
+              transition: 'transform 0.15s ease-out'
+            }}
+          >
             <picture className="hero-picture">
               <source media="(max-width: 768px)" srcSet="/assets/hero-banner-mobile-transparent.png" />
               <img src="/assets/hero-banner-transparent.png" alt="AARTH Heritage Handloom Silhouettes" className="hero-image" />
@@ -228,6 +287,7 @@ function StorefrontContent() {
           </div>
         </section>
 
+        {/* Collection Section with Interactive 3D Product Cards */}
         <section className="products-section" id="collection">
           <div className="container-wide">
             <header className="section-header-antique">
@@ -246,48 +306,31 @@ function StorefrontContent() {
             </header>
 
             <div className="products-grid-4">
-              {displayProducts.map((product, idx) => {
-                const tagNum = `№ 0${idx + 1}`;
-                const edition = product.tags[0] || "Living Craft • Handcrafted Edition";
-                const price = product.priceRange.minVariantPrice;
-                const formattedPrice = `${price.currencyCode === "GBP" ? "£" : price.currencyCode === "INR" ? "₹" : price.currencyCode + " "}${parseFloat(price.amount).toFixed(2)}`;
-                const mainImg = product.images[0]?.url || "/assets/product-1.jpg";
-
-                return (
-                  <article 
-                    key={product.id} 
-                    className="product-item"
-                    onClick={() => setSelectedProduct(product)}
-                  >
-                    <div className="product-image-box">
-                      <span className="product-number-tag">{tagNum}</span>
-                      <img src={mainImg} alt={product.title} loading="lazy" />
-
-                      <div className="product-card-quick-actions">
-                        <button
-                          className="btn-card-quick-add"
-                          disabled={cartLoading}
-                          onClick={(e) => handleQuickAdd(e, product)}
-                        >
-                          Quick Add
-                        </button>
-                      </div>
-                    </div>
-                    <div className="product-meta-bottom-left">
-                      <span className="product-edition-stamp">{edition}</span>
-                      <h3 className="product-title">{product.title}</h3>
-                      <p className="product-price">{formattedPrice}</p>
-                    </div>
-                  </article>
-                );
-              })}
+              {displayProducts.map((product, idx) => (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  index={idx}
+                  onSelect={(p) => setSelectedProduct(p)}
+                  onQuickAdd={handleQuickAdd}
+                  loading={cartLoading}
+                />
+              ))}
             </div>
           </div>
         </section>
 
+        {/* Moving Design Reel with Interactive Play/Pause */}
         <section className="moving-design-section" id="stories">
           <div className="video-container">
-            <video className="bg-video" autoPlay muted loop playsInline>
+            <video 
+              ref={videoRef}
+              className="bg-video" 
+              autoPlay 
+              muted 
+              loop 
+              playsInline
+            >
               <source src="/assets/fashion-moving-seamless.mp4" type="video/mp4" />
             </video>
             <div className="video-overlay"></div>
@@ -307,9 +350,13 @@ function StorefrontContent() {
             </button>
           </div>
 
-          <button className="video-control-pill">
-            <span>❚❚</span>
-            <span>PAUSE REEL</span>
+          <button 
+            className="video-control-pill"
+            onClick={toggleVideo}
+            aria-label={isPlayingVideo ? "Pause video reel" : "Play video reel"}
+          >
+            <span>{isPlayingVideo ? "❚❚" : "▶"}</span>
+            <span>{isPlayingVideo ? "PAUSE REEL" : "RESUME REEL"}</span>
           </button>
         </section>
       </main>

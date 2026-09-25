@@ -1745,4 +1745,341 @@ button {
   }
 }
 
+/* ==========================================================================
+   VINTAGE INTERACTIVE ANIMATIONS & MICRO-INTERACTIONS
+   ========================================================================== */
+
+/* 1. Custom Antique Artisanal Cursor (Desktop Only) */
+.custom-cursor-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 99999;
+  overflow: hidden;
+}
+
+.custom-cursor-dot {
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  width: 8px;
+  height: 8px;
+  background-color: var(--color-amber-gold);
+  border-radius: 0 !important;
+  pointer-events: none;
+  will-change: transform;
+  transition: width 0.2s ease, height 0.2s ease, background-color 0.2s ease;
+  box-shadow: 0 0 8px rgba(184, 146, 58, 0.6);
+}
+
+.custom-cursor-dot.hovered {
+  width: 10px;
+  height: 10px;
+  background-color: #111111;
+  box-shadow: none;
+}
+
+.custom-cursor-follower {
+  position: absolute;
+  top: -24px;
+  left: -24px;
+  width: 48px;
+  height: 48px;
+  border: 1px dashed rgba(184, 146, 58, 0.7);
+  pointer-events: none;
+  will-change: transform;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              height 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.2s ease,
+              background-color 0.2s ease;
+}
+
+.custom-cursor-follower.pointer {
+  width: 56px;
+  height: 56px;
+  border-style: solid;
+  border-color: var(--color-amber-gold);
+  background-color: rgba(184, 146, 58, 0.08);
+}
+
+.custom-cursor-follower.product {
+  width: 140px;
+  height: 38px;
+  top: -19px;
+  left: -70px;
+  background-color: rgba(24, 22, 20, 0.92);
+  border: 1px solid var(--color-amber-gold);
+  backdrop-filter: blur(4px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+.cursor-product-badge {
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #f7f2e9;
+  white-space: nowrap;
+}
+
+.cursor-flourish {
+  color: var(--color-amber-gold);
+  font-size: 9px;
+}
+
+/* 2. Interactive 3D Tilt Product Card with Image Flip */
+.interactive-vintage-card {
+  transform-style: preserve-3d;
+  will-change: transform;
+  position: relative;
+}
+
+.interactive-vintage-card .product-image-box {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid transparent;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.interactive-vintage-card:hover .product-image-box {
+  border-color: rgba(184, 146, 58, 0.4);
+  box-shadow: 0 12px 30px rgba(74, 59, 50, 0.15);
+}
+
+/* Corner bracket flourishes */
+.card-corner-bracket {
+  position: absolute;
+  font-family: var(--font-serif);
+  font-size: 16px;
+  color: var(--color-amber-gold);
+  z-index: 3;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+
+.card-corner-bracket.top-left {
+  top: 8px;
+  right: 12px;
+  transform: translate(4px, -4px);
+}
+
+.card-corner-bracket.bottom-right {
+  bottom: 8px;
+  left: 12px;
+  transform: translate(-4px, 4px);
+}
+
+.interactive-vintage-card:hover .card-corner-bracket {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+/* Primary vs Secondary Image Crossfade */
+.product-primary-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
+}
+
+.product-secondary-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: scale(1.04);
+}
+
+.product-secondary-img.is-visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Card Glare effect */
+.product-card-glare {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0) 70%);
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  transition: opacity 0.2s ease;
+  z-index: 2;
+}
+
+/* 3. Archival Seal (Spinning Heritage Stamp) */
+.archival-seal-container {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  width: 110px;
+  height: 110px;
+  cursor: pointer;
+  z-index: 95;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+}
+
+.archival-seal-container:hover {
+  transform: scale(1.08);
+}
+
+.archival-seal-disc {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+  color: var(--color-leather);
+  transition: transform 0.1s linear;
+}
+
+.archival-seal-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.seal-text {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.18em;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.archival-seal-center {
+  position: relative;
+  z-index: 2;
+  width: 44px;
+  height: 44px;
+  background-color: #f7f2e9;
+  background-image: url('/assets/new-paper.png');
+  border: 1px solid var(--border-antique);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+.seal-monogram {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-cacao);
+  line-height: 1;
+}
+
+.seal-flourish {
+  font-size: 8px;
+  color: var(--color-amber-gold);
+  line-height: 1;
+}
+
+@media (max-width: 768px) {
+  .archival-seal-container {
+    width: 84px;
+    height: 84px;
+    bottom: 20px;
+    right: 20px;
+  }
+  .archival-seal-center {
+    width: 34px;
+    height: 34px;
+  }
+  .seal-monogram {
+    font-size: 16px;
+  }
+}
+
+/* 4. Archival Live Ticker (Dual Timezone Ticker) */
+.archival-live-ticker {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: #111111;
+  text-transform: uppercase;
+}
+
+.ticker-pulse-dot {
+  width: 6px;
+  height: 6px;
+  background-color: #b8923a;
+  border-radius: 0 !important;
+  animation: pulseBeacon 2s infinite ease-in-out;
+}
+
+@keyframes pulseBeacon {
+  0% { transform: scale(0.9); opacity: 0.4; }
+  50% { transform: scale(1.4); opacity: 1; }
+  100% { transform: scale(0.9); opacity: 0.4; }
+}
+
+.ticker-item strong {
+  font-weight: 700;
+  color: var(--color-cacao);
+}
+
+.ticker-separator {
+  color: var(--color-amber-gold);
+  font-size: 9px;
+}
+
+/* 5. Gold Candle Shimmer on Section Headers */
+.section-title {
+  position: relative;
+  display: inline-block;
+  background: linear-gradient(
+    110deg,
+    #111111 0%,
+    #111111 40%,
+    #b8923a 50%,
+    #111111 60%,
+    #111111 100%
+  );
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textGoldShimmer 8s infinite linear;
+}
+
+@keyframes textGoldShimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* 6. Video Control Button Live States */
+.video-control-pill {
+  cursor: pointer;
+  transition: all var(--transition-smooth);
+}
+
+.video-control-pill:hover {
+  background-color: var(--color-amber-gold);
+  color: #111111;
+  border-color: var(--color-amber-gold);
+  transform: scale(1.04);
+}
+
+.video-control-pill:active {
+  transform: scale(0.98);
+}
+
+
 
