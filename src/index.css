@@ -159,6 +159,18 @@ button {
   border-radius: 0 !important;
 }
 
+/* Product Detail Page Navbar: Solid vintage parchment background */
+.navbar.pdp-navbar-mode {
+  background-color: #f7f2e9;
+  background-image: url('/assets/new-paper.png');
+  border-bottom: 1px solid var(--border-antique);
+}
+
+.navbar.pdp-navbar-mode.scrolled {
+  background-color: rgba(36, 34, 32, 0.96);
+  background-image: none;
+}
+
 @media (max-width: 768px) {
   .navbar {
     padding: 0 20px;
@@ -2920,28 +2932,31 @@ button {
    Strictly Zero Border Radius, Sticky Large Image, Center Gallery, Accordions
    ========================================================================== */
 .product-detail-page-container {
-  padding-top: 0;
+  padding-top: var(--nav-height);
   padding-bottom: 60px;
   min-height: 100vh;
   position: relative;
   background-color: transparent;
 }
 
-/* Top Navigation / Breadcrumb Bar (Sticky under Navbar with zero gap) */
-.pdp-top-bar {
+/* Top Navigation / Breadcrumb Bar (Sticky under Navbar with Full-Width Shield) */
+.pdp-top-bar-wrapper {
   position: sticky;
   top: var(--nav-height);
-  z-index: 45;
+  width: 100%;
   background-color: #f7f2e9;
   background-image: url('/assets/new-paper.png');
   border-bottom: 1px solid var(--border-antique);
+  z-index: 90;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.pdp-top-bar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding-top: 10px;
   padding-bottom: 10px;
-  margin-bottom: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
 }
 
 .pdp-back-btn {
@@ -2988,6 +3003,7 @@ button {
 
 /* 3-COLUMN SHOWCASE GRID */
 .pdp-showcase-container {
+  margin-top: 18px;
   margin-bottom: 80px;
 }
 
@@ -3042,11 +3058,17 @@ button {
   animation: fadeIn 0.2s ease;
 }
 
-/* 2. CENTER COLUMN: SCROLLABLE GALLERY STACK (FLOWS WITH PAGE) */
+/* 2. CENTER COLUMN: SCROLLABLE GALLERY STACK */
 .pdp-col-center-gallery {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 18px;
+  position: sticky;
+  top: calc(var(--nav-height) + 56px);
+  max-height: calc(100vh - var(--nav-height) - 76px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 6px;
 }
 
 /* Custom fine antique scrollbar */
@@ -3553,7 +3575,8 @@ button {
     gap: 28px;
   }
   .pdp-col-large-sticky,
-  .pdp-col-right-details {
+  .pdp-col-right-details,
+  .pdp-col-center-gallery {
     position: static;
   }
   .pdp-col-center-gallery {

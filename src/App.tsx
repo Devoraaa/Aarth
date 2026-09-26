@@ -172,7 +172,7 @@ function StorefrontContent() {
       <VintagePocketChronometer />
 
       <nav 
-        className={`navbar ${scrolled ? 'scrolled' : ''} ${firstScrollTriggered ? 'first-scroll-active' : ''}`}
+        className={`navbar ${scrolled ? 'scrolled' : ''} ${firstScrollTriggered ? 'first-scroll-active' : ''} ${selectedProduct ? 'pdp-navbar-mode' : ''}`}
       >
         {/* Vintage First-Scroll Wax Seal Flash */}
         <div className="nav-scroll-wax-wave" aria-hidden="true" />

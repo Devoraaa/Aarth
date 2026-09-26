@@ -168,22 +168,24 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
 
   return (
     <div className="product-detail-page-container">
-      {/* Top Breadcrumb Bar (Tight & Compact Spacing) */}
-      <div className="pdp-top-bar container-wide">
-        <button className="pdp-back-btn" onClick={onBack}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="19" y1="12" x2="5" y2="12"></line>
-            <polyline points="12 19 5 12 12 5"></polyline>
-          </svg>
-          <span>RETURN TO ARCHIVE</span>
-        </button>
+      {/* Top Breadcrumb Bar (Tight & Compact Spacing with Full-Width Shield) */}
+      <div className="pdp-top-bar-wrapper">
+        <div className="pdp-top-bar container-wide">
+          <button className="pdp-back-btn" onClick={onBack}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            <span>RETURN TO ARCHIVE</span>
+          </button>
 
-        <div className="pdp-breadcrumb">
-          <span>ATELIER</span>
-          <span className="pdp-bc-sep">/</span>
-          <span>EDITION 01</span>
-          <span className="pdp-bc-sep">/</span>
-          <span className="pdp-bc-current">{product.title}</span>
+          <div className="pdp-breadcrumb">
+            <span>ATELIER</span>
+            <span className="pdp-bc-sep">/</span>
+            <span>EDITION 01</span>
+            <span className="pdp-bc-sep">/</span>
+            <span className="pdp-bc-current">{product.title}</span>
+          </div>
         </div>
       </div>
 
@@ -233,11 +235,11 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
             </div>
           </div>
 
-          {/* COLUMN 2: CENTER SCROLLABLE OTHER PRODUCT IMAGES (SCROLLS WITH PAGE) */}
+          {/* COLUMN 2: CENTER SCROLLABLE OTHER PRODUCT IMAGES */}
           <div className="pdp-col-center-gallery">
             <div className="pdp-gallery-header">
               <span>ARCHIVE ANGLES [{images.length}]</span>
-              <span className="pdp-scroll-hint">SCROLL WITH PAGE 🡓</span>
+              <span className="pdp-scroll-hint">SCROLL TO EXPLORE 🡓</span>
             </div>
 
             <div className="pdp-center-images-stack">
