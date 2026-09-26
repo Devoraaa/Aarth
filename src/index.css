@@ -118,12 +118,14 @@ button {
    VINTAGE ATELIER NAVBAR & FIRST-SCROLL ANIMATIONS
    ========================================================================== */
 
-/* Navbar Base */
+/* Navbar Base - Always Fixed & Centered to eliminate any layout shift */
 .navbar {
-  position: sticky;
+  position: fixed;
   top: 0;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
   width: 100%;
+  max-width: 100%;
   height: var(--nav-height);
   display: flex;
   align-items: center;
@@ -131,35 +133,41 @@ button {
   padding: 0 54px;
   background-color: transparent;
   border-bottom: 1px solid var(--border-antique);
-  z-index: 100;
-  transition: background-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), 
-              border-color 0.4s ease, 
-              box-shadow 0.5s ease;
+  z-index: 1000;
+  transition: top 0.45s cubic-bezier(0.16, 1, 0.3, 1), 
+              width 0.45s cubic-bezier(0.16, 1, 0.3, 1), 
+              max-width 0.45s cubic-bezier(0.16, 1, 0.3, 1), 
+              height 0.45s cubic-bezier(0.16, 1, 0.3, 1), 
+              padding 0.45s cubic-bezier(0.16, 1, 0.3, 1), 
+              background-color 0.45s ease, 
+              border-color 0.45s ease, 
+              box-shadow 0.45s ease;
 }
 
-/* Scrolled State: Floating Detached Dark Leather Card */
+/* Scrolled State: Smoothly morphs into a Floating Detached Dark Leather Card */
 .navbar.scrolled {
-  position: fixed;
   top: 16px;
-  left: 50%;
-  transform: translateX(-50%);
   width: calc(100% - 64px);
   max-width: 1400px;
+  height: 72px;
+  padding: 0 36px;
   background-color: rgba(36, 34, 32, 0.96);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(251, 249, 244, 0.18);
+  border: 1px solid rgba(251, 249, 244, 0.2);
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
   border-radius: 0 !important;
 }
 
 @media (max-width: 768px) {
+  .navbar {
+    padding: 0 20px;
+  }
   .navbar.scrolled {
     top: 10px;
-    left: 12px;
-    transform: none;
     width: calc(100% - 24px);
-    padding: 0 20px;
+    height: 64px;
+    padding: 0 16px;
   }
 }
 .navbar.scrolled .nav-link,
@@ -646,6 +654,7 @@ button {
 
 /* Hero Section - Fits 100% of visible viewport without scrolling */
 .hero-section {
+  margin-top: var(--top-bars-total);
   position: relative;
   height: calc(100vh - var(--top-bars-total));
   height: calc(100dvh - var(--top-bars-total));
@@ -1282,6 +1291,7 @@ button {
 
   /* Hero Section - Fits mobile viewport perfectly without scrolling */
   .hero-section {
+  margin-top: var(--top-bars-total);
     height: calc(100vh - var(--nav-height));
     height: calc(100dvh - var(--nav-height));
     max-height: calc(100dvh - var(--nav-height));
@@ -3584,7 +3594,7 @@ button {
 
 
 /* ==========================================================================
-   ATELIER DOCK (BOTTOM-RIGHT FLOATING WIDGET)
+   ATELIER DOCK (BOTTOM-RIGHT PITLOOM CONSOLE WIDGET)
    ========================================================================== */
 .atelier-dock-container {
   position: fixed;
@@ -3599,47 +3609,67 @@ button {
 
 .atelier-dock-bar {
   background-color: #242220;
-  border: 1px solid rgba(251, 249, 244, 0.22);
+  border: 1px solid rgba(251, 249, 244, 0.25);
   color: #f7f2e9;
   padding: 10px 18px;
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 16px;
   cursor: pointer;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease;
   border-radius: 0 !important;
 }
 
 .atelier-dock-bar:hover {
   background-color: #322d29;
-  border-color: rgba(251, 249, 244, 0.4);
+  border-color: rgba(251, 249, 244, 0.45);
   transform: translateY(-2px);
+}
+
+.dock-spool-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #D8D1C2;
+}
+
+.dock-loom-spool {
+  transition: transform 0.15s linear;
+}
+
+.dock-loom-spool.reeling {
+  animation: reelFastSpin 0.25s infinite linear;
+}
+
+@keyframes reelFastSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
 }
 
 .dock-left-indicator {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.dock-pulse-dot {
-  width: 7px;
-  height: 7px;
-  background-color: #f7f2e9;
-  border-radius: 50% !important;
-  display: inline-block;
-  animation: dockPulse 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+.dock-thread-gauge {
+  width: 120px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.15);
+  overflow: hidden;
+  position: relative;
 }
 
-@keyframes dockPulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.4; transform: scale(0.85); }
+.dock-thread-fill {
+  height: 100%;
+  background: #D8D1C2;
+  transition: width 0.1s linear;
 }
 
 .dock-mono-text {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.16em;
   color: #f7f2e9;
@@ -3650,11 +3680,11 @@ button {
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.18);
   color: #f7f2e9;
-  padding: 4px 10px;
+  padding: 5px 12px;
   font-family: var(--font-mono);
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   transition: all 0.25s ease;
   border-radius: 0 !important;
 }
@@ -3664,20 +3694,20 @@ button {
   color: #242220;
 }
 
-/* Expanded Card */
+/* Expanded Craft Console Card */
 .atelier-dock-expanded-card {
-  width: 280px;
+  width: 300px;
   background-color: #242220;
-  border: 1px solid rgba(251, 249, 244, 0.25);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
-  padding: 16px 20px;
+  border: 1px solid rgba(251, 249, 244, 0.3);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  padding: 18px 22px;
   color: #f7f2e9;
-  animation: dockCardSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: dockConsoleSlide 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   border-radius: 0 !important;
 }
 
-@keyframes dockCardSlideUp {
-  from { opacity: 0; transform: translateY(12px); }
+@keyframes dockConsoleSlide {
+  from { opacity: 0; transform: translateY(14px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
@@ -3685,9 +3715,20 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
   padding-bottom: 10px;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
+}
+
+.dock-header-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dock-symbol {
+  color: #D8D1C2;
+  font-size: 12px;
 }
 
 .dock-tag-mono {
@@ -3710,7 +3751,7 @@ button {
 .dock-expanded-body {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 .dock-stat-row {
@@ -3732,9 +3773,57 @@ button {
   font-weight: 500;
 }
 
+.stat-val.highlight {
+  color: #D8D1C2;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.stat-val.badge {
+  background: rgba(216, 209, 194, 0.15);
+  border: 1px solid rgba(216, 209, 194, 0.3);
+  padding: 2px 8px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: #D8D1C2;
+}
+
+.dock-sound-toggle-row {
+  margin-top: 6px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.12);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.dock-toggle-pill {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #9E9185;
+  padding: 4px 10px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  transition: all 0.25s ease;
+  border-radius: 0 !important;
+}
+
+.dock-toggle-pill.active {
+  background: rgba(216, 209, 194, 0.2);
+  border-color: #D8D1C2;
+  color: #f7f2e9;
+}
+
 @media (max-width: 640px) {
   .atelier-dock-container {
     bottom: 16px;
     right: 16px;
+  }
+  .dock-thread-gauge {
+    width: 80px;
   }
 }
