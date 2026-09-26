@@ -71,9 +71,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       <div className="product-image-box">
         <span className="product-number-tag">{tagNum}</span>
 
-        {/* Vintage Corner Flourish Marks */}
-        <span className="card-corner-bracket top-left">⌜</span>
-        <span className="card-corner-bracket bottom-right">⌟</span>
+        {/* Tailor's Animated Basting Stitch Running Border */}
+        <svg className="card-stitch-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+          <rect x="0.8" y="0.8" width="98.4" height="98.4" fill="none" className="stitch-rect" />
+        </svg>
 
         {/* Primary Front Image */}
         <img
@@ -97,7 +98,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         <div
           className="product-card-glare"
           style={{
-            opacity: isHovered ? 0.25 : 0,
+            opacity: isHovered ? 0.22 : 0,
             transform: `translate(${tilt.y * 3}px, ${tilt.x * 3}px)`,
           }}
         />

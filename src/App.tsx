@@ -7,8 +7,10 @@ import { SearchModal } from './components/SearchModal';
 import { ProductCard } from './components/ProductCard';
 import { CustomCursor } from './components/CustomCursor';
 import { AtelierDock } from './components/AtelierDock';
-import { WeaversDesk } from './components/WeaversDesk';
-import { AtelierDispatch } from './components/AtelierDispatch';
+import { AtelierDispatchBar } from './components/AtelierDispatchBar';
+import { CraftPassportStamp } from './components/CraftPassportStamp';
+import { TactileDossier } from './components/TactileDossier';
+import { TailorNotebook } from './components/TailorNotebook';
 import { getProducts, type ShopifyProduct } from './lib/shopify';
 
 function StorefrontContent() {
@@ -18,10 +20,6 @@ function StorefrontContent() {
   const [products, setProducts] = useState<ShopifyProduct[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState<ShopifyProduct | null>(null);
-
-  // Hero Atelier Drafting Split Lens State
-  const [heroMode, setHeroMode] = useState<"split" | "photo" | "sketch">("split");
-  const [splitPos, setSplitPos] = useState<number>(55);
 
   // Video Reel Interactive Play/Pause
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -153,14 +151,6 @@ function StorefrontContent() {
     setHeroParallax({ x, y });
   };
 
-  const handleSplitMouseMove = (e: React.MouseEvent<HTMLElement>) => {
-    if (heroMode !== "split") return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const percentage = Math.max(8, Math.min(92, (x / rect.width) * 100));
-    setSplitPos(percentage);
-  };
-
   const toggleVideo = () => {
     if (videoRef.current) {
       if (videoRef.current.paused) {
@@ -204,21 +194,11 @@ function StorefrontContent() {
           {/* Desktop navigation links with Running Stitch */}
           <div className="desktop-nav-links">
             <a 
-              href="#weavers-desk" 
-              className="nav-link"
-              onClick={() => setSelectedProduct(null)}
-            >
-              <span className="nav-link-num">01</span>
-              <span className="nav-link-text">Loom Desk</span>
-              <span className="nav-link-flourish">✦</span>
-              <span className="nav-running-stitch" aria-hidden="true" />
-            </a>
-            <a 
               href="#collection" 
               className="nav-link"
               onClick={() => setSelectedProduct(null)}
             >
-              <span className="nav-link-num">02</span>
+              <span className="nav-link-num">01</span>
               <span className="nav-link-text">Collection</span>
               <span className="nav-link-flourish">✦</span>
               <span className="nav-running-stitch" aria-hidden="true" />
@@ -228,18 +208,14 @@ function StorefrontContent() {
               className="nav-link"
               onClick={() => setSelectedProduct(null)}
             >
-              <span className="nav-link-num">03</span>
+              <span className="nav-link-num">02</span>
               <span className="nav-link-text">Stories</span>
               <span className="nav-link-flourish">✦</span>
               <span className="nav-running-stitch" aria-hidden="true" />
             </a>
-            <a 
-              href="#dispatch" 
-              className="nav-link"
-              onClick={() => setSelectedProduct(null)}
-            >
-              <span className="nav-link-num">04</span>
-              <span className="nav-link-text">Dispatch</span>
+            <a href="#contact" className="nav-link">
+              <span className="nav-link-num">03</span>
+              <span className="nav-link-text">Contact</span>
               <span className="nav-link-flourish">✦</span>
               <span className="nav-running-stitch" aria-hidden="true" />
             </a>
@@ -326,16 +302,6 @@ function StorefrontContent() {
                 <span>00</span> Search Archive
               </a>
               <a 
-                href="#weavers-desk" 
-                className="mobile-drawer-link" 
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  setSelectedProduct(null);
-                }}
-              >
-                <span>01</span> Loom Drafting Desk
-              </a>
-              <a 
                 href="#collection" 
                 className="mobile-drawer-link" 
                 onClick={() => {
@@ -343,7 +309,7 @@ function StorefrontContent() {
                   setSelectedProduct(null);
                 }}
               >
-                <span>02</span> Curated Archive
+                <span>01</span> Collection
               </a>
               <a 
                 href="#stories" 
@@ -353,24 +319,14 @@ function StorefrontContent() {
                   setSelectedProduct(null);
                 }}
               >
-                <span>03</span> Stories & Process
-              </a>
-              <a 
-                href="#dispatch" 
-                className="mobile-drawer-link" 
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  setSelectedProduct(null);
-                }}
-              >
-                <span>04</span> Guild Dispatch
+                <span>02</span> Stories & Loom
               </a>
               <a 
                 href="#contact" 
                 className="mobile-drawer-link" 
                 onClick={() => setMobileMenuOpen(false)}
               >
-                <span>05</span> Contact & Atelier
+                <span>03</span> Contact & Atelier
               </a>
               <a 
                 href="#cart" 
@@ -408,47 +364,15 @@ function StorefrontContent() {
         </main>
       ) : (
         <main>
-          {/* Hero Section with Interactive Parallax & Atelier Drafting Split Lens */}
+          {/* Real-Time Live Guild Dispatch Tape */}
+          <AtelierDispatchBar />
+
+          {/* Hero Section with Interactive Parallax & 3D Wax Seal */}
           <section 
             className="hero-section" 
             id="hero"
-            onMouseMove={(e) => {
-              handleHeroMouseMove(e);
-              handleSplitMouseMove(e);
-            }}
+            onMouseMove={handleHeroMouseMove}
           >
-            {/* Top Atelier Telemetry & Mode Controls */}
-            <div className="hero-telemetry-bar">
-              <div className="telemetry-left">
-                <span className="telemetry-badge">✦ ATELIER SPEC 01</span>
-                <span className="telemetry-coords">BHAGALPUR 25°14'N • LONDON 51°30'W</span>
-              </div>
-
-              <div className="hero-lens-controls">
-                <button
-                  className={`lens-ctrl-btn ${heroMode === "photo" ? "active" : ""}`}
-                  onClick={() => setHeroMode("photo")}
-                  title="View Finished Photographic Silhouette"
-                >
-                  SILHOUETTE
-                </button>
-                <button
-                  className={`lens-ctrl-btn ${heroMode === "split" ? "active" : ""}`}
-                  onClick={() => setHeroMode("split")}
-                  title="Interactive Split Drafting Lens"
-                >
-                  SPLIT LENS ◧
-                </button>
-                <button
-                  className={`lens-ctrl-btn ${heroMode === "sketch" ? "active" : ""}`}
-                  onClick={() => setHeroMode("sketch")}
-                  title="Hand-Drawn Charcoal Atelier Draft"
-                >
-                  CHARCOAL DRAFT ✎
-                </button>
-              </div>
-            </div>
-
             <div 
               className="hero-image-wrapper"
               style={{
@@ -456,70 +380,23 @@ function StorefrontContent() {
                 transition: 'transform 0.18s cubic-bezier(0.16, 1, 0.3, 1)'
               }}
             >
-              {/* Underlying Hand-Drawn Charcoal & Pencil Atelier Sketch */}
-              {(heroMode === "sketch" || heroMode === "split") && (
-                <div className="hero-sketch-layer">
-                  <img 
-                    src="/assets/hero-sketch.jpg" 
-                    alt="Hand-drawn atelier drafting sketch" 
-                    className="hero-sketch-img" 
-                  />
-                  <div className="sketch-annotation-overlay">
-                    <span className="annotation-tag tag-shoulder">SHOULDER SEAM • ZERO-PLASTIC</span>
-                    <span className="annotation-tag tag-drape">BIAS DRAPE • TUSSAR RAW SILK</span>
-                    <span className="annotation-tag tag-pocket">CONCEALED WELT POCKET</span>
-                  </div>
-                </div>
-              )}
-
-              {/* Foreground Finished Photographic Silhouette */}
-              {(heroMode === "photo" || heroMode === "split") && (
-                <div 
-                  className="hero-photo-layer"
-                  style={{
-                    clipPath: heroMode === "split" ? `polygon(0 0, ${splitPos}% 0, ${splitPos}% 100%, 0 100%)` : undefined
-                  }}
-                >
-                  <picture className="hero-picture">
-                    <source media="(max-width: 768px)" srcSet="/assets/hero-banner-mobile-transparent.png" />
-                    <img src="/assets/hero-banner-transparent.png" alt="AARTH Heritage Handloom Silhouettes" className="hero-image" />
-                  </picture>
-                </div>
-              )}
-
-              {/* Draggable Divider Handle Line in Split Mode */}
-              {heroMode === "split" && (
-                <div 
-                  className="hero-split-divider"
-                  style={{ left: `${splitPos}%` }}
-                >
-                  <div className="divider-line" />
-                  <div className="divider-handle">
-                    <span className="handle-chevron">◀</span>
-                    <span className="handle-knurl">DRAFT</span>
-                    <span className="handle-chevron">▶</span>
-                  </div>
-                </div>
-              )}
+              <picture className="hero-picture">
+                <source media="(max-width: 768px)" srcSet="/assets/hero-banner-mobile-transparent.png" />
+                <img src="/assets/hero-banner-transparent.png" alt="AARTH Heritage Handloom Silhouettes" className="hero-image" />
+              </picture>
             </div>
+
+            {/* Interactive 3D Letterpress Wax Stamp */}
+            <CraftPassportStamp />
             
             <div className="hero-bottom-mark">
-              <button 
-                className="hero-explore-desk-btn"
-                onClick={() => {
-                  const el = document.getElementById("weavers-desk");
-                  if (el) el.scrollIntoView({ behavior: 'smooth' });
-                }}
-              >
-                <span>TOUCH THE WEAVE SPECIMENS</span>
-                <span className="btn-down-arrow">↓</span>
-              </button>
+              <span>AARTH</span>
               <div className="hero-scroll-line"></div>
             </div>
           </section>
 
-          {/* Interactive Weaver's Drafting Desk */}
-          <WeaversDesk />
+          {/* Centerpiece: The Weaver's Ledger (Tactile Swatch & Fiber Inspection) */}
+          <TactileDossier />
 
           {/* Collection Section with Interactive 3D Product Cards */}
           <section className="products-section" id="collection">
@@ -553,6 +430,9 @@ function StorefrontContent() {
               </div>
             </div>
           </section>
+
+          {/* Interactive Archival Blueprint & Slow Fashion Manifesto */}
+          <TailorNotebook />
 
           {/* Moving Design Reel with Interactive Play/Pause */}
           <section className="moving-design-section" id="stories">
@@ -593,9 +473,6 @@ function StorefrontContent() {
               <span>{isPlayingVideo ? "PAUSE REEL" : "RESUME REEL"}</span>
             </button>
           </section>
-
-          {/* Interactive Archival Wax-Sealed Manifesto Dispatch */}
-          <AtelierDispatch />
         </main>
       )}
 
