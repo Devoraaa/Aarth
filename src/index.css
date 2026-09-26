@@ -2275,32 +2275,6 @@ button {
   background-color: rgba(184, 146, 58, 0.08);
 }
 
-.custom-cursor-follower.product {
-  width: 140px;
-  height: 38px;
-  top: -19px;
-  left: -70px;
-  background-color: rgba(24, 22, 20, 0.92);
-  border: 1px solid var(--border-antique);
-  backdrop-filter: blur(4px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
-}
-
-.cursor-product-badge {
-  font-family: var(--font-display);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: #f7f2e9;
-  white-space: nowrap;
-}
-
-.cursor-flourish {
-  color: var(--color-cacao);
-  font-size: 9px;
-}
-
 /* 2. Interactive 3D Tilt Product Card with Image Flip */
 .interactive-vintage-card {
   transform-style: preserve-3d;
@@ -6885,26 +6859,52 @@ button {
 }
 
 /* ==========================================================================
-   1906 EDWARDIAN LOT PLATES (PRODUCT CARDS)
+   LUXURY ATELIER PRODUCT CARDS (1906 BESPOKE EDITORIAL ARCHIVE)
    ========================================================================== */
-.edwardian-lot-card {
-  background: #fbf9f4;
-  border: 2px solid #242220;
-  padding: 8px;
-  box-shadow: 4px 4px 0 rgba(36, 34, 32, 0.18);
-  transition: all 0.3s ease;
+.luxury-atelier-card {
+  position: relative;
+  background: #FAF7F0;
+  border: 1px solid rgba(54, 45, 36, 0.28);
+  padding: 10px;
+  box-shadow: 
+    0 4px 20px rgba(36, 26, 18, 0.05),
+    0 1px 3px rgba(36, 26, 18, 0.04);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.3s ease;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
 }
 
-.edwardian-lot-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 8px 8px 0 rgba(36, 34, 32, 0.3);
+.luxury-atelier-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(54, 45, 36, 0.65);
+  box-shadow: 
+    0 16px 36px rgba(36, 26, 18, 0.12),
+    0 2px 8px rgba(36, 26, 18, 0.06);
 }
 
-.lot-mount-inner {
-  border: 1px solid #242220;
-  padding: 8px;
-  background: #f7f2e9;
+.luxury-atelier-card .product-image-box {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  position: relative;
+  background-color: #ede7dc;
+  border: 1px solid rgba(54, 45, 36, 0.12);
+  margin-bottom: 14px;
+}
+
+.luxury-atelier-card .product-image-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
+}
+
+.luxury-atelier-card:hover .product-primary-img {
+  transform: scale(1.03);
 }
 
 .product-lot-tag {
@@ -6912,68 +6912,107 @@ button {
   top: 10px;
   left: 10px;
   background: #242220;
-  color: #f7f2e9;
-  padding: 3px 8px;
-  font-family: var(--font-display);
-  font-size: 9.5px;
+  color: #FAF8F5;
+  padding: 3px 9px;
+  font-family: var(--font-mono);
+  font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.16em;
-  z-index: 10;
+  z-index: 5;
+  border-radius: 0 !important;
 }
 
-.plate-corner {
+/* Quick Add Button sliding inside photo */
+.product-card-quick-actions {
   position: absolute;
-  color: rgba(251, 249, 244, 0.65);
-  font-size: 16px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px;
+  z-index: 6;
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   pointer-events: none;
-  z-index: 8;
-}
-.plate-corner.top-left { top: 6px; left: 8px; }
-.plate-corner.top-right { top: 6px; right: 8px; }
-.plate-corner.bottom-left { bottom: 6px; left: 8px; }
-.plate-corner.bottom-right { bottom: 6px; right: 8px; }
-
-.lot-entry-meta {
-  padding-top: 12px;
 }
 
-.lot-provenance-line {
+.luxury-atelier-card:hover .product-card-quick-actions {
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.btn-card-quick-add {
+  width: 100%;
+  padding: 10px 14px;
+  background: rgba(36, 34, 32, 0.95);
+  color: #FAF8F5;
+  border: 1px solid rgba(251, 249, 244, 0.2);
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-card-quick-add:hover {
+  background: var(--color-cacao);
+  color: #ffffff;
+}
+
+/* Metadata */
+.product-meta-content {
+  display: flex;
+  flex-direction: column;
+  padding: 2px 4px 6px 4px;
+}
+
+.product-provenance-tag {
   font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 0.14em;
-  color: #736558;
-  margin-bottom: 4px;
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #7A6A5E;
+  margin-bottom: 5px;
 }
 
-.lot-title {
+.product-title {
   font-family: var(--font-serif);
-  font-size: 19px;
+  font-size: 21px;
   font-weight: 500;
-  color: #242220;
+  color: #1C1917;
   margin: 0 0 6px 0;
-  line-height: 1.25;
+  line-height: 1.2;
+  transition: color 0.2s ease;
 }
 
-.lot-price-row {
+.luxury-atelier-card:hover .product-title {
+  color: var(--color-cacao);
+}
+
+.product-price-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top: 1px dashed rgba(74, 59, 50, 0.25);
+  border-top: 1px solid rgba(54, 45, 36, 0.1);
   padding-top: 6px;
+  margin-top: 2px;
 }
 
-.lot-price-val {
-  font-family: var(--font-display);
-  font-size: 15px;
-  font-weight: 700;
+.product-price-val {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 600;
   color: #242220;
+  letter-spacing: 0.06em;
 }
 
-.lot-hallmark {
+.product-hallmark-stamp {
   font-family: var(--font-mono);
   font-size: 9px;
-  letter-spacing: 0.18em;
-  color: #736558;
+  letter-spacing: 0.16em;
+  color: #9E8E81;
 }
 
 /* ==========================================================================
@@ -7315,123 +7354,7 @@ button {
   pointer-events: none;
 }
 
-/* Handwritten Cutter Marginalia */
-.vintage-marginalia {
-  position: absolute;
-  font-family: var(--font-antique);
-  font-size: 15px;
-  font-style: italic;
-  color: rgba(74, 59, 50, 0.45);
-  letter-spacing: 0.04em;
-  white-space: nowrap;
-}
 
-.marginalia-left {
-  top: 40%;
-  left: 2%;
-  transform: rotate(-90deg) translateX(-50%);
-  transform-origin: left top;
-}
-
-.marginalia-right {
-  top: 70%;
-  right: 2%;
-  transform: rotate(90deg) translateX(50%);
-  transform-origin: right top;
-}
-
-/* ==========================================================================
-   BURNT & TORN PRODUCT CARDS (PHATA HUA & JALA HUA - 1906 ARCHIVAL SPECIMEN)
-   ========================================================================== */
-.burnt-torn-card {
-  position: relative;
-  background: #FAF7EE;
-  border: 1.5px solid #382A1F;
-  border-radius: 1px 3px 2px 4px / 3px 1px 4px 2px;
-  /* Authentic charred paper perimeter: heat scorch at the very edge fading into paper */
-  box-shadow: 
-    0 6px 20px rgba(36, 26, 18, 0.12),
-    0 2px 6px rgba(36, 26, 18, 0.08),
-    inset 0 0 16px rgba(65, 38, 20, 0.3),
-    inset 0 0 3px rgba(22, 12, 6, 0.65),
-    3px 4px 0 rgba(36, 28, 20, 0.22);
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  overflow: hidden; /* Clips scorched gradients cleanly within paper bounds */
-}
-
-.burnt-torn-card:hover {
-  transform: translateY(-5px) scale(1.01);
-  box-shadow: 
-    0 14px 34px rgba(36, 26, 18, 0.2),
-    inset 0 0 20px rgba(70, 40, 20, 0.4),
-    inset 0 0 4px rgba(25, 14, 8, 0.75),
-    5px 6px 0 rgba(36, 28, 20, 0.3);
-}
-
-/* Organic Scorched / Burnt Corner Patina (jala hua - smooth fluid gradient, never square) */
-.burnt-torn-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 100px;
-  height: 100px;
-  background: radial-gradient(circle at 100% 0%, rgba(28, 16, 8, 0.48) 0%, rgba(68, 36, 16, 0.26) 32%, rgba(120, 70, 30, 0.1) 60%, transparent 80%);
-  pointer-events: none;
-  z-index: 10;
-  mix-blend-mode: multiply;
-}
-
-.burnt-torn-card::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 80px;
-  height: 80px;
-  background: radial-gradient(circle at 0% 100%, rgba(28, 16, 8, 0.38) 0%, rgba(68, 36, 16, 0.2) 32%, rgba(120, 70, 30, 0.07) 60%, transparent 80%);
-  pointer-events: none;
-  z-index: 10;
-  mix-blend-mode: multiply;
-}
-
-/* Authentic Torn Paper Corner Deckle (phata hua) */
-.card-torn-deckle {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 36px;
-  height: 36px;
-  pointer-events: none;
-  z-index: 12;
-}
-
-.torn-deckle-svg {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-
-/* Faint Diagonal Paper Crease Mark */
-.card-aged-crease {
-  position: absolute;
-  top: 12px;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent 5%, rgba(74, 59, 50, 0.16) 35%, rgba(255, 255, 255, 0.35) 36%, transparent 70%);
-  transform: rotate(-10deg);
-  pointer-events: none;
-  z-index: 11;
-}
-
-.charred-vignette-overlay {
-  position: absolute;
-  inset: 0;
-  box-shadow: inset 0 0 10px rgba(36, 26, 18, 0.22);
-  pointer-events: none;
-  z-index: 6;
-}
 
 /* ==========================================================================
    VINTAGE POCKET CHRONOMETER (BOTTOM-RIGHT UNIQUE ARTIFACT)

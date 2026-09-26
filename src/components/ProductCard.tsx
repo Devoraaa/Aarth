@@ -22,7 +22,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
 
-  const tagNum = `LOT NO. ${romanNumerals[index] || index + 1}`;
+  const tagNum = `LOT ${romanNumerals[index] || index + 1}`;
   const edition = product.tags[0] || "PROVENANCE VERIFIED • ANNO MDCCCCVI";
   const price = product.priceRange.minVariantPrice;
   const formattedPrice = `${price.currencyCode === "GBP" ? "£" : price.currencyCode === "INR" ? "₹" : price.currencyCode + " "}${parseFloat(price.amount).toFixed(2)}`;
@@ -39,8 +39,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
 
-    const rotateX = ((y - centerY) / centerY) * -4;
-    const rotateY = ((x - centerX) / centerX) * 4;
+    const rotateX = ((y - centerY) / centerY) * -3.5;
+    const rotateY = ((x - centerX) / centerX) * 3.5;
 
     setTilt({ x: rotateX, y: rotateY });
   };
@@ -57,7 +57,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   return (
     <article
       ref={cardRef}
-      className={`product-item edwardian-lot-card burnt-torn-card ${isHovered ? "card-hovered" : ""}`}
+      className={`product-item luxury-atelier-card ${isHovered ? "card-hovered" : ""}`}
       onClick={() => onSelect(product)}
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
@@ -69,81 +69,47 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           : "transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
       }}
     >
-      {/* Authentic Deckled Torn Paper Corner (phata hua - ragged paper fibers) */}
-      <div className="card-torn-deckle" aria-hidden="true">
-        <svg viewBox="0 0 40 40" className="torn-deckle-svg">
-          {/* Inner tear crevice shadow */}
-          <path d="M0,0 L40,0 L40,6 Q31,10 24,15 Q18,21 13,27 Q7,33 0,40 Z" fill="rgba(35, 20, 10, 0.3)" />
-          {/* Exposed fibrous paper pulp core */}
-          <path d="M0,0 L40,0 L40,3 Q30,7 23,12 Q17,18 12,24 Q6,30 0,36 Z" fill="#FAF6EE" stroke="rgba(75, 48, 25, 0.35)" strokeWidth="0.8" />
-          {/* Microscopic ripped rag fibers */}
-          <line x1="23" y1="12" x2="25" y2="10" stroke="rgba(95, 62, 35, 0.5)" strokeWidth="0.8" strokeLinecap="round" />
-          <line x1="17" y1="18" x2="19" y2="16" stroke="rgba(95, 62, 35, 0.5)" strokeWidth="0.8" strokeLinecap="round" />
-          <line x1="12" y1="24" x2="13.5" y2="22" stroke="rgba(95, 62, 35, 0.5)" strokeWidth="0.8" strokeLinecap="round" />
-        </svg>
+      <div className="product-image-box">
+        {/* Lot Tag Badge */}
+        <span className="product-lot-tag">{tagNum}</span>
+
+        {/* Primary Front Plate Image */}
+        <img
+          src={frontImg}
+          alt={product.title}
+          loading="lazy"
+          className={`product-primary-img ${backImg && isHovered ? "has-flip" : ""}`}
+        />
+
+        {/* Secondary Editorial Back Plate Image on Hover */}
+        {backImg && (
+          <img
+            src={backImg}
+            alt={`${product.title} Back View`}
+            loading="lazy"
+            className={`product-secondary-img ${isHovered ? "is-visible" : ""}`}
+          />
+        )}
+
+        {/* Quick Add Overlay Button inside photo bottom */}
+        <div className="product-card-quick-actions">
+          <button
+            className="btn-card-quick-add"
+            disabled={loading}
+            onClick={(e) => onQuickAdd(e, product)}
+          >
+            <span>✦ QUICK ACQUIRE</span>
+          </button>
+        </div>
       </div>
 
-      {/* Faint Diagonal Historic Fold Crease */}
-      <div className="card-aged-crease" aria-hidden="true" />
-
-      <div className="lot-mount-inner">
-        <div className="product-image-box">
-          <span className="product-lot-tag">{tagNum}</span>
-
-          {/* 1906 Corner Mount Brackets */}
-          <span className="plate-corner top-left">⌜</span>
-          <span className="plate-corner top-right">⌝</span>
-          <span className="plate-corner bottom-left">⌞</span>
-          <span className="plate-corner bottom-right">⌟</span>
-
-          {/* Primary Front Plate Image */}
-          <img
-            src={frontImg}
-            alt={product.title}
-            loading="lazy"
-            className={`product-primary-img ${backImg && isHovered ? "has-flip" : ""}`}
-          />
-
-          {/* Secondary Editorial Plate Image */}
-          {backImg && (
-            <img
-              src={backImg}
-              alt={`${product.title} Alternate View`}
-              loading="lazy"
-              className={`product-secondary-img ${isHovered ? "is-visible" : ""}`}
-            />
-          )}
-
-          {/* Charred Perimeter Vignette Overlay */}
-          <div className="charred-vignette-overlay" aria-hidden="true" />
-
-          {/* Fine Linen Sheen on Hover */}
-          <div
-            className="product-card-glare"
-            style={{
-              opacity: isHovered ? 0.22 : 0,
-              transform: `translate(${tilt.y * 2.5}px, ${tilt.x * 2.5}px)`,
-            }}
-          />
-
-          <div className="product-card-quick-actions">
-            <button
-              className="btn-card-quick-add"
-              disabled={loading}
-              onClick={(e) => onQuickAdd(e, product)}
-            >
-              <span>ACQUIRE LOT ☞</span>
-            </button>
-          </div>
-        </div>
-
-        <div className="lot-entry-meta">
-          <div className="lot-provenance-line">{edition}</div>
-          <h3 className="lot-title">{product.title}</h3>
-          <div className="lot-price-row">
-            <span className="lot-price-val">{formattedPrice}</span>
-            <span className="lot-hallmark">MDCCCCVI</span>
-          </div>
+      {/* Product Meta Section */}
+      <div className="product-meta-content">
+        <div className="product-provenance-tag">{edition}</div>
+        <h3 className="product-title">{product.title}</h3>
+        <div className="product-price-row">
+          <span className="product-price-val">{formattedPrice}</span>
+          <span className="product-hallmark-stamp">MDCCCCVI</span>
         </div>
       </div>
     </article>

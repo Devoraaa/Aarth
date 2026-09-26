@@ -3,8 +3,7 @@ import React, { useEffect, useState } from "react";
 export const CustomCursor: React.FC = () => {
   const [pos, setPos] = useState({ x: -100, y: -100 });
   const [trailingPos, setTrailingPos] = useState({ x: -100, y: -100 });
-  const [hoverState, setHoverState] = useState<"default" | "pointer" | "product">("default");
-  const [badgeText, setBadgeText] = useState("");
+  const [hoverState, setHoverState] = useState<"default" | "pointer">("default");
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -23,15 +22,10 @@ export const CustomCursor: React.FC = () => {
       const productCard = target.closest(".product-item");
       const clickable = target.closest("button, a, input, select, textarea, .nav-link, .nav-icon");
 
-      if (productCard) {
-        setHoverState("product");
-        setBadgeText("VIEW ARCHIVE");
-      } else if (clickable) {
+      if (clickable || productCard) {
         setHoverState("pointer");
-        setBadgeText("");
       } else {
         setHoverState("default");
-        setBadgeText("");
       }
     };
 
@@ -75,19 +69,13 @@ export const CustomCursor: React.FC = () => {
         }}
       />
 
-      {/* Trailing Antique Ring / Badge */}
+      {/* Trailing Antique Ring */}
       <div
         className={`custom-cursor-follower ${hoverState}`}
         style={{
           transform: `translate3d(${trailingPos.x}px, ${trailingPos.y}px, 0)`,
         }}
-      >
-        {hoverState === "product" && (
-          <span className="cursor-product-badge">
-            <span className="cursor-flourish">✦</span> {badgeText} <span className="cursor-flourish">✦</span>
-          </span>
-        )}
-      </div>
+      />
     </div>
   );
 };

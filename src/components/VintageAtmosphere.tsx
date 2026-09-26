@@ -129,14 +129,6 @@ export const VintageAtmosphere: React.FC = () => {
           <div className="stamp-cancellation-waves" />
         </div>
       </div>
-
-      {/* Artifact D: Faint Handwritten Cutter's Marginalia */}
-      <div className="vintage-marginalia marginalia-left">
-        <span>“Cut on bias • 32 in • Pure Tussar Weft”</span>
-      </div>
-      <div className="vintage-marginalia marginalia-right">
-        <span>“Vat ferment 48 hrs • Harda tincture”</span>
-      </div>
     </div>
   );
 };
