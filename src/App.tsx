@@ -6,7 +6,7 @@ import { ProductDetailPage } from './components/ProductDetailPage';
 import { SearchModal } from './components/SearchModal';
 import { ProductCard } from './components/ProductCard';
 import { CustomCursor } from './components/CustomCursor';
-import { ArchivalSeal } from './components/ArchivalSeal';
+import { AtelierDock } from './components/AtelierDock';
 import { getProducts, type ShopifyProduct } from './lib/shopify';
 
 function StorefrontContent() {
@@ -164,8 +164,8 @@ function StorefrontContent() {
       {/* Custom Vintage Crosshair & Loom Follower */}
       <CustomCursor />
 
-      {/* Rotating Archival Heritage Seal */}
-      <ArchivalSeal />
+      {/* Archival Floating Atelier Dock */}
+      <AtelierDock />
 
       <nav 
         className={`navbar ${scrolled ? 'scrolled' : ''} ${firstScrollTriggered ? 'first-scroll-active' : ''}`}
