@@ -383,20 +383,6 @@ function StorefrontContent() {
               </picture>
             </div>
 
-            {/* Interactive Candlelight / Lantern Beam following Cursor */}
-            <div 
-              className="hero-candlelight-beam" 
-              style={{
-                background: `radial-gradient(circle 420px at ${(heroParallax.x + 0.5) * 100}% ${(heroParallax.y + 0.5) * 100}%, rgba(253, 246, 227, 0.28) 0%, rgba(45, 34, 25, 0.4) 55%, rgba(20, 16, 12, 0.75) 100%)`
-              }} 
-            />
-
-            {/* Old Film & Daguerreotype Grain Flicker */}
-            <div className="hero-daguerreotype-grain" />
-
-            {/* Floating Silk Dust Motes */}
-            <div className="hero-silk-dust-motes" />
-            
             <div className="hero-bottom-mark">
               <span>AARTH • MDCCCCVI</span>
               <div className="hero-scroll-line"></div>

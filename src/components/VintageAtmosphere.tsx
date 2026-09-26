@@ -37,43 +37,65 @@ export const VintageAtmosphere: React.FC = () => {
         ))}
       </div>
 
-      {/* 2. Authentic Ink Spills & Splatters (ink spells) */}
+      {/* 2. Authentic Faded Iron-Gall Ink Stains (Dried decades ago, smudged into paper grain) */}
       {/* Ink Spill 1: Top Right Edge */}
       <svg className="ink-spill-svg ink-spill-1" viewBox="0 0 180 180">
+        {/* Outer translucent water-bleed diffusion halo */}
+        <path
+          d="M56,36 Q92,14 125,40 Q156,66 145,104 Q134,136 92,146 Q54,156 39,118 Q24,78 56,36 Z"
+          fill="#6E5540"
+          opacity="0.08"
+        />
+        {/* Dried iron-gall tannin deposit core */}
         <path
           d="M60,40 Q90,20 120,45 Q150,70 140,100 Q130,130 95,140 Q60,150 45,115 Q30,80 60,40 Z"
-          fill="#1C1815"
-          opacity="0.82"
+          fill="#4D392B"
+          opacity="0.18"
         />
-        <circle cx="150" cy="120" r="4" fill="#1C1815" opacity="0.75" />
-        <circle cx="135" cy="140" r="2.5" fill="#1C1815" opacity="0.6" />
-        <circle cx="40" cy="45" r="3" fill="#1C1815" opacity="0.7" />
-        <circle cx="160" cy="85" r="1.8" fill="#1C1815" opacity="0.5" />
+        {/* Faded dried splatter specks */}
+        <circle cx="150" cy="120" r="3.5" fill="#4D392B" opacity="0.16" />
+        <circle cx="135" cy="140" r="2" fill="#4D392B" opacity="0.14" />
+        <circle cx="40" cy="45" r="2.5" fill="#4D392B" opacity="0.15" />
+        <circle cx="160" cy="85" r="1.5" fill="#4D392B" opacity="0.12" />
       </svg>
 
       {/* Ink Spill 2: Left Middle Margin */}
       <svg className="ink-spill-svg ink-spill-2" viewBox="0 0 140 140">
+        {/* Outer translucent water-bleed halo */}
+        <path
+          d="M46,26 Q82,10 105,36 Q126,62 110,94 Q94,120 62,115 Q34,110 29,82 Q24,52 46,26 Z"
+          fill="#6E5540"
+          opacity="0.07"
+        />
+        {/* Dried iron-gall tannin core */}
         <path
           d="M50,30 Q80,15 100,40 Q120,65 105,90 Q90,115 65,110 Q40,105 35,80 Q30,55 50,30 Z"
-          fill="#241E1A"
-          opacity="0.78"
+          fill="#4D392B"
+          opacity="0.17"
         />
-        <circle cx="115" cy="100" r="3.2" fill="#241E1A" opacity="0.7" />
-        <circle cx="125" cy="80" r="2" fill="#241E1A" opacity="0.5" />
-        <circle cx="30" cy="95" r="2.2" fill="#241E1A" opacity="0.6" />
-        <circle cx="45" cy="20" r="1.5" fill="#241E1A" opacity="0.45" />
+        <circle cx="115" cy="100" r="2.8" fill="#4D392B" opacity="0.15" />
+        <circle cx="125" cy="80" r="1.8" fill="#4D392B" opacity="0.12" />
+        <circle cx="30" cy="95" r="2" fill="#4D392B" opacity="0.14" />
+        <circle cx="45" cy="20" r="1.2" fill="#4D392B" opacity="0.11" />
       </svg>
 
       {/* Ink Spill 3: Lower Right Margin */}
       <svg className="ink-spill-svg ink-spill-3" viewBox="0 0 160 160">
+        {/* Outer translucent water-bleed halo */}
+        <path
+          d="M66,30 Q114,18 130,56 Q146,98 114,125 Q82,151 51,130 Q24,108 35,66 Q45,30 66,30 Z"
+          fill="#6E5540"
+          opacity="0.08"
+        />
+        {/* Dried iron-gall tannin core */}
         <path
           d="M70,35 Q110,25 125,60 Q140,95 110,120 Q80,145 55,125 Q30,105 40,70 Q50,35 70,35 Z"
-          fill="#181412"
-          opacity="0.8"
+          fill="#4D392B"
+          opacity="0.18"
         />
-        <circle cx="140" cy="65" r="3.8" fill="#181412" opacity="0.7" />
-        <circle cx="35" cy="50" r="2.5" fill="#181412" opacity="0.6" />
-        <circle cx="85" cy="145" r="2" fill="#181412" opacity="0.5" />
+        <circle cx="140" cy="65" r="3.2" fill="#4D392B" opacity="0.15" />
+        <circle cx="35" cy="50" r="2.2" fill="#4D392B" opacity="0.13" />
+        <circle cx="85" cy="145" r="1.8" fill="#4D392B" opacity="0.12" />
       </svg>
 
       {/* 3. Random Vintage Atelier Artifacts in Background */}
