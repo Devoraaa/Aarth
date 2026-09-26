@@ -170,17 +170,8 @@ function StorefrontContent() {
       <nav 
         className={`navbar ${scrolled ? 'scrolled' : ''} ${firstScrollTriggered ? 'first-scroll-active' : ''}`}
       >
-        {/* Antique Corner Registration Marks */}
-        <span className="nav-corner top-left" aria-hidden="true">⌜</span>
-        <span className="nav-corner top-right" aria-hidden="true">⌝</span>
-        <span className="nav-corner bottom-left" aria-hidden="true">⌞</span>
-        <span className="nav-corner bottom-right" aria-hidden="true">⌟</span>
-
-        {/* Vintage First-Scroll Wax Seal Flash & Golden Thread Sweep */}
+        {/* Vintage First-Scroll Wax Seal Flash */}
         <div className="nav-scroll-wax-wave" aria-hidden="true" />
-        <div className="nav-first-scroll-ribbon" aria-hidden="true">
-          <span>✦ ATELIER ARCHIVE • EST. 2026 ✦</span>
-        </div>
 
         <div className="nav-left">
           {/* Mobile hamburger toggle */}
@@ -268,7 +259,7 @@ function StorefrontContent() {
             <span className="cart-btn-inner">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="cart-svg-tote"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
               <span className="cart-label">Bag</span>
-              <span className={`cart-count-badge ${(cart?.totalQuantity || 0) > 0 ? 'has-items' : ''}`}>[{cart?.totalQuantity || 0}]</span>
+              <span className={`cart-count-badge ${(cart?.totalQuantity || 0) > 0 ? 'has-items' : ''}`}>({cart?.totalQuantity || 0})</span>
             </span>
           </button>
         </div>
