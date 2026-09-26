@@ -5967,3 +5967,1779 @@ button {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* ==========================================================================
+   1906 EDWARDIAN BROADSHEET & IMPERIAL ATELIER SYSTEM
+   ========================================================================== */
+
+/* Oxford Rule Lines (Essential 1906 Printing Characteristic) */
+.oxford-double-line {
+  height: 4px;
+  border-top: 1px solid var(--color-leather);
+  border-bottom: 2px solid var(--color-leather);
+  margin: 12px 0 16px 0;
+  width: 100%;
+}
+
+.oxford-single-line {
+  height: 1px;
+  background-color: var(--border-antique);
+  margin: 16px 0 24px 0;
+  width: 100%;
+}
+
+.oxford-fine-line {
+  height: 1px;
+  border-top: 1px dashed rgba(74, 59, 50, 0.3);
+  margin: 16px 0;
+  width: 100%;
+}
+
+/* 1906 Broadsheet Section Header */
+.section-header-1906 {
+  text-align: center;
+  max-width: 960px;
+  margin: 0 auto 44px auto;
+  padding: 0 16px;
+}
+
+.folio-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--color-cacao);
+  text-transform: uppercase;
+}
+
+.broadsheet-headline {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 3.8vw, 3.2rem);
+  font-weight: 500;
+  color: var(--color-leather);
+  margin: 0 0 12px 0;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+
+.broadsheet-intro-p {
+  font-family: var(--font-antique);
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--color-cacao);
+  margin: 0 auto;
+  max-width: 780px;
+  font-style: italic;
+}
+
+/* 1906 Gazette Masthead Strip */
+.gazette-masthead-strip {
+  width: 100%;
+  background: #242220;
+  border-bottom: 2px solid rgba(251, 249, 244, 0.25);
+  color: #f7f2e9;
+  padding: 8px 36px;
+  cursor: pointer;
+  position: relative;
+  z-index: 90;
+  margin-top: var(--top-bars-total);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  transition: background-color 0.25s ease;
+}
+
+.gazette-masthead-strip:hover {
+  background: #2f2a26;
+}
+
+.gazette-strip-inner {
+  max-width: 1540px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.gazette-left-col,
+.gazette-right-col {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.gazette-vol {
+  color: #D8D1C2;
+  font-weight: 600;
+}
+
+.gazette-loc {
+  color: #9E9185;
+}
+
+.gazette-sep {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+.gazette-center-col {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.gazette-seal-symbol {
+  color: #D8D1C2;
+  font-size: 14px;
+}
+
+.gazette-core-motto {
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: #f7f2e9;
+}
+
+.gazette-cta {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  padding: 2px 8px;
+  font-weight: 700;
+  color: #f7f2e9;
+  letter-spacing: 0.12em;
+}
+
+/* 1906 Warrant Folio Modal */
+.gazette-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(18, 16, 14, 0.82);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.gazette-warrant-folio {
+  width: 100%;
+  max-width: 680px;
+  background: #f7f2e9;
+  color: #242220;
+  border: 3px solid #242220;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
+  padding: 12px;
+  animation: dockConsoleSlide 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 0 !important;
+}
+
+.warrant-border-outer {
+  border: 1px solid #242220;
+  padding: 4px;
+}
+
+.warrant-border-inner {
+  border: 2px solid #242220;
+  padding: 32px 36px;
+}
+
+.warrant-masthead {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.warrant-emblem-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.warrant-heraldry {
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 0.22em;
+  color: #4A3B32;
+  font-weight: 700;
+}
+
+.warrant-close-btn {
+  font-size: 18px;
+  color: #242220;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.warrant-house-title {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: #242220;
+  margin: 0 0 4px 0;
+}
+
+.warrant-guild-sub {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: #4A3B32;
+  text-transform: uppercase;
+}
+
+.warrant-oxford-divider {
+  height: 4px;
+  border-top: 1px solid #242220;
+  border-bottom: 2px solid #242220;
+  margin: 16px 0 0 0;
+}
+
+.warrant-body-articles {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.warrant-clause {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.clause-mark {
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  color: #4A3B32;
+  white-space: nowrap;
+  letter-spacing: 0.1em;
+}
+
+.clause-text h5 {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  color: #242220;
+  margin: 0 0 4px 0;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.clause-text p {
+  font-family: var(--font-antique);
+  font-size: 15px;
+  line-height: 1.6;
+  color: #383029;
+  margin: 0;
+}
+
+.warrant-seal-footer {
+  border-top: 2px solid #242220;
+  padding-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sig-tit {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: #736558;
+}
+
+.sig-auth {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #242220;
+}
+
+.wax-impression-box {
+  border: 1px solid #242220;
+  background: #242220;
+  color: #f7f2e9;
+  padding: 4px 10px;
+  text-align: center;
+}
+
+.wax-latin {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.18em;
+}
+
+.wax-year {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+/* 1906 Wax Medallion Seal */
+.craft-wax-stamp.seal-1906 {
+  width: 104px;
+  height: 104px;
+  cursor: pointer;
+  color: #242220;
+}
+
+.passport-card.edwardian-card {
+  background: #f7f2e9;
+  color: #242220;
+  border: 3px solid #242220;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.85);
+  padding: 10px;
+}
+
+.passport-card-ruled-border {
+  border: 2px solid #242220;
+  padding: 30px 34px;
+}
+
+.passport-card.edwardian-card .passport-title {
+  color: #242220;
+}
+
+.passport-card.edwardian-card .passport-entry h4 {
+  color: #242220;
+}
+
+.passport-card.edwardian-card .passport-entry p {
+  color: #3d322a;
+  font-family: var(--font-antique);
+  font-size: 15px;
+}
+
+.passport-card.edwardian-card .sig-val {
+  color: #242220;
+}
+
+.passport-card.edwardian-card .passport-dossier-btn {
+  background: #242220;
+  color: #f7f2e9;
+  border-color: #242220;
+}
+
+.passport-card.edwardian-card .passport-dossier-btn:hover {
+  background: #4A3B32;
+  color: #f7f2e9;
+}
+
+/* ==========================================================================
+   1906 SPECIMEN MOUNTING PLATES (TACTILE DOSSIER)
+   ========================================================================== */
+.specimen-mounting-tray {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.specimen-card-plate {
+  background: #f7f2e9;
+  border: 2px solid var(--color-leather);
+  padding: 16px 18px;
+  text-align: left;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: 4px 4px 0 rgba(36, 34, 32, 0.15);
+}
+
+.specimen-card-plate:hover {
+  transform: translateY(-2px);
+  box-shadow: 6px 6px 0 rgba(36, 34, 32, 0.25);
+}
+
+.specimen-card-plate.active {
+  background: #242220;
+  color: #f7f2e9;
+  box-shadow: 6px 6px 0 #4A3B32;
+}
+
+.plate-card-stamp {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: #736558;
+}
+
+.specimen-card-plate.active .plate-card-stamp {
+  color: #D8D1C2;
+}
+
+.plate-card-title {
+  font-family: var(--font-serif);
+  font-size: 17px;
+  font-weight: 600;
+  color: #242220;
+  margin: 0;
+  line-height: 1.25;
+}
+
+.specimen-card-plate.active .plate-card-title {
+  color: #f7f2e9;
+}
+
+.plate-card-prov {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  color: #4A3B32;
+}
+
+.specimen-card-plate.active .plate-card-prov {
+  color: #9E9185;
+}
+
+.mounting-pin-hole {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 6px;
+  height: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  border-radius: 50% !important;
+  background: #d8d1c2;
+}
+
+/* 1906 Display Folio */
+.specimen-display-folio {
+  border: 3px double #242220;
+  background: #fbf9f4;
+  padding: 12px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+}
+
+.folio-frame-inner {
+  border: 1px solid #242220;
+  padding: 36px;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 40px;
+}
+
+.sample-mount-border {
+  border: 2px solid #242220;
+  padding: 8px;
+  background: #f7f2e9;
+  box-shadow: 4px 4px 0 rgba(36, 34, 32, 0.12);
+}
+
+.sample-swatch-box {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3.4;
+  overflow: hidden;
+  border: 1px solid #242220;
+  background: #242220;
+  cursor: crosshair;
+}
+
+.sample-cloth-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 1906 Heavy Brass Jeweller's Loupe */
+.brass-jewellers-loupe {
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  transform: translate(-50%, -50%);
+  border: 4px solid #8C6D3F;
+  border-radius: 50% !important;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7), inset 0 0 25px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+  background-repeat: no-repeat;
+  background-size: 380%;
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loupe-brass-rim {
+  position: absolute;
+  bottom: -22px;
+  background: #242220;
+  border: 1px solid #8C6D3F;
+  color: #f7f2e9;
+  padding: 2px 8px;
+  white-space: nowrap;
+}
+
+.loupe-engraving {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+.mount-corner {
+  position: absolute;
+  color: rgba(251, 249, 244, 0.7);
+  font-size: 16px;
+  pointer-events: none;
+}
+.mount-corner.top-left { top: 6px; left: 8px; }
+.mount-corner.top-right { top: 6px; right: 8px; }
+.mount-corner.bottom-left { bottom: 6px; left: 8px; }
+.mount-corner.bottom-right { bottom: 6px; right: 8px; }
+
+.folio-mount-caption {
+  margin-top: 12px;
+  font-family: var(--font-antique);
+  font-size: 14px;
+  color: #4A3B32;
+  text-align: center;
+}
+
+/* Register Column */
+.folio-register-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.register-mast .reg-id {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: #736558;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.register-mast .reg-title {
+  font-family: var(--font-serif);
+  font-size: 32px;
+  font-weight: 500;
+  color: #242220;
+  margin: 0 0 4px 0;
+  line-height: 1.15;
+}
+
+.register-mast .reg-prov {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: #4A3B32;
+  text-transform: uppercase;
+}
+
+.reg-prose-body {
+  font-family: var(--font-antique);
+  font-size: 16px;
+  line-height: 1.7;
+  color: #383029;
+  margin: 0;
+}
+
+.reg-ledger-table {
+  border-top: 1px solid var(--border-antique);
+  border-bottom: 1px solid var(--border-antique);
+  padding: 10px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.reg-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11.5px;
+}
+
+.reg-label {
+  font-family: var(--font-mono);
+  color: #736558;
+  letter-spacing: 0.14em;
+}
+
+.reg-value {
+  font-family: var(--font-serif);
+  color: #242220;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.btn-order-from-plate {
+  width: 100%;
+  background: #242220;
+  border: 2px solid #242220;
+  color: #f7f2e9;
+  padding: 13px 24px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 4px 4px 0 rgba(36, 34, 32, 0.2);
+}
+
+.btn-order-from-plate:hover {
+  background: #4A3B32;
+  border-color: #4A3B32;
+  transform: translate(-1px, -1px);
+}
+
+/* ==========================================================================
+   1906 SAVILE ROW CUTTER'S DAYBOOK & TREATISE (TAILOR NOTEBOOK)
+   ========================================================================== */
+.cutter-open-daybook {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px;
+  background: #fbf9f4;
+  border: 3px double #242220;
+  padding: 36px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+}
+
+.daybook-leaf.left-leaf {
+  border-right: 1px solid var(--border-antique);
+  padding-right: 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.leaf-header-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #242220;
+  padding-bottom: 8px;
+  margin-bottom: 18px;
+}
+
+.draft-figure-title {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #242220;
+}
+
+.draft-hall-stamp {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  color: #736558;
+}
+
+.draft-canvas-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3.6;
+  border: 2px solid #242220;
+  background: #f7f2e9;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 0 20px rgba(74, 59, 50, 0.08);
+}
+
+.draft-illustration-img {
+  width: 86%;
+  height: 86%;
+  object-fit: contain;
+  opacity: 0.9;
+}
+
+.cutter-pin-marker {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 20;
+}
+
+.cutter-pin-marker .pin-circle {
+  width: 20px;
+  height: 20px;
+  background: #242220;
+  border: 1px solid #f7f2e9;
+  color: #f7f2e9;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.cutter-pin-marker.active .pin-circle {
+  background: #4A3B32;
+  transform: scale(1.25);
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.5);
+}
+
+.draft-chalk-ticket {
+  position: absolute;
+  transform: translate(-50%, 0);
+  background: #f7f2e9;
+  border: 2px solid #242220;
+  box-shadow: 6px 6px 0 rgba(36, 34, 32, 0.25);
+  padding: 12px 16px;
+  color: #242220;
+  width: 260px;
+  z-index: 35;
+  pointer-events: none;
+  animation: dockConsoleSlide 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ticket-point-hdr {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  border-bottom: 1px solid #242220;
+  padding-bottom: 4px;
+  margin-bottom: 6px;
+}
+
+.ticket-letter {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  color: #4A3B32;
+}
+
+.ticket-title {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #242220;
+}
+
+.ticket-body {
+  font-family: var(--font-antique);
+  font-size: 13px;
+  line-height: 1.5;
+  color: #383029;
+  margin: 0;
+}
+
+.draft-canvas-footnote {
+  margin-top: 12px;
+  font-family: var(--font-antique);
+  font-size: 14px;
+  color: #4A3B32;
+  text-align: center;
+}
+
+/* Right Leaf: Treatise */
+.treatise-index-row {
+  display: flex;
+  border-bottom: 2px solid #242220;
+  margin-bottom: 20px;
+}
+
+.treatise-index-tab {
+  padding: 8px 16px;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+
+.treatise-index-tab.active {
+  border-bottom-color: #242220;
+  background: rgba(74, 59, 50, 0.05);
+}
+
+.tab-numeral {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: #736558;
+}
+
+.treatise-index-tab.active .tab-numeral {
+  color: #242220;
+}
+
+.tab-heading {
+  font-family: var(--font-serif);
+  font-size: 14px;
+  font-weight: 600;
+  color: #242220;
+}
+
+.treatise-drop-seal {
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: #736558;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.treatise-chapter-title {
+  font-family: var(--font-serif);
+  font-size: 26px;
+  font-weight: 500;
+  color: #242220;
+  margin: 0 0 14px 0;
+  line-height: 1.2;
+}
+
+.treatise-ruled-prose {
+  margin-bottom: 24px;
+}
+
+.treatise-body-paragraph {
+  font-family: var(--font-antique);
+  font-size: 18px;
+  line-height: 1.75;
+  color: #2b2520;
+  margin: 0;
+  text-indent: 28px;
+}
+
+.treatise-colophon {
+  border-top: 1px solid var(--border-antique);
+  padding-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.colophon-tit {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: #736558;
+}
+
+.colophon-firm {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  color: #242220;
+}
+
+.colophon-privilege {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: #736558;
+}
+
+/* ==========================================================================
+   1906 EDWARDIAN LOT PLATES (PRODUCT CARDS)
+   ========================================================================== */
+.edwardian-lot-card {
+  background: #fbf9f4;
+  border: 2px solid #242220;
+  padding: 8px;
+  box-shadow: 4px 4px 0 rgba(36, 34, 32, 0.18);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.edwardian-lot-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 8px 8px 0 rgba(36, 34, 32, 0.3);
+}
+
+.lot-mount-inner {
+  border: 1px solid #242220;
+  padding: 8px;
+  background: #f7f2e9;
+}
+
+.product-lot-tag {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #242220;
+  color: #f7f2e9;
+  padding: 3px 8px;
+  font-family: var(--font-display);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  z-index: 10;
+}
+
+.plate-corner {
+  position: absolute;
+  color: rgba(251, 249, 244, 0.65);
+  font-size: 16px;
+  pointer-events: none;
+  z-index: 8;
+}
+.plate-corner.top-left { top: 6px; left: 8px; }
+.plate-corner.top-right { top: 6px; right: 8px; }
+.plate-corner.bottom-left { bottom: 6px; left: 8px; }
+.plate-corner.bottom-right { bottom: 6px; right: 8px; }
+
+.lot-entry-meta {
+  padding-top: 12px;
+}
+
+.lot-provenance-line {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: #736558;
+  margin-bottom: 4px;
+}
+
+.lot-title {
+  font-family: var(--font-serif);
+  font-size: 19px;
+  font-weight: 500;
+  color: #242220;
+  margin: 0 0 6px 0;
+  line-height: 1.25;
+}
+
+.lot-price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px dashed rgba(74, 59, 50, 0.25);
+  padding-top: 6px;
+}
+
+.lot-price-val {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  color: #242220;
+}
+
+.lot-hallmark {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: #736558;
+}
+
+/* ==========================================================================
+   1906 BRASS POCKET GAUGE (BOTTOM RIGHT DOCK)
+   ========================================================================== */
+.edwardian-dock-wrap {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.brass-gauge-bar {
+  background: #242220;
+  border: 2px solid #8C6D3F;
+  color: #f7f2e9;
+  padding: 10px 18px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.4);
+  transition: all 0.25s ease;
+  border-radius: 0 !important;
+}
+
+.brass-gauge-bar:hover {
+  background: #342d27;
+  transform: translateY(-2px);
+}
+
+.gauge-dial-housing {
+  color: #D8D1C2;
+}
+
+.gauge-dial-svg {
+  transition: transform 0.15s linear;
+}
+
+.gauge-notation-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.gauge-folio-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #f7f2e9;
+}
+
+.gauge-sub-status {
+  font-family: var(--font-display);
+  font-size: 8.5px;
+  letter-spacing: 0.16em;
+  color: #9E9185;
+}
+
+.gauge-return-btn {
+  background: #f7f2e9;
+  border: 1px solid #f7f2e9;
+  color: #242220;
+  padding: 5px 12px;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 0 !important;
+}
+
+.gauge-return-btn:hover {
+  background: transparent;
+  color: #f7f2e9;
+}
+
+/* 1906 Expanded Ledger Popup */
+.guild-ledger-popup {
+  width: 320px;
+  background: #f7f2e9;
+  border: 3px solid #242220;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  padding: 8px;
+  animation: dockConsoleSlide 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 0 !important;
+}
+
+.ledger-folio-card {
+  border: 1px solid #242220;
+  padding: 18px 20px;
+}
+
+.ledger-popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ledger-crest {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.crest-sym {
+  color: #4A3B32;
+  font-size: 14px;
+}
+
+.crest-label {
+  font-family: var(--font-display);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #242220;
+}
+
+.ledger-close-cross {
+  color: #242220;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.ledger-popup-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ledger-stat-entry {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+}
+
+.stat-term {
+  font-family: var(--font-mono);
+  color: #736558;
+  letter-spacing: 0.1em;
+}
+
+.stat-datum {
+  font-family: var(--font-serif);
+  color: #242220;
+  font-weight: 600;
+}
+
+.stat-datum.badge-1906 {
+  background: #242220;
+  color: #f7f2e9;
+  padding: 2px 6px;
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.12em;
+}
+
+.ledger-popup-footer {
+  text-align: center;
+  font-family: var(--font-antique);
+  font-size: 12px;
+  color: #4A3B32;
+  font-style: italic;
+}
+
+
+/* ==========================================================================
+   VINTAGE ATMOSPHERE: DUST BREEZE, INK SPILLS & SCATTERED ARTIFACTS
+   ========================================================================== */
+.vintage-atmosphere-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+}
+
+/* Floating Dust Particles Breeze */
+.dust-breeze-container {
+  position: absolute;
+  inset: 0;
+}
+
+.dust-particle {
+  position: absolute;
+  background: radial-gradient(circle, rgba(230, 215, 185, 0.75) 0%, rgba(184, 156, 120, 0.3) 60%, transparent 100%);
+  border-radius: 50% !important;
+  opacity: 0;
+  animation: dustDrift 16s infinite ease-in-out;
+}
+
+@keyframes dustDrift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.6);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.65;
+  }
+  60% {
+    transform: translate3d(60px, -80px, 0) scale(1.1);
+    opacity: 0.85;
+  }
+  85% {
+    opacity: 0.4;
+  }
+  100% {
+    transform: translate3d(120px, -180px, 0) scale(0.5);
+    opacity: 0;
+  }
+}
+
+/* Authentic Iron-Gall Ink Spills & Splatters (ink spells) */
+.ink-spill-svg {
+  position: absolute;
+  pointer-events: none;
+  filter: drop-shadow(1px 2px 4px rgba(28, 24, 21, 0.35));
+}
+
+.ink-spill-1 {
+  top: 140px;
+  right: 2%;
+  width: 130px;
+  height: 130px;
+  transform: rotate(24deg);
+}
+
+.ink-spill-2 {
+  top: 48%;
+  left: 1.5%;
+  width: 110px;
+  height: 110px;
+  transform: rotate(-18deg);
+}
+
+.ink-spill-3 {
+  top: 78%;
+  right: 3%;
+  width: 140px;
+  height: 140px;
+  transform: rotate(45deg);
+}
+
+/* Vintage Cup Stain Watermark */
+.vintage-cup-stain {
+  position: absolute;
+  top: 32%;
+  right: 5%;
+  width: 140px;
+  height: 140px;
+  border-radius: 50% !important;
+  border: 4px solid rgba(90, 70, 52, 0.08);
+  box-shadow: inset 0 0 16px rgba(90, 70, 52, 0.06), 0 0 10px rgba(90, 70, 52, 0.04);
+  transform: scale(1, 0.92) rotate(-15deg);
+  opacity: 0.65;
+}
+
+/* Vintage Brass Needle & Thread Artifact */
+.vintage-needle-artifact {
+  position: absolute;
+  top: 62%;
+  left: 3%;
+  opacity: 0.7;
+  transform: rotate(-12deg);
+}
+
+/* 1906 Cancelled Postal Stamp */
+.vintage-cancelled-stamp {
+  position: absolute;
+  top: 22%;
+  left: 2%;
+  width: 90px;
+  height: 105px;
+  border: 1px dashed rgba(74, 59, 50, 0.35);
+  background: rgba(247, 242, 233, 0.5);
+  padding: 8px;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.06);
+  transform: rotate(6deg);
+  opacity: 0.75;
+}
+
+.stamp-inner-serrated {
+  border: 1px solid rgba(74, 59, 50, 0.25);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px;
+  text-align: center;
+  position: relative;
+}
+
+.stamp-postmark-date {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.14em;
+  color: #5A4A3E;
+  font-weight: 700;
+}
+
+.stamp-postmark-loc {
+  font-family: var(--font-display);
+  font-size: 8.5px;
+  font-weight: 700;
+  color: #242220;
+}
+
+.stamp-val-print {
+  font-family: var(--font-mono);
+  font-size: 7.5px;
+  letter-spacing: 0.12em;
+  color: #5A4A3E;
+}
+
+.stamp-cancellation-waves {
+  position: absolute;
+  inset: -6px -12px;
+  background: repeating-linear-gradient(
+    -35deg,
+    transparent,
+    transparent 6px,
+    rgba(36, 30, 26, 0.3) 7px,
+    transparent 9px
+  );
+  pointer-events: none;
+}
+
+/* Handwritten Cutter Marginalia */
+.vintage-marginalia {
+  position: absolute;
+  font-family: var(--font-antique);
+  font-size: 15px;
+  font-style: italic;
+  color: rgba(74, 59, 50, 0.45);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.marginalia-left {
+  top: 40%;
+  left: 2%;
+  transform: rotate(-90deg) translateX(-50%);
+  transform-origin: left top;
+}
+
+.marginalia-right {
+  top: 70%;
+  right: 2%;
+  transform: rotate(90deg) translateX(50%);
+  transform-origin: right top;
+}
+
+/* ==========================================================================
+   HERO INTERACTIVE CANDLELIGHT BEAM & DUST MOTES
+   ========================================================================== */
+.hero-candlelight-beam {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  transition: background 0.12s ease-out;
+  mix-blend-mode: soft-light;
+}
+
+.hero-daguerreotype-grain {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(0,0,0,0) 60%, rgba(20, 16, 12, 0.5) 100%);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.hero-silk-dust-motes {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  background-image: 
+    radial-gradient(circle 1.5px at 20% 30%, rgba(255, 245, 220, 0.6) 100%, transparent 0),
+    radial-gradient(circle 2px at 70% 60%, rgba(255, 245, 220, 0.5) 100%, transparent 0),
+    radial-gradient(circle 1.2px at 45% 75%, rgba(255, 245, 220, 0.55) 100%, transparent 0),
+    radial-gradient(circle 1.8px at 85% 25%, rgba(255, 245, 220, 0.6) 100%, transparent 0);
+  animation: heroMotesFloat 12s infinite alternate ease-in-out;
+}
+
+@keyframes heroMotesFloat {
+  0% { transform: translate(0, 0); opacity: 0.4; }
+  50% { transform: translate(-15px, 20px); opacity: 0.85; }
+  100% { transform: translate(20px, -15px); opacity: 0.5; }
+}
+
+/* ==========================================================================
+   BURNT & TORN PRODUCT CARDS (PHATA HUA & JALA HUA)
+   ========================================================================== */
+.burnt-torn-card {
+  position: relative;
+  background: #fbf9f4;
+  border: 2px solid #242220;
+  box-shadow: 
+    inset 0 0 16px rgba(45, 30, 20, 0.35),
+    inset 0 0 36px rgba(25, 18, 12, 0.2),
+    4px 4px 0 rgba(36, 34, 32, 0.22);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: visible;
+}
+
+.burnt-torn-card:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 
+    inset 0 0 20px rgba(45, 30, 20, 0.45),
+    0 12px 30px rgba(36, 26, 18, 0.25),
+    6px 6px 0 #242220;
+}
+
+/* Scorched / Singed Corner Marks (jala hua) */
+.card-burn-scorch {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  pointer-events: none;
+  z-index: 12;
+}
+
+.scorch-top-right {
+  top: -4px;
+  right: -4px;
+  background: radial-gradient(circle at top right, rgba(20, 14, 10, 0.95) 0%, rgba(45, 28, 16, 0.8) 35%, rgba(90, 50, 20, 0.4) 65%, transparent 100%);
+  filter: blur(0.5px);
+}
+
+.scorch-bottom-left {
+  bottom: -4px;
+  left: -4px;
+  background: radial-gradient(circle at bottom left, rgba(20, 14, 10, 0.92) 0%, rgba(45, 28, 16, 0.75) 35%, rgba(90, 50, 20, 0.35) 65%, transparent 100%);
+  filter: blur(0.5px);
+}
+
+/* Torn Paper Deckled Notches (phata hua) */
+.card-torn-notch {
+  position: absolute;
+  background: #f2e9dc;
+  border: 1px solid rgba(74, 59, 50, 0.4);
+  pointer-events: none;
+  z-index: 12;
+}
+
+.notch-1 {
+  bottom: 30%;
+  right: -4px;
+  width: 8px;
+  height: 14px;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+.notch-2 {
+  top: 25%;
+  left: -4px;
+  width: 8px;
+  height: 12px;
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
+}
+
+/* Faint Diagonal Paper Crease Mark */
+.card-aged-crease {
+  position: absolute;
+  top: 10px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 5%, rgba(74, 59, 50, 0.18) 35%, rgba(255, 255, 255, 0.4) 36%, transparent 70%);
+  transform: rotate(-12deg);
+  pointer-events: none;
+  z-index: 11;
+}
+
+.charred-vignette-overlay {
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 18px rgba(36, 26, 18, 0.45);
+  pointer-events: none;
+  z-index: 6;
+}
+
+/* ==========================================================================
+   VINTAGE POCKET CHRONOMETER (BOTTOM-RIGHT UNIQUE ARTIFACT)
+   ========================================================================== */
+.pocket-chronometer-wrap {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.antique-watch-body {
+  width: 84px;
+  height: 102px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  filter: drop-shadow(4px 6px 12px rgba(0, 0, 0, 0.35));
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.antique-watch-body:hover {
+  transform: translateY(-4px) scale(1.05);
+}
+
+.antique-watch-body.winding-fast .watch-spade-hand {
+  animation: watchFastWind 0.3s infinite linear;
+}
+
+@keyframes watchFastWind {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+
+.watch-crown-bow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 18px;
+}
+
+.watch-bow-loop {
+  width: 22px;
+  height: 10px;
+  border: 2px solid #8C6D3F;
+  border-bottom: none;
+  border-radius: 10px 10px 0 0 !important;
+}
+
+.watch-knurled-crown {
+  width: 10px;
+  height: 6px;
+  background: repeating-linear-gradient(90deg, #8C6D3F, #8C6D3F 1px, #5A4426 2px);
+  border: 1px solid #3D2D18;
+}
+
+.watch-enamel-dial {
+  width: 74px;
+  height: 74px;
+  background: radial-gradient(circle, #fbf7ee 50%, #ede3cf 85%, #8C6D3F 100%);
+  border: 4px solid #4A3B32;
+  border-radius: 50% !important;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3), 0 4px 10px rgba(0, 0, 0, 0.35);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.watch-roman-numeral {
+  position: absolute;
+  font-family: var(--font-serif);
+  font-size: 8px;
+  font-weight: 700;
+  color: #242220;
+}
+
+.watch-roman-numeral.pos-12 { top: 3px; left: 50%; transform: translateX(-50%); }
+.watch-roman-numeral.pos-3  { right: 4px; top: 50%; transform: translateY(-50%); }
+.watch-roman-numeral.pos-6  { bottom: 3px; left: 50%; transform: translateX(-50%); }
+.watch-roman-numeral.pos-9  { left: 4px; top: 50%; transform: translateY(-50%); }
+
+.watch-brand-signature {
+  position: absolute;
+  top: 18px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.watch-brand-signature span {
+  font-family: var(--font-display);
+  font-size: 7.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #242220;
+}
+
+.watch-brand-signature i {
+  font-family: var(--font-serif);
+  font-size: 6px;
+  color: #736558;
+}
+
+.watch-spade-hand {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2px;
+  height: 24px;
+  background: #242220;
+  transform-origin: 50% 100%;
+  margin-top: -24px;
+  margin-left: -1px;
+  transition: transform 0.15s ease-out;
+}
+
+.watch-spade-hand::after {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -2px;
+  width: 6px;
+  height: 6px;
+  background: #242220;
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+
+.watch-center-pin {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background: #8C6D3F;
+  border: 1px solid #242220;
+  border-radius: 50% !important;
+  z-index: 10;
+}
+
+.watch-leather-pill {
+  margin-top: 4px;
+  background: #242220;
+  border: 1px solid #8C6D3F;
+  color: #f7f2e9;
+  padding: 1px 6px;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+}
+
+/* Interior Popup */
+.chronometer-case-interior {
+  width: 280px;
+  background: #fbf9f4;
+  border: 3px double #242220;
+  padding: 18px 20px;
+  color: #242220;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  animation: dockConsoleSlide 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 0 !important;
+}
+
+.interior-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.interior-heraldry {
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: #4A3B32;
+  font-weight: 700;
+}
+
+.interior-close-btn {
+  font-size: 16px;
+  color: #242220;
+  cursor: pointer;
+}
+
+.interior-oxford-rule {
+  height: 3px;
+  border-top: 1px solid #242220;
+  border-bottom: 1px solid #242220;
+  margin: 10px 0;
+}
+
+.interior-movement-view {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.balance-wheel-anim svg {
+  animation: balanceWheelOscillate 0.6s infinite alternate ease-in-out;
+}
+
+@keyframes balanceWheelOscillate {
+  0% { transform: rotate(-45deg); }
+  100% { transform: rotate(45deg); }
+}
+
+.movement-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.mov-firm {
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 700;
+  color: #242220;
+}
+
+.mov-jewels {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  color: #736558;
+}
+
+.interior-data-table {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.interior-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10.5px;
+}
+
+.int-label {
+  font-family: var(--font-mono);
+  color: #736558;
+  letter-spacing: 0.1em;
+}
+
+.int-val {
+  font-family: var(--font-serif);
+  color: #242220;
+  font-weight: 600;
+}
+
+.interior-spring-btn {
+  width: 100%;
+  background: #242220;
+  border: 1px solid #242220;
+  color: #f7f2e9;
+  padding: 8px 14px;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.interior-spring-btn:hover {
+  background: #4A3B32;
+}
+
+/* ==========================================================================
+   NAVBAR QUILL INK BLEED HOVER ANIMATION
+   ========================================================================== */
+.nav-link {
+  position: relative;
+  overflow: visible;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #242220;
+  transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 1px 3px rgba(36, 34, 32, 0.4);
+}
+
+.navbar.scrolled .nav-link::after {
+  background: #f7f2e9;
+  box-shadow: 0 1px 4px rgba(247, 242, 233, 0.5);
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}

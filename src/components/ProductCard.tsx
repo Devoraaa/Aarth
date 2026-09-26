@@ -9,6 +9,8 @@ interface ProductCardProps {
   loading: boolean;
 }
 
+const romanNumerals = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"];
+
 export const ProductCard: React.FC<ProductCardProps> = ({
   product,
   index,
@@ -20,8 +22,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
 
-  const tagNum = `№ 0${index + 1}`;
-  const edition = product.tags[0] || "Living Craft • Handcrafted Edition";
+  const tagNum = `LOT NO. ${romanNumerals[index] || index + 1}`;
+  const edition = product.tags[0] || "PROVENANCE VERIFIED • ANNO MDCCCCVI";
   const price = product.priceRange.minVariantPrice;
   const formattedPrice = `${price.currencyCode === "GBP" ? "£" : price.currencyCode === "INR" ? "₹" : price.currencyCode + " "}${parseFloat(price.amount).toFixed(2)}`;
 
@@ -37,9 +39,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
 
-    // Subtle tilt: max 5 degrees
-    const rotateX = ((y - centerY) / centerY) * -5;
-    const rotateY = ((x - centerX) / centerX) * 5;
+    const rotateX = ((y - centerY) / centerY) * -4;
+    const rotateY = ((x - centerX) / centerX) * 4;
 
     setTilt({ x: rotateX, y: rotateY });
   };
@@ -56,7 +57,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   return (
     <article
       ref={cardRef}
-      className={`product-item interactive-vintage-card ${isHovered ? "card-hovered" : ""}`}
+      className={`product-item edwardian-lot-card burnt-torn-card ${isHovered ? "card-hovered" : ""}`}
       onClick={() => onSelect(product)}
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
@@ -68,56 +69,76 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           : "transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
       }}
     >
-      <div className="product-image-box">
-        <span className="product-number-tag">{tagNum}</span>
+      {/* Scorched / Burnt Corner Marks (jala hua) */}
+      <div className="card-burn-scorch scorch-top-right" aria-hidden="true" />
+      <div className="card-burn-scorch scorch-bottom-left" aria-hidden="true" />
 
-        {/* Tailor's Animated Basting Stitch Running Border */}
-        <svg className="card-stitch-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-          <rect x="0.8" y="0.8" width="98.4" height="98.4" fill="none" className="stitch-rect" />
-        </svg>
+      {/* Torn Paper Deckled Edge Notches (phata hua) */}
+      <div className="card-torn-notch notch-1" aria-hidden="true" />
+      <div className="card-torn-notch notch-2" aria-hidden="true" />
 
-        {/* Primary Front Image */}
-        <img
-          src={frontImg}
-          alt={product.title}
-          loading="lazy"
-          className={`product-primary-img ${backImg && isHovered ? "has-flip" : ""}`}
-        />
+      {/* Faint Diagonal Crease / Fold Mark */}
+      <div className="card-aged-crease" aria-hidden="true" />
 
-        {/* Secondary Back/Editorial Image crossfade if available */}
-        {backImg && (
+      <div className="lot-mount-inner">
+        <div className="product-image-box">
+          <span className="product-lot-tag">{tagNum}</span>
+
+          {/* 1906 Corner Mount Brackets */}
+          <span className="plate-corner top-left">⌜</span>
+          <span className="plate-corner top-right">⌝</span>
+          <span className="plate-corner bottom-left">⌞</span>
+          <span className="plate-corner bottom-right">⌟</span>
+
+          {/* Primary Front Plate Image */}
           <img
-            src={backImg}
-            alt={`${product.title} Alternate View`}
+            src={frontImg}
+            alt={product.title}
             loading="lazy"
-            className={`product-secondary-img ${isHovered ? "is-visible" : ""}`}
+            className={`product-primary-img ${backImg && isHovered ? "has-flip" : ""}`}
           />
-        )}
 
-        {/* Antique subtle lens flare/glare overlay */}
-        <div
-          className="product-card-glare"
-          style={{
-            opacity: isHovered ? 0.22 : 0,
-            transform: `translate(${tilt.y * 3}px, ${tilt.x * 3}px)`,
-          }}
-        />
+          {/* Secondary Editorial Plate Image */}
+          {backImg && (
+            <img
+              src={backImg}
+              alt={`${product.title} Alternate View`}
+              loading="lazy"
+              className={`product-secondary-img ${isHovered ? "is-visible" : ""}`}
+            />
+          )}
 
-        <div className="product-card-quick-actions">
-          <button
-            className="btn-card-quick-add"
-            disabled={loading}
-            onClick={(e) => onQuickAdd(e, product)}
-          >
-            <span>✦ Quick Add</span>
-          </button>
+          {/* Charred Perimeter Vignette Overlay */}
+          <div className="charred-vignette-overlay" aria-hidden="true" />
+
+          {/* Fine Linen Sheen on Hover */}
+          <div
+            className="product-card-glare"
+            style={{
+              opacity: isHovered ? 0.22 : 0,
+              transform: `translate(${tilt.y * 2.5}px, ${tilt.x * 2.5}px)`,
+            }}
+          />
+
+          <div className="product-card-quick-actions">
+            <button
+              className="btn-card-quick-add"
+              disabled={loading}
+              onClick={(e) => onQuickAdd(e, product)}
+            >
+              <span>ACQUIRE LOT ☞</span>
+            </button>
+          </div>
         </div>
-      </div>
 
-      <div className="product-meta-bottom-left">
-        <span className="product-edition-stamp">{edition}</span>
-        <h3 className="product-title">{product.title}</h3>
-        <p className="product-price">{formattedPrice}</p>
+        <div className="lot-entry-meta">
+          <div className="lot-provenance-line">{edition}</div>
+          <h3 className="lot-title">{product.title}</h3>
+          <div className="lot-price-row">
+            <span className="lot-price-val">{formattedPrice}</span>
+            <span className="lot-hallmark">MDCCCCVI</span>
+          </div>
+        </div>
       </div>
     </article>
   );

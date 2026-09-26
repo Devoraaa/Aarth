@@ -6,11 +6,8 @@ import { ProductDetailPage } from './components/ProductDetailPage';
 import { SearchModal } from './components/SearchModal';
 import { ProductCard } from './components/ProductCard';
 import { CustomCursor } from './components/CustomCursor';
-import { AtelierDock } from './components/AtelierDock';
-import { AtelierDispatchBar } from './components/AtelierDispatchBar';
-import { CraftPassportStamp } from './components/CraftPassportStamp';
-import { TactileDossier } from './components/TactileDossier';
-import { TailorNotebook } from './components/TailorNotebook';
+import { VintagePocketChronometer } from './components/VintagePocketChronometer';
+import { VintageAtmosphere } from './components/VintageAtmosphere';
 import { getProducts, type ShopifyProduct } from './lib/shopify';
 
 function StorefrontContent() {
@@ -168,8 +165,11 @@ function StorefrontContent() {
       {/* Custom Vintage Crosshair & Loom Follower */}
       <CustomCursor />
 
-      {/* Archival Floating Atelier Dock */}
-      <AtelierDock />
+      {/* Atmospheric 1906 Dust Breeze, Ink Spills & Scattered Atelier Artifacts */}
+      <VintageAtmosphere />
+
+      {/* 1906 Antique Brass Pocket Chronometer in Bottom-Right Corner */}
+      <VintagePocketChronometer />
 
       <nav 
         className={`navbar ${scrolled ? 'scrolled' : ''} ${firstScrollTriggered ? 'first-scroll-active' : ''}`}
@@ -364,10 +364,7 @@ function StorefrontContent() {
         </main>
       ) : (
         <main>
-          {/* Real-Time Live Guild Dispatch Tape */}
-          <AtelierDispatchBar />
-
-          {/* Hero Section with Interactive Parallax & 3D Wax Seal */}
+          {/* Hero Section with Parallax, Interactive Candlelight Beam & Dust Motes */}
           <section 
             className="hero-section" 
             id="hero"
@@ -386,34 +383,43 @@ function StorefrontContent() {
               </picture>
             </div>
 
-            {/* Interactive 3D Letterpress Wax Stamp */}
-            <CraftPassportStamp />
+            {/* Interactive Candlelight / Lantern Beam following Cursor */}
+            <div 
+              className="hero-candlelight-beam" 
+              style={{
+                background: `radial-gradient(circle 420px at ${(heroParallax.x + 0.5) * 100}% ${(heroParallax.y + 0.5) * 100}%, rgba(253, 246, 227, 0.28) 0%, rgba(45, 34, 25, 0.4) 55%, rgba(20, 16, 12, 0.75) 100%)`
+              }} 
+            />
+
+            {/* Old Film & Daguerreotype Grain Flicker */}
+            <div className="hero-daguerreotype-grain" />
+
+            {/* Floating Silk Dust Motes */}
+            <div className="hero-silk-dust-motes" />
             
             <div className="hero-bottom-mark">
-              <span>AARTH</span>
+              <span>AARTH • MDCCCCVI</span>
               <div className="hero-scroll-line"></div>
             </div>
           </section>
 
-          {/* Centerpiece: The Weaver's Ledger (Tactile Swatch & Fiber Inspection) */}
-          <TactileDossier />
-
           {/* Collection Section with Interactive 3D Product Cards */}
           <section className="products-section" id="collection">
             <div className="container-wide">
-              <header className="section-header-antique">
-                <div className="section-header-flourish">❦ — ✦ — ❧</div>
-                <div className="section-eyebrow">Handloom Edition • No. 01</div>
-                <h2 className="section-title">The Curated Archive</h2>
-                <div className="section-divider-line">
-                  <span></span>
-                  <i>
-                    {loadingProducts 
-                      ? "Accessing Loom Archive..." 
-                      : `Selected Silhouettes [${displayProducts.length} of ${displayProducts.length}]`}
-                  </i>
-                  <span></span>
+              <header className="section-header-1906">
+                <div className="folio-label-row">
+                  <span className="folio-label-left">CATALOGUE OF BESPOKE LOTS</span>
+                  <span className="folio-label-center">
+                    ❦ ANNO MDCCCCVI • {loadingProducts ? "CONSULTING REGISTER..." : "EDITION NO. I"} ❦
+                  </span>
+                  <span className="folio-label-right">MAYFAIR &amp; CALCUTTA REGISTRY</span>
                 </div>
+                <div className="oxford-double-line" />
+                <h2 className="broadsheet-headline">The Curated Broadside Archive</h2>
+                <p className="broadsheet-intro-p">
+                  Bespoke subcontinental silhouettes, loomed on wooden pedal frames in Eastern residencies and tailored in the West End of London.
+                </p>
+                <div className="oxford-single-line" />
               </header>
 
               <div className="products-grid-4">
@@ -430,9 +436,6 @@ function StorefrontContent() {
               </div>
             </div>
           </section>
-
-          {/* Interactive Archival Blueprint & Slow Fashion Manifesto */}
-          <TailorNotebook />
 
           {/* Moving Design Reel with Interactive Play/Pause */}
           <section className="moving-design-section" id="stories">
@@ -451,7 +454,7 @@ function StorefrontContent() {
             </div>
 
             <div className="video-content">
-              <span className="video-caption-eyebrow">Atelier in Motion • Loom & Thread</span>
+              <span className="video-caption-eyebrow">CHINÉMATOGRAPHE DISPATCH • MDCCCCVI</span>
               <h2 className="video-caption-title">The Drape of Living Tradition</h2>
               <button 
                 className="btn-stories"
@@ -460,17 +463,17 @@ function StorefrontContent() {
                   if (el) el.scrollIntoView({ behavior: 'smooth' });
                 }}
               >
-                Explore Collection
+                ACQUIRE FROM ARCHIVE ☞
               </button>
             </div>
 
             <button 
               className="video-control-pill"
               onClick={toggleVideo}
-              aria-label={isPlayingVideo ? "Pause video reel" : "Play video reel"}
+              aria-label={isPlayingVideo ? "Halt motion reel" : "Resume motion reel"}
             >
               <span>{isPlayingVideo ? "❚❚" : "▶"}</span>
-              <span>{isPlayingVideo ? "PAUSE REEL" : "RESUME REEL"}</span>
+              <span>{isPlayingVideo ? "HALT MOTION" : "RESUME MOTION"}</span>
             </button>
           </section>
         </main>
