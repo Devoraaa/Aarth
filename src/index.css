@@ -7973,3 +7973,28 @@ button {
   margin: 0 !important;
   padding: 0 !important;
 }
+
+/* FIX RELATIVE POSITIONING OFFSET GAP & SHIFT BREADCRUMB */
+.pdp-top-bar {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-between !important; /* shift breadcrumb right */
+  align-items: center !important;
+  flex-wrap: nowrap !important;
+  padding-top: 18px !important;
+  padding-bottom: 14px !important;
+}
+
+@media (max-width: 1024px) {
+  .pdp-col-large-sticky {
+    top: 0 !important; /* removes the massive visual gap caused by relative top offset */
+    margin-top: 16px !important; /* give a small reasonable margin instead */
+  }
+}
+
+@media (max-width: 1024px) {
+  .pdp-col-right-details {
+    top: 0 !important; /* fix massive gap above product details box */
+    margin-top: 0 !important; 
+  }
+}
