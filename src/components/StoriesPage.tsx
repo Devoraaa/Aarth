@@ -94,7 +94,7 @@ export function StoriesPage({ products, initialProductId, onBack }: StoriesPageP
   const currentText = storyTexts[currentSlide];
 
   return (
-    <div className="story-viewer-container" style={{ position: 'fixed', inset: 0, zIndex: 0, backgroundColor: '#000' }}>
+    <div className="story-viewer-container" style={{ position: 'fixed', inset: 0, zIndex: 9999, backgroundColor: '#000' }}>
       <style>{`
         .story-bg {
           position: absolute;

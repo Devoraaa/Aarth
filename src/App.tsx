@@ -240,7 +240,7 @@ function StorefrontContent() {
             className="search-toggle-btn nav-icon nav-action-btn" 
             aria-label="Search"
             onClick={() => setSearchOpen(true)}
-            title="Search Store (Motif, Silhouette, Craft)"
+            title="Search"
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="nav-svg-icon"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
             <span className="nav-icon-tooltip">SEARCH</span>
@@ -315,7 +315,7 @@ function StorefrontContent() {
                   setSearchOpen(true);
                 }}
               >
-                <span>00</span> Search Store
+                <span>00</span> Search
               </a>
               <a href="#collection" className="mobile-drawer-link" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); setSelectedProduct(null); setShowContactPage(false); setShowStoriesPage(false); setShowCollectionPage(true); window.scrollTo({ top: 0, behavior: "smooth" }); }}
               >
@@ -333,7 +333,7 @@ function StorefrontContent() {
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
               >
-                <span>02</span> Stories & Loom
+                <span>02</span> Stories
               </a>
               <a 
                 href="#contact" 
@@ -346,7 +346,7 @@ function StorefrontContent() {
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
               >
-                <span>03</span> Contact & Account
+                <span>03</span> Contact Us
               </a>
               <a 
                 href="#cart" 
