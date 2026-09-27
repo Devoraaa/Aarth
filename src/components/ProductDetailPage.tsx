@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import type { ShopifyProduct, ShopifyVariant } from "../lib/shopify";
 import { useCart } from "../context/CartContext";
 import { cartCreate } from "../lib/shopify";
+import { ProductCard } from "./ProductCard";
 
 interface ProductDetailPageProps {
   product: ShopifyProduct;
@@ -17,6 +18,14 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
   onSelectProduct,
 }) => {
   const { addItem, openCart, loading: cartLoading } = useCart();
+
+  const handleQuickAdd = async (e: React.MouseEvent, p: ShopifyProduct) => {
+    e.stopPropagation();
+    if (p.variants.length > 0) {
+      await addItem(p.variants[0].id, 1);
+      openCart();
+    }
+  };
 
   // Active large image state
   const [activeImgIdx, setActiveImgIdx] = useState(0);
@@ -330,45 +339,28 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
       <section className="pdp-related-section">
         <div className="container-wide">
           <header className="section-header-antique">
-            <div className="section-header-flourish">❦ — ✦ — ❧</div>
+            <div className="section-header-flourish">✧ ─ ✦ ─ ☙</div>
             <h2 className="section-title">Products you may like</h2>
           </header>
-
           <div className="pdp-related-grid-3">
-            {relatedProducts.map((relProduct, idx) => {
-              const relPrice = relProduct.priceRange.minVariantPrice;
-              const formattedRelPrice = `${
-                relPrice.currencyCode === "GBP"
-                  ? "£"
-                  : relPrice.currencyCode === "INR"
-                  ? "₹"
-                  : relPrice.currencyCode + " "
-              }${parseFloat(relPrice.amount).toFixed(2)}`;
-              const relImg = relProduct.images[0]?.url || "/assets/product-1.jpg";
-
-              return (
-                <article
-                  key={relProduct.id}
-                  className="pdp-related-card"
-                  onClick={() => onSelectProduct(relProduct)}
-                >
-                  <div className="pdp-related-img-box">
-                    <img src={relImg} alt={relProduct.title} loading="lazy" />
-                  </div>
-
-                  <div className="pdp-related-meta">
-                    <h3 className="pdp-related-title">{relProduct.title}</h3>
-                    <p className="pdp-related-price">{formattedRelPrice}</p>
-                  </div>
-                </article>
-              );
-            })}
+            {relatedProducts.map((relProduct, idx) => (
+              <ProductCard
+                key={relProduct.id}
+                product={relProduct}
+                index={idx}
+                onSelect={onSelectProduct}
+                onQuickAdd={handleQuickAdd}
+                loading={cartLoading}
+              />
+            ))}
           </div>
         </div>
       </section>
     </div>
   );
 };
+
+
 
 
 

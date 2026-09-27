@@ -7920,3 +7920,10 @@ button {
 }
 
 
+
+@media (max-width: 640px) {
+  .pdp-related-grid-3 {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 14px !important;
+  }
+}
