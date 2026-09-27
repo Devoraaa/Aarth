@@ -551,10 +551,7 @@ function StorefrontContent() {
               
               <button 
                 className="btn-stories"
-                onClick={() => {
-                  const el = document.getElementById("collection");
-                  if (el) el.scrollIntoView({ behavior: 'smooth' });
-                }}
+                onClick={() => { setSelectedProduct(displayProducts[0]); setShowContactPage(false); setShowCollectionPage(false); setShowStoriesPage(true); window.scrollTo({ top: 0, behavior: "smooth" }); }}
               >
                 STORIES
               </button>
@@ -673,6 +670,8 @@ function App() {
 }
 
 export default App;
+
+
 
 
 
