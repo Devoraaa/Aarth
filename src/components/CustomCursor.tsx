@@ -1,73 +1,65 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
-export const CustomCursor: React.FC = () => {
-  const cursorRef = useRef<HTMLDivElement>(null);
-  const [hoverState, setHoverState] = useState<"default" | "pointer">("default");
+export function CustomCursor() {
+  const [pos, setPos] = useState({ x: -100, y: -100 });
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    // Only enable on desktop / devices with a mouse
-    if (!window.matchMedia("(pointer: fine)").matches) {
-      return;
-    }
-
-    const onMouseMove = (e: MouseEvent) => {
-      // Instant 1:1 hardware-speed transform update without React re-render lag
-      if (cursorRef.current) {
-        cursorRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
-      }
-
+    const handleMouseMove = (e: MouseEvent) => {
+      setPos({ x: e.clientX, y: e.clientY });
       if (!isVisible) setIsVisible(true);
-
-      const target = e.target as HTMLElement | null;
-      if (!target) return;
-
-      const productCard = target.closest(".product-item");
-      const clickable = target.closest("button, a, input, select, textarea, .nav-link, .nav-icon, .clickable, [role='button']");
-
-      if (clickable || productCard) {
-        setHoverState("pointer");
-      } else {
-        setHoverState("default");
-      }
     };
+    
+    const handleMouseEnter = () => setIsVisible(true);
+    const handleMouseLeave = () => setIsVisible(false);
 
-    const onMouseLeave = () => {
-      if (cursorRef.current) cursorRef.current.style.opacity = "0";
-      setIsVisible(false);
-    };
-
-    const onMouseEnter = () => {
-      if (cursorRef.current) cursorRef.current.style.opacity = "1";
-      setIsVisible(true);
-    };
-
-    window.addEventListener("mousemove", onMouseMove, { passive: true });
-    document.addEventListener("mouseleave", onMouseLeave);
-    document.addEventListener("mouseenter", onMouseEnter);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    document.addEventListener('mouseenter', handleMouseEnter);
+    document.addEventListener('mouseleave', handleMouseLeave);
 
     return () => {
-      window.removeEventListener("mousemove", onMouseMove);
-      document.removeEventListener("mouseleave", onMouseLeave);
-      document.removeEventListener("mouseenter", onMouseEnter);
+      window.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseenter', handleMouseEnter);
+      document.removeEventListener('mouseleave', handleMouseLeave);
     };
   }, [isVisible]);
 
   return (
-    <div className="custom-cursor-container" aria-hidden="true">
-      <div
-        ref={cursorRef}
-        className={`peacock-cursor-feather ${hoverState !== "default" ? "hovered" : ""}`}
+    <>
+      <style>{`
+        * {
+          cursor: none !important;
+        }
+        .aarth-custom-cursor {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 50px;
+          height: 50px;
+          pointer-events: none;
+          z-index: 2147483647; /* Max z-index */
+          transition: opacity 0.15s ease;
+          will-change: transform;
+        }
+        @media (max-width: 768px) {
+          /* Do not use custom cursor on mobile touch devices */
+          * {
+            cursor: auto !important;
+          }
+          .aarth-custom-cursor {
+            display: none !important;
+          }
+        }
+      `}</style>
+      <img 
+        src="/assets/peacock-cursor.png" 
+        alt="cursor"
+        className="aarth-custom-cursor"
         style={{
-          opacity: isVisible ? 1 : 0,
+          transform: `translate(calc(${pos.x}px - 14px), calc(${pos.y}px - 14px))`,
+          opacity: isVisible ? 1 : 0
         }}
-      >
-        <img
-          src="/assets/peacock-feather-cursor.png"
-          alt="Peacock Feather Cursor"
-          className="peacock-feather-img"
-        />
-      </div>
-    </div>
+      />
+    </>
   );
-};
+}

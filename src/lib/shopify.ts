@@ -44,6 +44,11 @@ export interface ShopifyProduct {
   } | null;
   images: ShopifyImage[];
   variants: ShopifyVariant[];
+  washCare?: string;
+  shipping?: string;
+  storyBgPc?: string;
+  storyBgMobile?: string;
+  storyTexts?: string[];
 }
 
 export interface CartLineItem {
@@ -81,7 +86,21 @@ const PRODUCT_FRAGMENT = `
     description
     descriptionHtml
     tags
-    priceRange {
+    wash_care: metafield(namespace: "custom", key: "wash_care") { value }
+    shipping: metafield(namespace: "custom", key: "shipping") { value }
+      story_bg_pc: metafield(namespace: "custom", key: "story_bg_pc") {
+        value
+        reference { ... on MediaImage { image { url } } }
+      }
+      story_bg_mobile: metafield(namespace: "custom", key: "story_bg_mobile") {
+        value
+        reference { ... on MediaImage { image { url } } }
+      }
+      story_text_1: metafield(namespace: "custom", key: "story_text_1") { value }
+      story_text_2: metafield(namespace: "custom", key: "story_text_2") { value }
+      story_text_3: metafield(namespace: "custom", key: "story_text_3") { value }
+      story_text_4: metafield(namespace: "custom", key: "story_text_4") { value }
+      priceRange {
       minVariantPrice {
         amount
         currencyCode
@@ -210,6 +229,16 @@ function normalizeProduct(raw: any): ShopifyProduct {
     description: raw.description ?? "",
     descriptionHtml: raw.descriptionHtml ?? "",
     tags: raw.tags ?? [],
+    washCare: raw.wash_care?.value,
+    shipping: raw.shipping?.value,
+    storyBgPc: raw.story_bg_pc?.reference?.image?.url || raw.story_bg_pc?.value,
+    storyBgMobile: raw.story_bg_mobile?.reference?.image?.url || raw.story_bg_mobile?.value,
+    storyTexts: [
+      raw.story_text_1?.value,
+      raw.story_text_2?.value,
+      raw.story_text_3?.value,
+      raw.story_text_4?.value
+    ].filter(Boolean) as string[],
     priceRange: raw.priceRange,
     compareAtPriceRange: raw.compareAtPriceRange ?? null,
     images: (raw.images?.edges ?? []).map((e: any) => e.node),
@@ -585,20 +614,11 @@ export async function getHeroSettings() {
       metaobject(handle: {handle: "main-hero-banner", type: "hero_banner"}) {
         fields {
           key
-          value
           reference {
             ... on MediaImage {
               image {
                 url
               }
-            }
-            ... on Video {
-              sources {
-                url
-              }
-            }
-            ... on GenericFile {
-              url
             }
           }
           references(first: 1) {
@@ -608,14 +628,6 @@ export async function getHeroSettings() {
                   image {
                     url
                   }
-                }
-                ... on Video {
-                  sources {
-                    url
-                  }
-                }
-                ... on GenericFile {
-                  url
                 }
               }
             }
@@ -630,145 +642,20 @@ export async function getHeroSettings() {
 
     let desktopUrl = null;
     let mobileUrl = null;
-    let videoUrl = null;
 
     data.metaobject.fields.forEach((field: any) => {
-      const url = field.reference?.image?.url || 
-                  field.reference?.sources?.[0]?.url || 
-                  field.reference?.url || 
-                  field.references?.edges?.[0]?.node?.image?.url ||
-                  field.references?.edges?.[0]?.node?.sources?.[0]?.url ||
-                  field.references?.edges?.[0]?.node?.url ||
-                  (field.value && (field.value.startsWith('http') || field.value.startsWith('/')) ? field.value : null);
-
+      const url = field.reference?.image?.url || field.references?.edges?.[0]?.node?.image?.url;
       if (field.key === 'desktop_image') desktopUrl = url;
       if (field.key === 'mobile_image') mobileUrl = url;
-      if (field.key === 'video_url' || field.key === 'reel_url' || field.key === 'video') videoUrl = url;
     });
 
-    return { desktopUrl, mobileUrl, videoUrl };
+    return { desktopUrl, mobileUrl };
   } catch (err) {
     return null;
   }
 }
 
-export async function getVideoSettings(): Promise<{ videoUrl: string | null; contactVideoUrl: string | null }> {
-  const query = `
-    query getVideoReel {
-      videoMetaobject: metaobject(handle: {handle: "main-video-reel", type: "video_reel"}) {
-        fields {
-          key
-          value
-          reference {
-            ... on Video {
-              sources {
-                url
-              }
-            }
-            ... on GenericFile {
-              url
-            }
-          }
-        }
-      }
-      heroMetaobject: metaobject(handle: {handle: "main-hero-banner", type: "hero_banner"}) {
-        fields {
-          key
-          value
-          reference {
-            ... on Video {
-              sources {
-                url
-              }
-            }
-            ... on GenericFile {
-              url
-            }
-          }
-        }
-      }
-    }
-  `;
-  try {
-    const data = await shopifyFetch<any>(query);
-    let videoUrl: string | null = null;
-    let contactVideoUrl: string | null = null;
 
-    if (data.videoMetaobject?.fields) {
-      data.videoMetaobject.fields.forEach((f: any) => {
-        const url = f.reference?.sources?.[0]?.url || f.reference?.url || (f.value && (f.value.startsWith('http') || f.value.startsWith('/')) ? f.value : null);
-        if (f.key === 'video_url' || f.key === 'video' || f.key === 'reel_url') {
-          videoUrl = url;
-        }
-        if (f.key === 'contact_video_url' || f.key === 'contact_video') {
-          contactVideoUrl = url;
-        }
-      });
-    }
 
-    if (!videoUrl && data.heroMetaobject?.fields) {
-      data.heroMetaobject.fields.forEach((f: any) => {
-        const url = f.reference?.sources?.[0]?.url || f.reference?.url || (f.value && (f.value.startsWith('http') || f.value.startsWith('/')) ? f.value : null);
-        if (f.key === 'video_url' || f.key === 'video' || f.key === 'reel_url') {
-          videoUrl = url;
-        }
-      });
-    }
 
-    return { videoUrl, contactVideoUrl: contactVideoUrl || videoUrl };
-  } catch (err) {
-    return { videoUrl: null, contactVideoUrl: null };
-  }
-}
-
-export async function getCollectionDetails(handle?: string): Promise<{ title: string; description?: string } | null> {
-  const query = `
-    query getCollections {
-      metaobject(handle: {handle: "main-collection-settings", type: "collection_settings"}) {
-        fields {
-          key
-          value
-        }
-      }
-      collections(first: 5) {
-        edges {
-          node {
-            id
-            title
-            description
-            handle
-          }
-        }
-      }
-    }
-  `;
-  try {
-    const data = await shopifyFetch<any>(query);
-    // 1. Metaobject custom override
-    if (data.metaobject?.fields) {
-      const titleField = data.metaobject.fields.find((f: any) => f.key === 'title' || f.key === 'name');
-      const descField = data.metaobject.fields.find((f: any) => f.key === 'description' || f.key === 'subtitle');
-      if (titleField?.value) {
-        return { title: titleField.value, description: descField?.value };
-      }
-    }
-
-    // 2. Active Shopify collection title
-    if (data.collections?.edges?.length > 0) {
-      const edge = data.collections.edges.find((e: any) => 
-        handle ? e.node.handle === handle : (e.node.handle !== "frontpage" && e.node.title)
-      ) || data.collections.edges[0];
-
-      if (edge?.node?.title) {
-        return {
-          title: edge.node.title,
-          description: edge.node.description || undefined
-        };
-      }
-    }
-  } catch (err) {
-    console.warn("Could not fetch collection details from Shopify:", err);
-  }
-  return null;
-}
 

@@ -38,26 +38,7 @@ export const VintageAtmosphere: React.FC = () => {
       </div>
 
       {/* 2. Authentic Faded Iron-Gall Ink Stains (Dried decades ago, smudged into paper grain) */}
-      {/* Ink Spill 1: Top Right Edge */}
-      <svg className="ink-spill-svg ink-spill-1" viewBox="0 0 180 180">
-        {/* Outer translucent water-bleed diffusion halo */}
-        <path
-          d="M56,36 Q92,14 125,40 Q156,66 145,104 Q134,136 92,146 Q54,156 39,118 Q24,78 56,36 Z"
-          fill="#6E5540"
-          opacity="0.08"
-        />
-        {/* Dried iron-gall tannin deposit core */}
-        <path
-          d="M60,40 Q90,20 120,45 Q150,70 140,100 Q130,130 95,140 Q60,150 45,115 Q30,80 60,40 Z"
-          fill="#4D392B"
-          opacity="0.18"
-        />
-        {/* Faded dried splatter specks */}
-        <circle cx="150" cy="120" r="3.5" fill="#4D392B" opacity="0.16" />
-        <circle cx="135" cy="140" r="2" fill="#4D392B" opacity="0.14" />
-        <circle cx="40" cy="45" r="2.5" fill="#4D392B" opacity="0.15" />
-        <circle cx="160" cy="85" r="1.5" fill="#4D392B" opacity="0.12" />
-      </svg>
+      
 
       {/* Ink Spill 2: Left Middle Margin */}
       <svg className="ink-spill-svg ink-spill-2" viewBox="0 0 140 140">
@@ -99,8 +80,7 @@ export const VintageAtmosphere: React.FC = () => {
       </svg>
 
       {/* 3. Random Vintage Atelier Artifacts in Background */}
-      {/* Artifact A: Aged Tea / Coffee Cup Ring Stain on Parchment */}
-      <div className="vintage-cup-stain" />
+      
 
       {/* Artifact B: Antique Brass Tailoring Needle & Trailing Basting Thread */}
       <div className="vintage-needle-artifact">
@@ -119,16 +99,8 @@ export const VintageAtmosphere: React.FC = () => {
         </svg>
       </div>
 
-      {/* Artifact C: 1906 Cancelled Postal Stamp in Background */}
-      <div className="vintage-cancelled-stamp">
-        <div className="stamp-inner-serrated">
-          <span className="stamp-postmark-date">14 OCT 1906</span>
-          <span className="stamp-postmark-loc">CALCUTTA G.P.O.</span>
-          <span className="stamp-val-print">ONE ANNA</span>
-          {/* Wavy cancellation bars */}
-          <div className="stamp-cancellation-waves" />
-        </div>
-      </div>
+      
     </div>
   );
 };
+

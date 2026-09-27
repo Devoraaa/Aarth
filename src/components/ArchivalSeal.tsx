@@ -52,9 +52,7 @@ export const ArchivalSeal: React.FC = () => {
 
           {/* Circular Text */}
           <text className="seal-text" fill="currentColor">
-            <textPath href="#sealCirclePath" startOffset="0%">
-              ✦ AARTH ATELIER ✦ EST. 2026 ✦ THE LIVING LOOM ✦ LONDON & GUJARAT ✦
-            </textPath>
+            
           </text>
         </svg>
       </div>

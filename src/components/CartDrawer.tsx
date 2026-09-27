@@ -23,13 +23,6 @@ export const CartDrawer: React.FC = () => {
     <div className="cart-drawer-overlay" onClick={closeCart}>
       <div
         className="cart-drawer-panel"
-        style={{
-          backgroundImage: "url('/assets/user-vintage-bg.jpg')",
-          backgroundRepeat: "repeat-y",
-          backgroundPosition: "top center",
-          backgroundSize: "100% auto",
-          backgroundColor: "#F3EBDD",
-        }}
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
@@ -37,7 +30,6 @@ export const CartDrawer: React.FC = () => {
       >
         <div className="cart-drawer-header">
           <div className="cart-header-title-box">
-            <span className="cart-eyebrow">YOUR ITEMS</span>
             <h3 className="cart-title">YOUR BAG [{totalQuantity}]</h3>
           </div>
           <button
@@ -91,7 +83,7 @@ export const CartDrawer: React.FC = () => {
                     <div className="cart-item-info-top">
                       <h4 className="cart-item-title">{item.merchandise.product.title}</h4>
                       {item.merchandise.title && item.merchandise.title !== "Default Title" && (
-                        <span className="cart-item-variant">{item.merchandise.title}</span>
+                        <span className="text-2xl">{item.merchandise.title}</span>
                       )}
                       <span className="cart-item-price">{formattedPrice}</span>
                     </div>
@@ -120,7 +112,7 @@ export const CartDrawer: React.FC = () => {
                         disabled={loading}
                         onClick={() => removeItem(item.id)}
                       >
-                        Remove ✕
+                        Remove
                       </button>
                     </div>
                   </div>
@@ -136,9 +128,6 @@ export const CartDrawer: React.FC = () => {
               <span>Subtotal</span>
               <span className="cart-subtotal-val">{formattedTotal}</span>
             </div>
-            <p className="cart-shipping-note">
-              Taxes, duties & shipping calculated during final checkout dispatch.
-            </p>
 
             <button
               className="cart-checkout-btn"
@@ -147,10 +136,6 @@ export const CartDrawer: React.FC = () => {
             >
               {loading ? "PREPARING DISPATCH..." : `PROCEED TO CHECKOUT • ${formattedTotal}`}
             </button>
-
-            <div className="cart-trust-mark">
-              <span>✦ SECURE SHOPIFY CHECKOUT • WORLDWIDE DISPATCH</span>
-            </div>
           </div>
         )}
       </div>

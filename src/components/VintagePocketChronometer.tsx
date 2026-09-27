@@ -119,11 +119,6 @@ export const VintagePocketChronometer: React.FC = () => {
           {/* Center Pin */}
           <div className="watch-center-pin" />
         </div>
-
-        {/* Small Leather Label Badge */}
-        <div className="watch-leather-pill">
-          <span>{scrollPercent}% • {yardsSpun}yds</span>
-        </div>
       </div>
     </div>
   );

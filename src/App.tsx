@@ -11,21 +11,16 @@ import { ProductCard } from './components/ProductCard';
 import { CustomCursor } from './components/CustomCursor';
 import { VintagePocketChronometer } from './components/VintagePocketChronometer';
 import { VintageAtmosphere } from './components/VintageAtmosphere';
-import { TelegraphTape } from './components/TelegraphTape';
-import { getProducts, getHeroSettings, getVideoSettings, getCollectionDetails, type ShopifyProduct } from './lib/shopify';
+import { getProducts, getHeroSettings, type ShopifyProduct } from './lib/shopify';
 import { ContactPage } from './components/ContactPage';
-import { StoriesPage } from './components/StoriesPage';
 import { CollectionPage } from './components/CollectionPage';
-import { CollectionHoverCard } from './components/CollectionHoverCard';
-import { PostalStamp } from './components/PostalStamp';
-import { PageStamps } from './components/PageStamps';
-import './vintage-1906.css';
-
+import { StoriesPage } from './components/StoriesPage';
 
 function StorefrontContent() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [storiesMenuOpen, setStoriesMenuOpen] = useState(false);
   const [products, setProducts] = useState<ShopifyProduct[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState<ShopifyProduct | null>(null);
@@ -33,33 +28,14 @@ function StorefrontContent() {
   const [showStoriesPage, setShowStoriesPage] = useState(false);
   const [showCollectionPage, setShowCollectionPage] = useState(false);
   const [showProfilePage, setShowProfilePage] = useState(false);
-  const [collectionHovered, setCollectionHovered] = useState(false);
-  const hoverTimeoutRef = useRef<number | null>(null);
-  const [collectionInfo, setCollectionInfo] = useState<{ title: string; description?: string } | null>(null);
-  const [videoSettings, setVideoSettings] = useState<{ videoUrl: string | null; contactVideoUrl: string | null } | null>(null);
   const [heroImages, setHeroImages] = useState({ desktop: '/assets/hero-banner-transparent.png', mobile: '/assets/hero-banner-mobile-transparent.png' });
 
-  // Video Reel reference
+  // Video Reel Interactive Play/Pause
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [isPlayingVideo, setIsPlayingVideo] = useState(true);
 
   // Hero Mouse Parallax
   const [heroParallax, setHeroParallax] = useState({ x: 0, y: 0 });
-
-  // Ink reveal scroll observer
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('revealed');
-          }
-        });
-      },
-      { threshold: 0.1, rootMargin: '0px 0px -60px 0px' }
-    );
-    document.querySelectorAll('.ink-reveal').forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
 
   const { cart, openCart, addItem, loading: cartLoading } = useCart();
   const { openAuth, customer } = useCustomer();
@@ -108,16 +84,6 @@ function StorefrontContent() {
           desktop: settings.desktopUrl || prev.desktop,
           mobile: settings.mobileUrl || settings.desktopUrl || prev.mobile
         }));
-      }
-    });
-
-    getCollectionDetails().then((info) => {
-      if (info?.title) setCollectionInfo(info);
-    });
-
-    getVideoSettings().then((settings) => {
-      if (settings?.videoUrl || settings?.contactVideoUrl) {
-        setVideoSettings(settings);
       }
     });
   }, []);
@@ -189,86 +155,6 @@ function StorefrontContent() {
 
   const displayProducts = products.length > 0 ? products : fallbackProducts;
 
-  const navigateTo = (view: 'home' | 'collection' | 'stories' | 'contact' | 'product', item?: ShopifyProduct) => {
-    if (view === 'product' && item) {
-      setSelectedProduct(item);
-      setShowCollectionPage(false);
-      setShowStoriesPage(false);
-      setShowContactPage(false);
-      window.history.pushState({ view: 'product', handle: item.handle }, '', `#product-${item.handle}`);
-    } else if (view === 'collection') {
-      setSelectedProduct(null);
-      setShowCollectionPage(true);
-      setShowStoriesPage(false);
-      setShowContactPage(false);
-      window.history.pushState({ view: 'collection' }, '', '#collection');
-    } else if (view === 'stories') {
-      setSelectedProduct(null);
-      setShowCollectionPage(false);
-      setShowStoriesPage(true);
-      setShowContactPage(false);
-      window.history.pushState({ view: 'stories' }, '', '#stories');
-    } else if (view === 'contact') {
-      setSelectedProduct(null);
-      setShowCollectionPage(false);
-      setShowStoriesPage(false);
-      setShowContactPage(true);
-      window.history.pushState({ view: 'contact' }, '', '#contact');
-    } else {
-      setSelectedProduct(null);
-      setShowCollectionPage(false);
-      setShowStoriesPage(false);
-      setShowContactPage(false);
-      window.history.pushState({ view: 'home' }, '', window.location.pathname);
-    }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  useEffect(() => {
-    const handlePopState = () => {
-      const hash = window.location.hash;
-      if (hash.startsWith('#product-')) {
-        const handle = hash.replace('#product-', '');
-        const p = displayProducts.find((x) => x.handle === handle || x.id === handle);
-        if (p) {
-          setSelectedProduct(p);
-          setShowCollectionPage(false);
-          setShowStoriesPage(false);
-          setShowContactPage(false);
-          return;
-        }
-      }
-      if (hash === '#collection') {
-        setSelectedProduct(null);
-        setShowCollectionPage(true);
-        setShowStoriesPage(false);
-        setShowContactPage(false);
-        return;
-      }
-      if (hash === '#stories') {
-        setSelectedProduct(null);
-        setShowCollectionPage(false);
-        setShowStoriesPage(true);
-        setShowContactPage(false);
-        return;
-      }
-      if (hash === '#contact') {
-        setSelectedProduct(null);
-        setShowCollectionPage(false);
-        setShowStoriesPage(false);
-        setShowContactPage(true);
-        return;
-      }
-      setSelectedProduct(null);
-      setShowCollectionPage(false);
-      setShowStoriesPage(false);
-      setShowContactPage(false);
-    };
-
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
-  }, [displayProducts]);
-
   const handleQuickAdd = async (e: React.MouseEvent, product: ShopifyProduct) => {
     e.stopPropagation();
     const variantId = product.variants[0]?.id;
@@ -284,29 +170,22 @@ function StorefrontContent() {
     setHeroParallax({ x, y });
   };
 
-  const handleCollectionMouseEnter = () => {
-    if (hoverTimeoutRef.current) {
-      clearTimeout(hoverTimeoutRef.current);
-      hoverTimeoutRef.current = null;
+  const toggleVideo = () => {
+    if (videoRef.current) {
+      if (videoRef.current.paused) {
+        videoRef.current.play();
+        setIsPlayingVideo(true);
+      } else {
+        videoRef.current.pause();
+        setIsPlayingVideo(false);
+      }
     }
-    setCollectionHovered(true);
-  };
-
-  const handleCollectionMouseLeave = () => {
-    if (hoverTimeoutRef.current) {
-      clearTimeout(hoverTimeoutRef.current);
-    }
-    hoverTimeoutRef.current = window.setTimeout(() => {
-      setCollectionHovered(false);
-    }, 350);
   };
 
   return (
     <>
       {/* Custom Vintage Crosshair & Loom Follower */}
       <CustomCursor />
-
-
 
       {/* Atmospheric 1906 Dust Breeze, Ink Spills & Scattered Account Artifacts */}
       <VintageAtmosphere />
@@ -334,61 +213,68 @@ function StorefrontContent() {
             </svg>
           </button>
 
-          {/* Desktop navigation links with Collection Mega Card */}
+          {/* Desktop navigation links with Running Stitch */}
           <div className="desktop-nav-links">
-            <div
-              className="nav-link-collection-wrap"
-              onMouseEnter={handleCollectionMouseEnter}
-              onMouseLeave={handleCollectionMouseLeave}
+            <a href="#collection" className="nav-link" onClick={(e) => { e.preventDefault(); setSelectedProduct(null); setShowContactPage(false); setShowStoriesPage(false); setShowCollectionPage(true); window.scrollTo({ top: 0, behavior: "smooth" }); }}
             >
-              <a 
-                href="#collection" 
-                className="nav-link nav-link-collection"
-                onClick={(e) => {
-                  e.preventDefault();
-                  navigateTo('collection');
-                }}
-              >
-                <span className="nav-link-text">Collection</span>
-                <span className="nav-running-stitch" aria-hidden="true" />
-              </a>
-
-              {collectionHovered && (
-                <CollectionHoverCard
-                  products={displayProducts}
-                  collectionTitle={collectionInfo?.title}
-                  onSelectProduct={(p) => {
-                    setCollectionHovered(false);
-                    navigateTo('product', p);
-                  }}
-                  onViewAll={() => {
-                    setCollectionHovered(false);
-                    navigateTo('collection');
-                  }}
-                  onMouseEnter={handleCollectionMouseEnter}
-                  onMouseLeave={handleCollectionMouseLeave}
-                />
-              )}
-            </div>
-
-            <a 
-              href="#stories" 
-              className="nav-link"
-              onClick={(e) => {
-                e.preventDefault();
-                navigateTo('stories');
-              }}
-            >
-              <span className="nav-link-text">Stories</span>
+              <span className="nav-link-text">Collection</span>
               <span className="nav-running-stitch" aria-hidden="true" />
             </a>
-
+            <div 
+                className="nav-item-wrapper" 
+                style={{ position: "relative", display: "flex", alignItems: "center", height: "100%" }}
+                onMouseEnter={() => setStoriesMenuOpen(true)}
+                onMouseLeave={() => setStoriesMenuOpen(false)}
+              >
+                <a 
+                  href="#stories" 
+                  className="nav-link"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    // Optionally open first story on click
+                    setSelectedProduct(displayProducts[0]);
+                    setShowContactPage(false);
+                    setShowCollectionPage(false);
+                    setShowStoriesPage(true);
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }}
+                >
+                  <span className="nav-link-text">Stories</span>
+                  <span className="nav-running-stitch" aria-hidden="true" />
+                </a>
+                
+                {storiesMenuOpen && (
+                  <div className="stories-dropdown-mega">
+                    {displayProducts.slice(0, 4).map((prod) => (
+                      <div 
+                        key={prod.id} 
+                        className="story-dropdown-card"
+                        onClick={() => {
+                          setStoriesMenuOpen(false);
+                          setSelectedProduct(prod);
+                          setShowContactPage(false);
+                          setShowCollectionPage(false);
+                          setShowStoriesPage(true);
+                          window.scrollTo({ top: 0, behavior: "smooth" });
+                        }}
+                      >
+                        <img src={prod.images[0]?.url || "/assets/fallback-image.jpg"} alt={prod.title} />
+                        <div className="story-dropdown-card-overlay">
+                          <h3 className="story-dropdown-card-title">{prod.title}</h3>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             <a 
               href="#contact" 
               className="nav-link"
               onClick={(e) => {
                 e.preventDefault();
-                navigateTo('contact');
+                setShowStoriesPage(false);
+                setShowContactPage(true); setShowCollectionPage(false);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
             >
               <span className="nav-link-text">Contact</span>
@@ -401,16 +287,20 @@ function StorefrontContent() {
           <a 
             href="#" 
             className="brand-logo-link"
-            onClick={(e) => {
-              e.preventDefault();
-              navigateTo('home');
-            }}
+              onClick={(e) => {
+                e.preventDefault();
+                setSelectedProduct(null);
+                setShowContactPage(false);
+                setShowStoriesPage(false);
+                setShowCollectionPage(false);
+                setShowProfilePage(false);
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
           >
             <div className="brand-logo-box">
               {/* Antique Loom Compass Wheel behind Monogram */}
               <div className="logo-loom-ring" aria-hidden="true" />
               <img src="/assets/aarth-logo.png" alt="AARTH Logo" className="brand-logo-img" />
-              <span className="brand-sub-badge">HERITAGE SILHOUETTES</span>
             </div>
           </a>
         </div>
@@ -425,7 +315,7 @@ function StorefrontContent() {
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="nav-svg-icon"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
             <span className="nav-icon-tooltip">SEARCH</span>
           </button>
-          <a href="#account" onClick={(e) => { e.preventDefault(); if(customer) { setShowProfilePage(true); setShowContactPage(false); setShowStoriesPage(false); setSelectedProduct(null); } else { openAuth(); } }} className="nav-icon desktop-account-link nav-action-btn" aria-label="Account" title="My Account" style={{ position: "relative", display: "flex", alignItems: "center", gap: "6px", textDecoration: "none" }}>
+          <a href="#account" onClick={(e) => { e.preventDefault(); if(customer) { setShowProfilePage(true); setShowCollectionPage(false); setShowContactPage(false); setShowStoriesPage(false); setSelectedProduct(null); } else { openAuth(); } }} className="nav-icon desktop-account-link nav-action-btn" aria-label="Account" title="My Account" style={{ position: "relative", display: "flex", alignItems: "center", gap: "6px", textDecoration: "none" }}>
             {customer ? (
               <>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="nav-svg-icon"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
@@ -484,13 +374,7 @@ function StorefrontContent() {
               >
                 <span>00</span> Search Store
               </a>
-              <a 
-                href="#collection" 
-                className="mobile-drawer-link" 
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  setSelectedProduct(null);
-                }}
+              <a href="#collection" className="mobile-drawer-link" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); setSelectedProduct(null); setShowContactPage(false); setShowStoriesPage(false); setShowCollectionPage(true); window.scrollTo({ top: 0, behavior: "smooth" }); }}
               >
                 <span>01</span> Collection
               </a>
@@ -502,7 +386,7 @@ function StorefrontContent() {
                   setMobileMenuOpen(false);
                   setSelectedProduct(null);
                   setShowContactPage(false);
-                  setShowStoriesPage(true);
+                  setShowStoriesPage(true); setShowCollectionPage(false);
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
               >
@@ -515,7 +399,7 @@ function StorefrontContent() {
                   e.preventDefault();
                   setMobileMenuOpen(false);
                   setShowStoriesPage(false);
-                  setShowContactPage(true);
+                  setShowContactPage(true); setShowCollectionPage(false);
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
               >
@@ -542,21 +426,22 @@ function StorefrontContent() {
         </div>
       )}
 
-      {/* MAIN CONTENT: Conditional Product Detail Page vs Collection vs Stories vs Contact vs Homepage */}
+      {/* MAIN CONTENT: Conditional Product Detail Page vs Homepage */}
       {showCollectionPage ? (
         <main>
-          <CollectionPage
-            products={displayProducts}
-            collectionTitle={collectionInfo?.title}
-            collectionDescription={collectionInfo?.description}
-            onSelectProduct={(p) => navigateTo('product', p)}
-            onQuickAdd={handleQuickAdd}
-            loading={cartLoading}
+          <CollectionPage 
+            products={products}
+            loading={loadingProducts}
+            onSelectProduct={(p) => { setSelectedProduct(p); setShowCollectionPage(false); }}
+            onQuickAdd={(e, p) => { e.stopPropagation(); addItem(p.id, 1); }}
           />
         </main>
       ) : showStoriesPage ? (
         <main>
-          <StoriesPage onBack={() => navigateTo('home')} />
+          <StoriesPage products={displayProducts.slice(0,4)} initialProductId={selectedProduct?.id || displayProducts[0]?.id || ""} onBack={() => {
+            setShowStoriesPage(false);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }} />
         </main>
       ) : showProfilePage ? (
         <main>
@@ -564,18 +449,21 @@ function StorefrontContent() {
         </main>
       ) : showContactPage ? (
         <main>
-          <ContactPage 
-            onBack={() => navigateTo('home')} 
-            videoUrl={videoSettings?.contactVideoUrl || videoSettings?.videoUrl || undefined}
-          />
+          <ContactPage onBack={() => {
+            setShowContactPage(false);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }} />
         </main>
       ) : selectedProduct ? (
         <main>
           <ProductDetailPage
             product={selectedProduct}
             allProducts={displayProducts}
-            onBack={() => navigateTo('home')}
-            onSelectProduct={(p) => navigateTo('product', p)}
+            onBack={() => {
+              setSelectedProduct(null);
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            onSelectProduct={(p) => setSelectedProduct(p)}
           />
         </main>
       ) : (
@@ -585,7 +473,11 @@ function StorefrontContent() {
             className="hero-section" 
             id="hero"
             onMouseMove={handleHeroMouseMove}
+            style={{ overflow: "hidden" }}
           >
+            {/* Vintage Stamps - Hero Section */}
+            <img src="/assets/stamps/stamp1.png" style={{ position: "absolute", top: "12%", left: "4%", width: "clamp(60px, 8vw, 100px)", transform: "rotate(-8deg)", opacity: 0.5, mixBlendMode: "multiply", zIndex: 0, pointerEvents: "none" }} alt="Vintage Stamp" />
+            <img src="/assets/stamps/stamp2.png" style={{ position: "absolute", bottom: "35%", right: "3%", width: "clamp(70px, 9vw, 110px)", transform: "rotate(12deg)", opacity: 0.45, mixBlendMode: "multiply", zIndex: 0, pointerEvents: "none" }} alt="Vintage Stamp" />
             <div 
               className="hero-image-wrapper"
               style={{
@@ -601,37 +493,22 @@ function StorefrontContent() {
 
             <div className="hero-bottom-mark">
               <span>AARTH</span>
-              <div className="hero-scroll-line"></div>
             </div>
-
-            {/* Authentic Vintage Stamps stuck on hero parchment */}
-            <PageStamps />
           </section>
 
-          {/* Telegraph Tape Ticker — dispatches from the 1906 atelier */}
-          <TelegraphTape />
-
           {/* Collection Section with Interactive 3D Product Cards */}
-          <section className="products-section section-aged-corner" id="collection" style={{ position: 'relative', overflow: 'hidden' }}>
+          <section className="products-section" id="collection" style={{ position: "relative" }}>
+            {/* Vintage Stamps - Products Section */}
+            <img src="/assets/stamps/stamp3.png" style={{ position: "absolute", top: "180px", left: "2%", width: "clamp(65px, 8vw, 100px)", transform: "rotate(-15deg)", opacity: 0.4, mixBlendMode: "multiply", zIndex: 0, pointerEvents: "none" }} alt="Vintage Stamp" />
+            <img src="/assets/stamps/stamp4.png" style={{ position: "absolute", bottom: "250px", right: "2%", width: "clamp(55px, 7vw, 90px)", transform: "rotate(18deg)", opacity: 0.45, mixBlendMode: "multiply", zIndex: 0, pointerEvents: "none" }} alt="Vintage Stamp" />
             <div className="container-wide">
-              {/* Ornamental Divider */}
-              <div className="ornament-divider"><span className="ornament-divider-symbol">✦ ✦ ✦</span></div>
-
-              {/* Exact Reference Header Bar */}
-              <div className="featured-collection-bar">
-                <h2 className="featured-collection-heading">FEATURED COLLECTION</h2>
-                <div className="featured-collection-divider-line" />
-                <a 
-                  href="#collection" 
-                  className="featured-collection-view-all"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    navigateTo('collection');
-                  }}
-                >
-                  VIEW ALL &rarr;
-                </a>
-              </div>
+              <header className="section-header-1906">
+          
+                <div className="oxford-double-line" />
+                <h2 className="broadsheet-headline">GARVI • DROP 001</h2>
+               
+                <div className="oxford-single-line" />
+              </header>
 
               <div className="products-grid-4">
                 {displayProducts.map((product, idx) => (
@@ -639,7 +516,7 @@ function StorefrontContent() {
                     key={product.id}
                     product={product}
                     index={idx}
-                    onSelect={(p) => navigateTo('product', p)}
+                    onSelect={(p) => setSelectedProduct(p)}
                     onQuickAdd={handleQuickAdd}
                     loading={cartLoading}
                   />
@@ -648,17 +525,8 @@ function StorefrontContent() {
             </div>
           </section>
 
-          {/* Moving Design Reel */}
-          <section className="moving-design-section" id="stories" style={{ position: 'relative' }}>
-            {/* Authentic Stamp stuck in reel corner */}
-            <div className="page-stuck-stamp stories-section-stamp" style={{ position: 'absolute', bottom: '24px', right: '28px', zIndex: 6 }}>
-              <PostalStamp
-                src="/assets/stamps/stamp-ashoka-blue.png"
-                alt="Royal India Service Stamp"
-                rotate={-5}
-                width={62}
-              />
-            </div>
+          {/* Moving Design Reel with Interactive Play/Pause */}
+          <section className="moving-design-section" id="stories">
             <div className="video-container">
               <video 
                 ref={videoRef}
@@ -667,52 +535,49 @@ function StorefrontContent() {
                 muted 
                 loop 
                 playsInline
-                key={videoSettings?.videoUrl || "default-video"}
               >
-                <source src={videoSettings?.videoUrl || "/assets/fashion-moving-seamless.mp4"} type="video/mp4" />
+                <source src="/assets/fashion-moving-seamless.mp4" type="video/mp4" />
               </video>
+              {/* <div className="video-overlay"></div> */}
             </div>
 
-            {/* Centered Small Stories Button Only (No Text, No Halt Button) */}
-            <div className="video-stories-center-box">
+            <div className="video-content">
+              
               <button 
-                className="video-stories-btn"
-                onClick={() => navigateTo('stories')}
+                className="btn-stories"
+                onClick={() => {
+                  const el = document.getElementById("collection");
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }}
               >
-                Stories ☞
+                STORIES
               </button>
             </div>
+
+           
           </section>
         </main>
       )}
 
-      {/* Global Site Footer (Redesigned 4-Column Sleek Layout with 1/3rd Reduced Height) */}
+      {/* Global Site Footer */}
       <footer className="site-footer" id="contact">
         <div className="container">
           <div className="footer-grid">
-            {/* Column 1: Left - ONLY Logo */}
-            <div className="footer-col footer-col-logo">
-              <img
-                src="/assets/aarth-logo-white.png"
-                alt="AARTH Atelier Logo"
-                className="footer-logo"
-                style={{ maxHeight: '54px', width: 'auto', display: 'block' }}
-              />
-            </div>
-
-            {/* Column 2: Collection & About */}
             <div className="footer-col">
-              <h4>Atelier</h4>
+              <img src="/assets/aarth-logo-white.png" alt="AARTH Logo" className="footer-logo" />
+              <p className="footer-text">Preserving the unyielding craft of the subcontinent through structured silhouettes and botanical dyes.</p>
+              <div className="newsletter-form">
+                <input type="email" placeholder="Join the Archive" className="newsletter-input" />
+                <button className="newsletter-submit">Subscribe</button>
+              </div>
+            </div>
+            <div className="footer-col">
+              <h4>Account</h4>
               <ul className="footer-nav">
                 <li>
-                  <a 
-                    href="#collection"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      navigateTo('collection');
-                    }}
+                  <a href="#collection" onClick={(e) => { e.preventDefault(); setSelectedProduct(null); setShowContactPage(false); setShowStoriesPage(false); setShowCollectionPage(true); window.scrollTo({ top: 0, behavior: "smooth" }); }}
                   >
-                    Collection
+                    Collection 01
                   </a>
                 </li>
                 <li>
@@ -720,85 +585,44 @@ function StorefrontContent() {
                     href="#stories"
                     onClick={(e) => {
                       e.preventDefault();
-                      navigateTo('stories');
+                      setSelectedProduct(null);
+                      setShowContactPage(false);
+                      setShowStoriesPage(true); setShowCollectionPage(false);
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
                     }}
                   >
-                    About
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            {/* Column 3: Contact (Number, Insta, Email) */}
-            <div className="footer-col">
-              <h4>Contact</h4>
-              <ul className="footer-nav footer-contact-list">
-                <li>
-                  <a href="tel:+919876543210" className="footer-contact-link">
-                    +91 98765 43210
+                    The Process
                   </a>
                 </li>
                 <li>
                   <a 
-                    href="https://instagram.com" 
-                    target="_blank" 
-                    rel="noreferrer"
-                    className="footer-contact-link"
+                    href="#hero"
+                    onClick={() => setSelectedProduct(null)}
                   >
-                    Instagram
-                  </a>
-                </li>
-                <li>
-                  <a href="mailto:concierge@aarth.studio" className="footer-contact-link">
-                    concierge@aarth.studio
+                    Our Silhouettes
                   </a>
                 </li>
               </ul>
             </div>
-
-            {/* Column 4: Policy (Terms & Conditions, Return/Refund Policy) */}
             <div className="footer-col">
-              <h4>Policy</h4>
+              <h4>Support</h4>
               <ul className="footer-nav">
-                <li>
-                  <a 
-                    href="#terms"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      alert("AARTH TERMS & CONDITIONS:\n\nAll garments are produced in archival numbered editions on traditional handlooms using non-synthetic botanical dyes. Subtle artisanal irregularities are hallmarks of genuine heritage craftsmanship.");
-                    }}
-                  >
-                    Terms & Conditions
-                  </a>
-                </li>
-                <li>
-                  <a 
-                    href="#returns"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      alert("AARTH RETURN & REFUND POLICY:\n\nWe provide a 14-day archival exchange or return window on unworn specimens with intact wax seals. Complimentary return dispatch for domestic UK clients.");
-                    }}
-                  >
-                    Return / Refund Policy
-                  </a>
-                </li>
+                <li><a href="#contact" onClick={(e) => { e.preventDefault(); setShowStoriesPage(false); setShowContactPage(true); setShowCollectionPage(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>Contact Us</a></li>
+                <li><a href="#collection">Shipping & Delivery</a></li>
+                <li><a href="#collection">Returns & Exchange</a></li>
+              </ul>
+            </div>
+            <div className="footer-col">
+              <h4>Legal</h4>
+              <ul className="footer-nav">
+                <li><a href="#">Terms of Service</a></li>
+                <li><a href="#">Privacy Policy</a></li>
               </ul>
             </div>
           </div>
-
           <div className="footer-bottom">
-            <span>
-              © 2026 AARTH. All Rights Reserved. — Designed by{' '}
-              <a 
-                href="https://www.devora.page/" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                style={{ textDecoration: 'underline', color: 'inherit' }}
-              >
-                Devoraaa
-              </a>
-            </span>
-            <span>Living Subcontinental Handloom Archive</span>
+            <span>© 2026 AARTH. All Rights Reserved.</span>
+            <span>Crafted in India</span>
           </div>
         </div>
       </footer>
@@ -843,6 +667,16 @@ function App() {
 }
 
 export default App;
+
+
+
+
+
+
+
+
+
+
 
 
 

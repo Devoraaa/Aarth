@@ -22,10 +22,7 @@ export const CollectionPage: React.FC<CollectionPageProps> = ({
   const [selectedCategory, setSelectedCategory] = useState<string>("ALL");
 
   const categories = [
-    { id: "ALL", label: "ALL SPECIMENS" },
-    // { id: "SILK", label: "PITLOOM RAW SILK" },
-    // { id: "COTTON", label: "MUD-RESIST COTTON" },
-    // { id: "ZARI", label: "CHANDERI WEAVE" },
+    { id: "ALL", label: "" },
   ];
 
   const filteredProducts = products.filter((p) => {
@@ -37,15 +34,14 @@ export const CollectionPage: React.FC<CollectionPageProps> = ({
     return true;
   });
 
-  const heading = collectionTitle || "THE ATELIER COLLECTION";
-  const subheading = collectionDescription || "Pure handloom silhouettes woven on ancestral pitlooms with botanical extracts, curated as living archival specimens.";
+  const heading = collectionTitle || "GARVI • DROP 001";
 
   return (
     <div 
       className="collection-page-view container-wide" 
       style={{ 
         paddingTop: 'calc(var(--nav-height) + 28px)', 
-        paddingBottom: '80px',
+        paddingBottom: '20px',
         backgroundImage: "url('/assets/user-vintage-bg.jpg')",
         backgroundRepeat: "repeat-y",
         backgroundPosition: "top center",
@@ -55,25 +51,10 @@ export const CollectionPage: React.FC<CollectionPageProps> = ({
       {/* Collection Header Bar */}
       <div className="collection-page-header">
         <div className="collection-header-meta">
-          <span className="collection-eyebrow">ARCHIVAL REGISTER • 1906 ATELIER</span>
           <h1 className="collection-main-heading">{heading}</h1>
-          <p className="collection-subheading">
-            {subheading}
-          </p>
         </div>
 
-        {/* Category Ledger Filter Tabs */}
-        <div className="collection-filter-tabs">
-          {categories.map((cat) => (
-            <button
-              key={cat.id}
-              className={`collection-tab-btn ${selectedCategory === cat.id ? "active" : ""}`}
-              onClick={() => setSelectedCategory(cat.id)}
-            >
-              <span>{cat.label}</span>
-            </button>
-          ))}
-        </div>
+       
       </div>
 
       <div className="collection-page-divider" />
@@ -94,3 +75,4 @@ export const CollectionPage: React.FC<CollectionPageProps> = ({
     </div>
   );
 };
+

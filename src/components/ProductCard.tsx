@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import type { ShopifyProduct } from "../lib/shopify";
-import { useCart } from "../context/CartContext";
 
 interface ProductCardProps {
   product: ShopifyProduct;
@@ -10,156 +9,104 @@ interface ProductCardProps {
   loading: boolean;
 }
 
+const romanNumerals = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"];
+
 export const ProductCard: React.FC<ProductCardProps> = ({
   product,
   index,
   onSelect,
   onQuickAdd,
-  loading: productLoading,
+  loading,
 }) => {
-  const { cart, addItem, updateItem, loading: cartLoading } = useCart();
-  const loading = productLoading || cartLoading;
-
-  const cartLine = cart?.lines.find((line) => line.merchandise.product.id === product.id);
-  const quantity = cartLine ? cartLine.quantity : 0;
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
 
   const price = product.priceRange.minVariantPrice;
-  // If currency is INR or zero decimals, format cleanly without redundant trailing cents if whole
-  const numericAmount = parseFloat(price.amount);
-  const formattedPrice = `${price.currencyCode === "GBP" ? "£" : price.currencyCode === "INR" ? "₹" : price.currencyCode + " "}${numericAmount % 1 === 0 ? numericAmount.toLocaleString() : numericAmount.toFixed(2)}`;
+  const formattedPrice = `${price.currencyCode === "GBP" ? "£" : price.currencyCode === "INR" ? "₹" : price.currencyCode + " "}${parseFloat(price.amount).toFixed(2)}`;
 
   const frontImg = product.images[0]?.url || "/assets/product-1.jpg";
   const backImg = product.images[1]?.url || null;
-  const isNew = index === 0 || product.tags?.some((t) => t.toLowerCase().includes("new"));
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    const rotateX = ((y - centerY) / centerY) * -3.5;
+    const rotateY = ((x - centerX) / centerX) * 3.5;
+
+    setTilt({ x: rotateX, y: rotateY });
+  };
+
+  const handleMouseLeave = () => {
+    setTilt({ x: 0, y: 0 });
+    setIsHovered(false);
+  };
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
 
   return (
     <article
-      className="vintage-manilla-card"
+      ref={cardRef}
+      className={`product-item luxury-atelier-card ${isHovered ? "card-hovered" : ""}`}
       onClick={() => onSelect(product)}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
+        transition: isHovered
+          ? "transform 0.1s ease-out"
+          : "transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
+      }}
     >
-      <div className="vintage-card-img-box">
-        {/* Top-Right: Red "NEW" Tape on first lot */}
-        {isNew && (
-          <div className="card-tape-new-badge" aria-label="New lot">
-            <span>NEW</span>
-          </div>
-        )}
+      <div className="product-image-box">
 
-        {/* Product Image Display */}
+        {/* Primary Front Plate Image */}
         <img
           src={frontImg}
           alt={product.title}
           loading="lazy"
-          className="vintage-card-product-img"
+          className={`product-primary-img ${backImg && isHovered ? "has-flip" : ""}`}
         />
 
+        {/* Secondary Editorial Back Plate Image on Hover */}
         {backImg && (
           <img
             src={backImg}
             alt={`${product.title} Back View`}
             loading="lazy"
-            className="vintage-card-product-img-hover"
+            className={`product-secondary-img ${isHovered ? "is-visible" : ""}`}
           />
         )}
+
+        {/* Quick Add Overlay Button inside photo bottom */}
+        <div className="product-card-quick-actions">
+          <button
+            className="btn-card-quick-add"
+            disabled={loading}
+            onClick={(e) => onQuickAdd(e, product)}
+          >
+            <span>Add To Cart</span>
+          </button>
+        </div>
       </div>
 
-      {/* Meta Section */}
-      <div className="vintage-card-meta">
-        <h3 className="vintage-card-title">{product.title}</h3>
-        <div className="vintage-card-price">{formattedPrice}</div>
-
-        {/* Vintage Weathered Enamel Sign Action Area */}
-        <div
-          className="vintage-card-action-row"
-          onClick={(e) => e.stopPropagation()}
-        >
-          {/* Left / Mid: ADD TO CART Button */}
-          <button
-            type="button"
-            className="vintage-card-add-img-btn"
-            disabled={loading}
-            aria-label={`Add ${product.title} to cart`}
-            onClick={(e) => {
-              e.stopPropagation();
-              onQuickAdd(e, product);
-            }}
-          >
-            <img
-              src="/assets/vintage-add-to-cart.png"
-              alt="Add to Cart"
-              className="vintage-card-add-sign-img"
-              loading="lazy"
-            />
-          </button>
-
-          {/* Right Corner: '+' if 0, or '[-] [qty] [+]' if >= 1 */}
-          {quantity > 0 ? (
-            <div className="vintage-card-qty-cluster">
-              <button
-                type="button"
-                className="vintage-card-sign-btn vintage-card-minus-btn"
-                disabled={loading}
-                onClick={async (e) => {
-                  e.stopPropagation();
-                  if (cartLine) await updateItem(cartLine.id, quantity - 1);
-                }}
-                aria-label="Decrease quantity"
-                title="Decrease quantity"
-              >
-                <img
-                  src="/assets/vintage-minus.png"
-                  alt="-"
-                  className="vintage-sign-icon-img"
-                />
-              </button>
-
-              <div className="vintage-card-qty-number-box">
-                <span className="vintage-card-qty-count">{quantity}</span>
-              </div>
-
-              <button
-                type="button"
-                className="vintage-card-sign-btn vintage-card-plus-btn"
-                disabled={loading}
-                onClick={async (e) => {
-                  e.stopPropagation();
-                  if (cartLine) await updateItem(cartLine.id, quantity + 1);
-                }}
-                aria-label="Increase quantity"
-                title="Increase quantity"
-              >
-                <img
-                  src="/assets/vintage-plus.png"
-                  alt="+"
-                  className="vintage-sign-icon-img"
-                />
-              </button>
-            </div>
-          ) : (
-            <button
-              type="button"
-              className="vintage-card-sign-btn vintage-card-plus-btn"
-              disabled={loading}
-              aria-label={`Add 1 ${product.title} to cart`}
-              title="Add 1 to cart"
-              onClick={async (e) => {
-                e.stopPropagation();
-                const variantId = product.variants[0]?.id;
-                if (variantId) {
-                  await addItem(variantId, 1, false); // DO NOT OPEN CART DRAWER
-                }
-              }}
-            >
-              <img
-                src="/assets/vintage-plus.png"
-                alt="+"
-                className="vintage-sign-icon-img"
-                loading="lazy"
-              />
-            </button>
-          )}
+      {/* Product Meta Section */}
+      <div className="product-meta-content">
+        <h3 className="product-title">{product.title}</h3>
+        <div className="product-price-row">
+          <span className="product-price-val">{formattedPrice}</span>
         </div>
       </div>
     </article>
   );
 };
+

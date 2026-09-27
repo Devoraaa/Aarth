@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import type { ShopifyProduct, ShopifyVariant } from "../lib/shopify";
 import { useCart } from "../context/CartContext";
 import { cartCreate } from "../lib/shopify";
-import { ProductCard } from "./ProductCard";
 
 interface ProductDetailPageProps {
   product: ShopifyProduct;
@@ -19,14 +18,6 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
 }) => {
   const { addItem, openCart, loading: cartLoading } = useCart();
 
-  const handleBack = () => {
-    if (window.history.length > 1) {
-      window.history.back();
-    } else {
-      onBack();
-    }
-  };
-
   // Active large image state
   const [activeImgIdx, setActiveImgIdx] = useState(0);
   const [quantity, setQuantity] = useState(1);
@@ -36,7 +27,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
   const [buyingNow, setBuyingNow] = useState(false);
 
   // Accordion dropdown states
-  const [descOpen, setDescOpen] = useState(true);
+  const [descOpen, setDescOpen] = useState(false);
   const [washCareOpen, setWashCareOpen] = useState(false);
   const [shippingOpen, setShippingOpen] = useState(false);
 
@@ -180,7 +171,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
       {/* Top Breadcrumb Bar (Tight & Compact Spacing with Full-Width Shield) */}
       <div className="pdp-top-bar-wrapper">
         <div className="pdp-top-bar container-wide">
-          <button className="pdp-back-btn" onClick={handleBack}>
+          <button className="pdp-back-btn" onClick={onBack}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <line x1="19" y1="12" x2="5" y2="12"></line>
               <polyline points="12 19 5 12 12 5"></polyline>
@@ -189,9 +180,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
           </button>
 
           <div className="pdp-breadcrumb">
-            <span>ATELIER</span>
-            <span className="pdp-bc-sep">/</span>
-            <span>EDITION 01</span>
+            <span>COLLECTION</span>
             <span className="pdp-bc-sep">/</span>
             <span className="pdp-bc-current">{product.title}</span>
           </div>
@@ -246,10 +235,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
 
           {/* COLUMN 2: CENTER SCROLLABLE OTHER PRODUCT IMAGES */}
           <div className="pdp-col-center-gallery">
-            <div className="pdp-gallery-header">
-              <span>ARCHIVE ANGLES [{images.length}]</span>
-              <span className="pdp-scroll-hint">SCROLL TO EXPLORE 🡓</span>
-            </div>
+            
 
             <div className="pdp-center-images-stack">
               {images.map((img, idx) => (
@@ -261,9 +247,6 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
                 >
                   <img src={img.url} alt={`${product.title} angle ${idx + 1}`} loading="lazy" />
                   <span className="pdp-thumb-number">0{idx + 1}</span>
-                  {activeImgIdx === idx && (
-                    <span className="pdp-active-badge">VIEWING ON LEFT</span>
-                  )}
                 </div>
               ))}
             </div>
@@ -275,14 +258,10 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
               {/* Product Header: Name & Price */}
               <div className="pdp-header-row">
                 <div className="pdp-title-box">
-                  <span className="pdp-eyebrow">
-                    {product.tags[0] || "HANDLOOM ARCHIVE • NO. 01"}
-                  </span>
                   <h1 className="pdp-product-title">{product.title}</h1>
                 </div>
                 <div className="pdp-price-box">
                   <span className="pdp-product-price">{formattedPrice}</span>
-                  <span className="pdp-tax-note">Inc. VAT</span>
                 </div>
               </div>
 
@@ -296,7 +275,6 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
                     {product.variants.map((v) => (
                       <button
                         key={v.id}
-                        type="button"
                         className={`pdp-variant-chip ${selectedVariantId === v.id ? "selected" : ""}`}
                         onClick={() => setSelectedVariantId(v.id)}
                       >
@@ -307,29 +285,18 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
                 </div>
               )}
 
-              {/* Quantity Selector - Fully Functional with Click Handlers */}
+              {/* Quantity Selector */}
               <div className="pdp-qty-row">
-                <span className="pdp-qty-label">QUANTITY</span>
                 <div className="pdp-qty-selector">
                   <button
-                    type="button"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      setQuantity((prev) => Math.max(1, prev - 1));
-                    }}
+                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
                     aria-label="Decrease quantity"
                   >
                     −
                   </button>
-                  <span className="pdp-qty-display-num">{quantity}</span>
+                  <span>{quantity}</span>
                   <button
-                    type="button"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      setQuantity((prev) => prev + 1);
-                    }}
+                    onClick={() => setQuantity(quantity + 1)}
                     aria-label="Increase quantity"
                   >
                     +
@@ -341,7 +308,6 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
               <div className="pdp-cta-buttons">
                 {/* 1. Add to Bag */}
                 <button
-                  type="button"
                   className="btn-pdp-add-to-cart"
                   disabled={cartLoading || !currentVariant?.availableForSale}
                   onClick={handleAddToCart}
@@ -357,7 +323,6 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
 
                 {/* 2. Buy Now (Direct Shopify Checkout) */}
                 <button
-                  type="button"
                   className="btn-pdp-buy-now"
                   disabled={buyingNow || !currentVariant?.availableForSale}
                   onClick={handleBuyNow}
@@ -370,121 +335,137 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
                 </button>
               </div>
 
-              {/* Description Accordion (Moved cleanly below Buy Now!) */}
-              <div className="pdp-accordion-item">
-                <button
-                  type="button"
-                  className="pdp-accordion-trigger"
-                  onClick={() => setDescOpen(!descOpen)}
-                  aria-expanded={descOpen}
-                >
-                  <span className="pdp-acc-title">DESCRIPTION</span>
-                  <span className="pdp-acc-icon">{descOpen ? "−" : "+"}</span>
-                </button>
-                {descOpen && (
-                  <div className="pdp-accordion-content">
-                    {product.descriptionHtml ? (
-                      <div dangerouslySetInnerHTML={{ __html: product.descriptionHtml }} />
-                    ) : (
-                      <p>
-                        {product.description ||
-                          "Handcrafted artisanal silhouette cut and finished with heirloom precision. Woven on wooden pitlooms with living botanical dyes, celebrating timeless subcontinental craft tailored for modern living."}
-                      </p>
-                    )}
-                  </div>
-                )}
-              </div>
+                                              {/* Description Dropdown (Accordion) */}
+                <div className="pdp-accordion-item">
+                  <button
+                    className="pdp-accordion-trigger"
+                    onClick={() => setDescOpen(!descOpen)}
+                    aria-expanded={descOpen}
+                  >
+                    <span className="pdp-acc-title">Details and Description</span>
+                    <span className="pdp-acc-icon">{descOpen ? "-" : "+"}</span>
+                  </button>
+                  {descOpen && (
+                    <div className="pdp-accordion-content">
+                      {product.descriptionHtml ? (
+                        <div dangerouslySetInnerHTML={{ __html: product.descriptionHtml }} />
+                      ) : (
+                        <p>
+                          Handcrafted artisanal silhouette cut and finished with heirloom precision.
+                          Woven on wooden pitlooms with living botanical dyes, celebrating timeless
+                          subcontinental craft tailored for modern living.
+                        </p>
+                      )}
+                    </div>
+                  )}
+                </div>
 
-              {/* Wash Care Dropdown (Accordion) */}
-              <div className="pdp-accordion-item">
-                <button
-                  type="button"
-                  className="pdp-accordion-trigger"
-                  onClick={() => setWashCareOpen(!washCareOpen)}
-                  aria-expanded={washCareOpen}
-                >
-                  <span className="pdp-acc-title">WASH & ATELIER CARE</span>
-                  <span className="pdp-acc-icon">{washCareOpen ? "−" : "+"}</span>
-                </button>
-                {washCareOpen && (
-                  <div className="pdp-accordion-content">
-                    <ul className="pdp-care-list">
-                      <li>✦ Gentle cold hand wash or eco dry clean recommended.</li>
-                      <li>✦ Use pH-neutral organic mild detergent to protect botanical fibers.</li>
-                      <li>✦ Dry flat in natural shade; avoid direct harsh sunlight.</li>
-                      <li>✦ Warm iron on reverse side to retain textured handloom slub.</li>
-                      <li>✦ Do not bleach or tumble dry.</li>
-                    </ul>
-                  </div>
-                )}
-              </div>
+                {/* Wash Care Dropdown (Accordion) */}
+                <div className="pdp-accordion-item">
+                  <button
+                    className="pdp-accordion-trigger"
+                    onClick={() => setWashCareOpen(!washCareOpen)}
+                    aria-expanded={washCareOpen}
+                  >
+                    <span className="pdp-acc-title">WASH & ATELIER CARE</span>
+                    <span className="pdp-acc-icon">{washCareOpen ? "-" : "+"}</span>
+                  </button>
+                  {washCareOpen && (
+                    <div className="pdp-accordion-content">
+                      {product.washCare ? (
+                        <div style={{ whiteSpace: "pre-wrap" }} dangerouslySetInnerHTML={{ __html: product.washCare }} />
+                      ) : (
+                        <ul className="pdp-care-list">
+                          <li>? Gentle cold hand wash or eco dry clean recommended.</li>
+                          <li>? Use pH-neutral organic mild detergent to protect botanical fibers.</li>
+                          <li>? Dry flat in natural shade; avoid direct harsh sunlight.</li>
+                          <li>? Warm iron on reverse side to retain textured handloom slub.</li>
+                          <li>? Do not bleach or tumble dry.</li>
+                        </ul>
+                      )}
+                    </div>
+                  )}
+                </div>
 
-              {/* Shipping & Returns Dropdown (Accordion) */}
-              <div className="pdp-accordion-item">
-                <button
-                  type="button"
-                  className="pdp-accordion-trigger"
-                  onClick={() => setShippingOpen(!shippingOpen)}
-                  aria-expanded={shippingOpen}
-                >
-                  <span className="pdp-acc-title">SHIPPING & DISPATCH POLICY</span>
-                  <span className="pdp-acc-icon">{shippingOpen ? "−" : "+"}</span>
-                </button>
-                {shippingOpen && (
-                  <div className="pdp-accordion-content">
-                    <ul className="pdp-care-list">
-                      <li>✦ <strong>UK Domestic:</strong> Complimentary dispatch on orders above £50 (2-3 business days via Royal Mail).</li>
-                      <li>✦ <strong>Worldwide Express:</strong> Fast international dispatch with live tracking (DHL Express).</li>
-                      <li>✦ <strong>Archival Returns:</strong> 14-day hassle-free exchange on unworn garments with original atelier tags intact.</li>
-                      <li>✦ Secure payment processing via Shopify encrypted checkout.</li>
-                    </ul>
-                  </div>
-                )}
-              </div>
+                {/* Shipping & Returns Dropdown (Accordion) */}
+                <div className="pdp-accordion-item">
+                  <button
+                    className="pdp-accordion-trigger"
+                    onClick={() => setShippingOpen(!shippingOpen)}
+                    aria-expanded={shippingOpen}
+                  >
+                    <span className="pdp-acc-title">SHIPPING & DISPATCH POLICY</span>
+                    <span className="pdp-acc-icon">{shippingOpen ? "-" : "+"}</span>
+                  </button>
+                  {shippingOpen && (
+                    <div className="pdp-accordion-content">
+                      {product.shipping ? (
+                        <div style={{ whiteSpace: "pre-wrap" }} dangerouslySetInnerHTML={{ __html: product.shipping }} />
+                      ) : (
+                        <ul className="pdp-care-list">
+                          <li>? <strong>UK Domestic:</strong> Complimentary dispatch on orders above 50 (2-3 business days via Royal Mail).</li>
+                          <li>? <strong>Worldwide Express:</strong> Fast international dispatch with live tracking (DHL Express).</li>
+                          <li>? <strong>Archival Returns:</strong> 14-day hassle-free exchange on unworn garments with original atelier tags intact.</li>
+                          <li>? Secure payment processing via Shopify encrypted checkout.</li>
+                        </ul>
+                      )}
+                    </div>
+                  )}
+                </div>
 
-              {/* Craftsmanship Guarantee Stamp */}
-              <div className="pdp-craft-seal">
-                <span>✦ MADE IN INDIA • DESIGNED IN LONDON • THE LIVING ARCHIVE</span>
-              </div>
+                {/* Craftsmanship Guarantee Stamp */}
             </div>
           </div>
         </div>
       </div>
 
-      {/* PRODUCTS YOU MAY LIKE SECTION (EXACT SAME PRODUCT CARDS AS HOME PAGE) */}
+      {/* PRODUCTS YOU MAY LIKE SECTION (EXACTLY 3 PRODUCTS) */}
       <section className="pdp-related-section">
         <div className="container-wide">
           <header className="section-header-antique">
             <div className="section-header-flourish">❦ — ✦ — ❧</div>
-            <div className="section-eyebrow">Curated Complements</div>
             <h2 className="section-title">Products you may like</h2>
-            <div className="section-divider-line">
-              <span></span>
-              <i>Selected Silhouettes [3 of 3]</i>
-              <span></span>
-            </div>
           </header>
 
-          <div className="products-grid-4">
-            {relatedProducts.map((relProduct, idx) => (
-              <ProductCard
-                key={relProduct.id}
-                product={relProduct}
-                index={idx}
-                onSelect={onSelectProduct}
-                onQuickAdd={async (e, p) => {
-                  e.stopPropagation();
-                  const variantId = p.variants[0]?.id;
-                  if (variantId) await addItem(variantId, 1, false);
-                }}
-                loading={cartLoading}
-              />
-            ))}
+          <div className="pdp-related-grid-3">
+            {relatedProducts.map((relProduct, idx) => {
+              const relPrice = relProduct.priceRange.minVariantPrice;
+              const formattedRelPrice = `${
+                relPrice.currencyCode === "GBP"
+                  ? "£"
+                  : relPrice.currencyCode === "INR"
+                  ? "₹"
+                  : relPrice.currencyCode + " "
+              }${parseFloat(relPrice.amount).toFixed(2)}`;
+              const relImg = relProduct.images[0]?.url || "/assets/product-1.jpg";
+
+              return (
+                <article
+                  key={relProduct.id}
+                  className="pdp-related-card"
+                  onClick={() => onSelectProduct(relProduct)}
+                >
+                  <div className="pdp-related-img-box">
+                    <img src={relImg} alt={relProduct.title} loading="lazy" />
+                  </div>
+
+                  <div className="pdp-related-meta">
+                    <h3 className="pdp-related-title">{relProduct.title}</h3>
+                    <p className="pdp-related-price">{formattedRelPrice}</p>
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </div>
       </section>
     </div>
   );
 };
+
+
+
+
+
 
 
