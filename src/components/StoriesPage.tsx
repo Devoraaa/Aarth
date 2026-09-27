@@ -94,7 +94,7 @@ export function StoriesPage({ products, initialProductId, onBack }: StoriesPageP
   const currentText = storyTexts[currentSlide];
 
   return (
-    <div className="story-viewer-container" style={{ position: 'fixed', inset: 0, zIndex: 1000, backgroundColor: '#000' }}>
+    <div className="story-viewer-container" style={{ position: 'fixed', inset: 0, zIndex: 0, backgroundColor: '#000' }}>
       <style>{`
         .story-bg {
           position: absolute;
@@ -186,7 +186,7 @@ export function StoriesPage({ products, initialProductId, onBack }: StoriesPageP
           color: '#fff',
           fontSize: '28px',
           cursor: 'pointer',
-          zIndex: 20,
+          zIndex: 0,
           textShadow: '0 2px 4px rgba(0,0,0,0.5)'
         }}
       >
@@ -208,11 +208,11 @@ export function StoriesPage({ products, initialProductId, onBack }: StoriesPageP
       {/* Navigation Areas */}
       <div 
         onClick={handlePrev} 
-        style={{ position: 'absolute', top: 0, left: 0, bottom: 0, width: '30%', zIndex: 15, cursor: 'w-resize' }} 
+        style={{ position: 'absolute', top: 0, left: 0, bottom: 0, width: '30%', zIndex: 0, cursor: 'w-resize' }} 
       />
       <div 
         onClick={handleNext} 
-        style={{ position: 'absolute', top: 0, right: 0, bottom: 0, width: '30%', zIndex: 15, cursor: 'e-resize' }} 
+        style={{ position: 'absolute', top: 0, right: 0, bottom: 0, width: '30%', zIndex: 0, cursor: 'e-resize' }} 
       />
 
       {/* Center Product Image */}
@@ -222,7 +222,7 @@ export function StoriesPage({ products, initialProductId, onBack }: StoriesPageP
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        zIndex: 5,
+        zIndex: 0,
         pointerEvents: 'none'
       }}>
         <img 

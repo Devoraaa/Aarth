@@ -8079,3 +8079,39 @@ button {
     padding: 2rem 1.25rem;
   }
 }
+
+/* FIX STAMPS Z-INDEX: Force them behind components */
+.product-card,
+.cart-drawer-header,
+.cart-items-list,
+.cart-drawer-footer,
+.video-content,
+.hero-content,
+.pdp-top-bar-wrapper,
+.pdp-three-column-grid,
+.footer-content,
+.contact-split-right,
+.contact-split-left video {
+  position: relative;
+  z-index: 2 !important;
+}
+
+/* Explicitly make sure the video container in the moving design section is above stamps */
+.moving-design-section .video-container {
+  position: relative;
+  z-index: 2 !important;
+}
+
+/* Ensure the hero image wrapper is above stamps */
+.hero-image-wrapper {
+  position: relative;
+  z-index: 2 !important;
+}
+
+.collection-page-container .section-header-1906,
+.collection-page-container .products-grid,
+.stories-page-container > *,
+.section-header-1906 {
+  position: relative;
+  z-index: 2 !important;
+}

@@ -485,7 +485,7 @@ function StorefrontContent() {
             {/* Vintage Stamps - Hero Section */}
             <img src="/assets/stamps/stamp1.png" style={{ position: "absolute", top: "12%", left: "4%", width: "clamp(60px, 8vw, 100px)", transform: "rotate(-8deg)", opacity: 0.5, mixBlendMode: "multiply", zIndex: 0, pointerEvents: "none" }} alt="Vintage Stamp" />
             <img src="/assets/stamps/stamp2.png" style={{ position: "absolute", bottom: "35%", right: "3%", width: "clamp(70px, 9vw, 110px)", transform: "rotate(12deg)", opacity: 0.45, mixBlendMode: "multiply", zIndex: 0, pointerEvents: "none" }} alt="Vintage Stamp" />
-            <img src="/assets/stamps/stamp5.png" style={{ position: "absolute", bottom: "10%", left: "8%", width: "clamp(80px, 10vw, 120px)", transform: "rotate(-15deg)", opacity: 0.6, mixBlendMode: "multiply", zIndex: 2, pointerEvents: "none" }} alt="Vintage Stamp Bottom Left" />
+            <img src="/assets/stamps/stamp5.png" style={{ position: "absolute", bottom: "10%", left: "8%", width: "clamp(80px, 10vw, 120px)", transform: "rotate(-15deg)", opacity: 0.6, mixBlendMode: "multiply", zIndex: 0, pointerEvents: "none" }} alt="Vintage Stamp Bottom Left" />
             <img src="/assets/stamps/stamp3.png" style={{ position: "absolute", top: "25%", right: "12%", width: "clamp(55px, 7vw, 90px)", transform: "rotate(25deg)", opacity: 0.35, mixBlendMode: "multiply", zIndex: 0, pointerEvents: "none" }} alt="Vintage Stamp" />
 
             <div 
@@ -545,8 +545,8 @@ function StorefrontContent() {
                       <section className="moving-design-section" id="stories" style={{ position: "relative", overflow: "hidden" }}>
               
               {/* Vintage Stamps - Video Section */}
-              <img src="/assets/stamps/stamp1.png" style={{ position: "absolute", top: "10%", left: "3%", width: "clamp(60px, 8vw, 100px)", transform: "rotate(-20deg)", opacity: 0.7, mixBlendMode: "multiply", zIndex: 5, pointerEvents: "none" }} alt="Vintage Stamp" />
-              <img src="/assets/stamps/stamp4.png" style={{ position: "absolute", bottom: "15%", right: "4%", width: "clamp(70px, 9vw, 110px)", transform: "rotate(15deg)", opacity: 0.65, mixBlendMode: "multiply", zIndex: 5, pointerEvents: "none" }} alt="Vintage Stamp" />
+              <img src="/assets/stamps/stamp1.png" style={{ position: "absolute", top: "10%", left: "3%", width: "clamp(60px, 8vw, 100px)", transform: "rotate(-20deg)", opacity: 0.7, mixBlendMode: "multiply", zIndex: 0, pointerEvents: "none" }} alt="Vintage Stamp" />
+              <img src="/assets/stamps/stamp4.png" style={{ position: "absolute", bottom: "15%", right: "4%", width: "clamp(70px, 9vw, 110px)", transform: "rotate(15deg)", opacity: 0.65, mixBlendMode: "multiply", zIndex: 0, pointerEvents: "none" }} alt="Vintage Stamp" />
 
               <div className="video-container">
               <video 
