@@ -103,7 +103,7 @@ export function StoriesPage({ products, initialProductId, onBack }: StoriesPageP
           background-size: cover;
           background-position: center;
           filter: brightness(0.8);
-          z-index: 1;
+          z-index: -1;
         }
         @media (max-width: 768px) {
           .story-bg {
@@ -186,7 +186,7 @@ export function StoriesPage({ products, initialProductId, onBack }: StoriesPageP
           color: '#fff',
           fontSize: '28px',
           cursor: 'pointer',
-          zIndex: 0,
+          zIndex: 50,
           textShadow: '0 2px 4px rgba(0,0,0,0.5)'
         }}
       >
@@ -208,11 +208,11 @@ export function StoriesPage({ products, initialProductId, onBack }: StoriesPageP
       {/* Navigation Areas */}
       <div 
         onClick={handlePrev} 
-        style={{ position: 'absolute', top: 0, left: 0, bottom: 0, width: '30%', zIndex: 0, cursor: 'w-resize' }} 
+        style={{ position: 'absolute', top: 0, left: 0, bottom: 0, width: '30%', zIndex: 20, cursor: 'w-resize' }} 
       />
       <div 
         onClick={handleNext} 
-        style={{ position: 'absolute', top: 0, right: 0, bottom: 0, width: '30%', zIndex: 0, cursor: 'e-resize' }} 
+        style={{ position: 'absolute', top: 0, right: 0, bottom: 0, width: '30%', zIndex: 20, cursor: 'e-resize' }} 
       />
 
       {/* Center Product Image */}
@@ -222,7 +222,7 @@ export function StoriesPage({ products, initialProductId, onBack }: StoriesPageP
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        zIndex: 0,
+        zIndex: 10,
         pointerEvents: 'none'
       }}>
         <img 
