@@ -63,7 +63,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       style={{
         position: "relative",
         zIndex: 10,
-        backgroundColor: "#FAF7F0",
+        backgroundColor: "#f7f2e9",
+        backgroundImage: "url('/assets/new-paper.png')",
+        backgroundRepeat: "repeat",
         transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
         transition: isHovered
           ? "transform 0.1s ease-out"
