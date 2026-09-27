@@ -7845,7 +7845,17 @@ button {
 
 /* 2. PDP Fixes */
 .product-detail-page-container {
-  padding-top: calc(var(--nav-height) + 30px) !important;
+  padding-top: var(--nav-height) !important;
+}
+.pdp-showcase-container {
+  margin-top: 0 !important;
+}
+.pdp-top-bar {
+  padding-top: 0 !important;
+  padding-bottom: 8px !important;
+}
+.pdp-col-large-sticky {
+  top: calc(var(--nav-height) + 16px) !important;
 }
 @media (min-width: 1025px) {
   .pdp-three-column-grid {
@@ -7908,3 +7918,5 @@ button {
     object-fit: contain !important;
   }
 }
+
+
