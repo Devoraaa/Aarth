@@ -7927,3 +7927,19 @@ button {
     gap: 14px !important;
   }
 }
+
+/* Override for PDP Back Button and Top Spacing */
+.pdp-top-bar {
+  padding-top: 24px !important; 
+}
+.pdp-back-btn {
+  padding: 6px 12px !important;
+  font-size: 9px !important;
+  gap: 8px !important;
+  letter-spacing: 0.15em !important;
+  line-height: 1 !important;
+}
+.pdp-back-btn svg {
+  width: 14px !important;
+  height: 14px !important;
+}
