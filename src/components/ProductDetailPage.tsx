@@ -31,25 +31,6 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
   const [washCareOpen, setWashCareOpen] = useState(false);
   const [shippingOpen, setShippingOpen] = useState(false);
 
-  // Precision Vintage Magnifier Loupe State
-  const imgBoxRef = useRef<HTMLDivElement>(null);
-  const [loupe, setLoupe] = useState<{
-    active: boolean;
-    x: number;
-    y: number;
-    bgX: number;
-    bgY: number;
-    bgW: number;
-    bgH: number;
-  }>({
-    active: false,
-    x: 0,
-    y: 0,
-    bgX: 0,
-    bgY: 0,
-    bgW: 0,
-    bgH: 0,
-  });
 
   // Scroll to top when product changes
   useEffect(() => {
@@ -57,7 +38,6 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
     setActiveImgIdx(0);
     setQuantity(1);
     setSelectedVariantId(product.variants[0]?.id || "");
-    setLoupe((prev) => ({ ...prev, active: false }));
   }, [product.id]);
 
   const currentVariant: ShopifyVariant | undefined =
@@ -92,41 +72,9 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
 
   const mainImage = images[activeImgIdx] || images[0];
 
-  // Mathematical precision magnifier loupe anchored right under cursor
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!imgBoxRef.current) return;
-    const rect = imgBoxRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
 
-    const zoom = 1.6; // Amazon-style natural, comfortable zoom level
-    const loupeSize = 250;
-
-    // Total width & height of the magnified image background
-    const bgW = rect.width * zoom;
-    const bgH = rect.height * zoom;
-
-    // Shift background so the exact point (x, y) is in the center of the loupe
-    const bgX = -(x * zoom - loupeSize / 2);
-    const bgY = -(y * zoom - loupeSize / 2);
-
-    setLoupe({
-      active: true,
-      x,
-      y,
-      bgX,
-      bgY,
-      bgW,
-      bgH,
-    });
-  };
-
-  const handleMouseEnter = () => {
-    setLoupe((prev) => ({ ...prev, active: true }));
-  };
 
   const handleMouseLeave = () => {
-    setLoupe((prev) => ({ ...prev, active: false }));
   };
 
   // Add to Bag handler
@@ -190,10 +138,9 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
       {/* Main 3-Column Showcase Container */}
       <div className="pdp-showcase-container container-wide">
         <div className="pdp-three-column-grid">
-          {/* COLUMN 1: LEFT LARGE STICKY IMAGE WITH EXACT POINT LOUPE ZOOM */}
+          {/* COLUMN 1: LEFT LARGE STICKY IMAGE */}
           <div className="pdp-col-large-sticky">
             <div
-              ref={imgBoxRef}
               className="pdp-large-img-box magnifier-target-box"
               
             >
@@ -422,6 +369,8 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
     </div>
   );
 };
+
+
 
 
 
