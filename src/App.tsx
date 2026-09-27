@@ -1,14 +1,26 @@
 import { useEffect, useRef, useState } from 'react';
 import ComingSoon from './ComingSoon';
 import { CartProvider, useCart } from './context/CartContext';
+import { CustomerProvider, useCustomer } from './context/CustomerContext';
 import { CartDrawer } from './components/CartDrawer';
+import { AuthModal } from './components/AuthModal';
 import { ProductDetailPage } from './components/ProductDetailPage';
+import { ProfilePage } from './components/ProfilePage';
 import { SearchModal } from './components/SearchModal';
 import { ProductCard } from './components/ProductCard';
 import { CustomCursor } from './components/CustomCursor';
 import { VintagePocketChronometer } from './components/VintagePocketChronometer';
 import { VintageAtmosphere } from './components/VintageAtmosphere';
-import { getProducts, type ShopifyProduct } from './lib/shopify';
+import { TelegraphTape } from './components/TelegraphTape';
+import { getProducts, getHeroSettings, getVideoSettings, getCollectionDetails, type ShopifyProduct } from './lib/shopify';
+import { ContactPage } from './components/ContactPage';
+import { StoriesPage } from './components/StoriesPage';
+import { CollectionPage } from './components/CollectionPage';
+import { CollectionHoverCard } from './components/CollectionHoverCard';
+import { PostalStamp } from './components/PostalStamp';
+import { PageStamps } from './components/PageStamps';
+import './vintage-1906.css';
+
 
 function StorefrontContent() {
   const [scrolled, setScrolled] = useState(false);
@@ -17,15 +29,40 @@ function StorefrontContent() {
   const [products, setProducts] = useState<ShopifyProduct[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState<ShopifyProduct | null>(null);
+  const [showContactPage, setShowContactPage] = useState(false);
+  const [showStoriesPage, setShowStoriesPage] = useState(false);
+  const [showCollectionPage, setShowCollectionPage] = useState(false);
+  const [showProfilePage, setShowProfilePage] = useState(false);
+  const [collectionHovered, setCollectionHovered] = useState(false);
+  const hoverTimeoutRef = useRef<number | null>(null);
+  const [collectionInfo, setCollectionInfo] = useState<{ title: string; description?: string } | null>(null);
+  const [videoSettings, setVideoSettings] = useState<{ videoUrl: string | null; contactVideoUrl: string | null } | null>(null);
+  const [heroImages, setHeroImages] = useState({ desktop: '/assets/hero-banner-transparent.png', mobile: '/assets/hero-banner-mobile-transparent.png' });
 
-  // Video Reel Interactive Play/Pause
+  // Video Reel reference
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isPlayingVideo, setIsPlayingVideo] = useState(true);
 
   // Hero Mouse Parallax
   const [heroParallax, setHeroParallax] = useState({ x: 0, y: 0 });
 
+  // Ink reveal scroll observer
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -60px 0px' }
+    );
+    document.querySelectorAll('.ink-reveal').forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
   const { cart, openCart, addItem, loading: cartLoading } = useCart();
+  const { openAuth, customer } = useCustomer();
   const [firstScrollTriggered, setFirstScrollTriggered] = useState(false);
   const prevScrolledRef = useRef(false);
 
@@ -64,6 +101,25 @@ function StorefrontContent() {
       .finally(() => {
         setLoadingProducts(false);
       });
+
+    getHeroSettings().then((settings) => {
+      if (settings && (settings.desktopUrl || settings.mobileUrl)) {
+        setHeroImages(prev => ({
+          desktop: settings.desktopUrl || prev.desktop,
+          mobile: settings.mobileUrl || settings.desktopUrl || prev.mobile
+        }));
+      }
+    });
+
+    getCollectionDetails().then((info) => {
+      if (info?.title) setCollectionInfo(info);
+    });
+
+    getVideoSettings().then((settings) => {
+      if (settings?.videoUrl || settings?.contactVideoUrl) {
+        setVideoSettings(settings);
+      }
+    });
   }, []);
 
   // Fallback curated mock products if Shopify store has no products yet
@@ -133,6 +189,86 @@ function StorefrontContent() {
 
   const displayProducts = products.length > 0 ? products : fallbackProducts;
 
+  const navigateTo = (view: 'home' | 'collection' | 'stories' | 'contact' | 'product', item?: ShopifyProduct) => {
+    if (view === 'product' && item) {
+      setSelectedProduct(item);
+      setShowCollectionPage(false);
+      setShowStoriesPage(false);
+      setShowContactPage(false);
+      window.history.pushState({ view: 'product', handle: item.handle }, '', `#product-${item.handle}`);
+    } else if (view === 'collection') {
+      setSelectedProduct(null);
+      setShowCollectionPage(true);
+      setShowStoriesPage(false);
+      setShowContactPage(false);
+      window.history.pushState({ view: 'collection' }, '', '#collection');
+    } else if (view === 'stories') {
+      setSelectedProduct(null);
+      setShowCollectionPage(false);
+      setShowStoriesPage(true);
+      setShowContactPage(false);
+      window.history.pushState({ view: 'stories' }, '', '#stories');
+    } else if (view === 'contact') {
+      setSelectedProduct(null);
+      setShowCollectionPage(false);
+      setShowStoriesPage(false);
+      setShowContactPage(true);
+      window.history.pushState({ view: 'contact' }, '', '#contact');
+    } else {
+      setSelectedProduct(null);
+      setShowCollectionPage(false);
+      setShowStoriesPage(false);
+      setShowContactPage(false);
+      window.history.pushState({ view: 'home' }, '', window.location.pathname);
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    const handlePopState = () => {
+      const hash = window.location.hash;
+      if (hash.startsWith('#product-')) {
+        const handle = hash.replace('#product-', '');
+        const p = displayProducts.find((x) => x.handle === handle || x.id === handle);
+        if (p) {
+          setSelectedProduct(p);
+          setShowCollectionPage(false);
+          setShowStoriesPage(false);
+          setShowContactPage(false);
+          return;
+        }
+      }
+      if (hash === '#collection') {
+        setSelectedProduct(null);
+        setShowCollectionPage(true);
+        setShowStoriesPage(false);
+        setShowContactPage(false);
+        return;
+      }
+      if (hash === '#stories') {
+        setSelectedProduct(null);
+        setShowCollectionPage(false);
+        setShowStoriesPage(true);
+        setShowContactPage(false);
+        return;
+      }
+      if (hash === '#contact') {
+        setSelectedProduct(null);
+        setShowCollectionPage(false);
+        setShowStoriesPage(false);
+        setShowContactPage(true);
+        return;
+      }
+      setSelectedProduct(null);
+      setShowCollectionPage(false);
+      setShowStoriesPage(false);
+      setShowContactPage(false);
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [displayProducts]);
+
   const handleQuickAdd = async (e: React.MouseEvent, product: ShopifyProduct) => {
     e.stopPropagation();
     const variantId = product.variants[0]?.id;
@@ -148,16 +284,21 @@ function StorefrontContent() {
     setHeroParallax({ x, y });
   };
 
-  const toggleVideo = () => {
-    if (videoRef.current) {
-      if (videoRef.current.paused) {
-        videoRef.current.play();
-        setIsPlayingVideo(true);
-      } else {
-        videoRef.current.pause();
-        setIsPlayingVideo(false);
-      }
+  const handleCollectionMouseEnter = () => {
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+      hoverTimeoutRef.current = null;
     }
+    setCollectionHovered(true);
+  };
+
+  const handleCollectionMouseLeave = () => {
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+    }
+    hoverTimeoutRef.current = window.setTimeout(() => {
+      setCollectionHovered(false);
+    }, 350);
   };
 
   return (
@@ -165,7 +306,9 @@ function StorefrontContent() {
       {/* Custom Vintage Crosshair & Loom Follower */}
       <CustomCursor />
 
-      {/* Atmospheric 1906 Dust Breeze, Ink Spills & Scattered Atelier Artifacts */}
+
+
+      {/* Atmospheric 1906 Dust Breeze, Ink Spills & Scattered Account Artifacts */}
       <VintageAtmosphere />
 
       {/* 1906 Antique Brass Pocket Chronometer in Bottom-Right Corner */}
@@ -191,32 +334,64 @@ function StorefrontContent() {
             </svg>
           </button>
 
-          {/* Desktop navigation links with Running Stitch */}
+          {/* Desktop navigation links with Collection Mega Card */}
           <div className="desktop-nav-links">
-            <a 
-              href="#collection" 
-              className="nav-link"
-              onClick={() => setSelectedProduct(null)}
+            <div
+              className="nav-link-collection-wrap"
+              onMouseEnter={handleCollectionMouseEnter}
+              onMouseLeave={handleCollectionMouseLeave}
             >
-              <span className="nav-link-num">01</span>
-              <span className="nav-link-text">Collection</span>
-              <span className="nav-link-flourish">✦</span>
-              <span className="nav-running-stitch" aria-hidden="true" />
-            </a>
+              <a 
+                href="#collection" 
+                className="nav-link nav-link-collection"
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigateTo('collection');
+                }}
+              >
+                <span className="nav-link-text">Collection</span>
+                <span className="nav-running-stitch" aria-hidden="true" />
+              </a>
+
+              {collectionHovered && (
+                <CollectionHoverCard
+                  products={displayProducts}
+                  collectionTitle={collectionInfo?.title}
+                  onSelectProduct={(p) => {
+                    setCollectionHovered(false);
+                    navigateTo('product', p);
+                  }}
+                  onViewAll={() => {
+                    setCollectionHovered(false);
+                    navigateTo('collection');
+                  }}
+                  onMouseEnter={handleCollectionMouseEnter}
+                  onMouseLeave={handleCollectionMouseLeave}
+                />
+              )}
+            </div>
+
             <a 
               href="#stories" 
               className="nav-link"
-              onClick={() => setSelectedProduct(null)}
+              onClick={(e) => {
+                e.preventDefault();
+                navigateTo('stories');
+              }}
             >
-              <span className="nav-link-num">02</span>
               <span className="nav-link-text">Stories</span>
-              <span className="nav-link-flourish">✦</span>
               <span className="nav-running-stitch" aria-hidden="true" />
             </a>
-            <a href="#contact" className="nav-link">
-              <span className="nav-link-num">03</span>
+
+            <a 
+              href="#contact" 
+              className="nav-link"
+              onClick={(e) => {
+                e.preventDefault();
+                navigateTo('contact');
+              }}
+            >
               <span className="nav-link-text">Contact</span>
-              <span className="nav-link-flourish">✦</span>
               <span className="nav-running-stitch" aria-hidden="true" />
             </a>
           </div>
@@ -228,8 +403,7 @@ function StorefrontContent() {
             className="brand-logo-link"
             onClick={(e) => {
               e.preventDefault();
-              setSelectedProduct(null);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
+              navigateTo('home');
             }}
           >
             <div className="brand-logo-box">
@@ -244,16 +418,25 @@ function StorefrontContent() {
         <div className="nav-right">
           <button 
             className="search-toggle-btn nav-icon nav-action-btn" 
-            aria-label="Search the archive"
+            aria-label="Search"
             onClick={() => setSearchOpen(true)}
-            title="Search Archive (Motif, Silhouette, Craft)"
+            title="Search Store (Motif, Silhouette, Craft)"
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="nav-svg-icon"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
             <span className="nav-icon-tooltip">SEARCH</span>
           </button>
-          <a href="#contact" className="nav-icon desktop-account-link nav-action-btn" aria-label="Account" title="Atelier Account">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="nav-svg-icon"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <span className="nav-icon-tooltip">ATELIER</span>
+          <a href="#account" onClick={(e) => { e.preventDefault(); if(customer) { setShowProfilePage(true); setShowContactPage(false); setShowStoriesPage(false); setSelectedProduct(null); } else { openAuth(); } }} className="nav-icon desktop-account-link nav-action-btn" aria-label="Account" title="My Account" style={{ position: "relative", display: "flex", alignItems: "center", gap: "6px", textDecoration: "none" }}>
+            {customer ? (
+              <>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="nav-svg-icon"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.05em", paddingTop: "2px", minWidth: "max-content" }}>{customer.firstName}</span>
+              </>
+            ) : (
+              <>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="nav-svg-icon"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                <span className="nav-icon-tooltip" style={{ minWidth: "max-content", right: "0", transform: "translateX(0)" }}>ACCOUNT</span>
+              </>
+            )}
           </a>
           <button 
             className="cart-toggle-btn nav-link-cart" 
@@ -299,7 +482,7 @@ function StorefrontContent() {
                   setSearchOpen(true);
                 }}
               >
-                <span>00</span> Search Archive
+                <span>00</span> Search Store
               </a>
               <a 
                 href="#collection" 
@@ -314,9 +497,13 @@ function StorefrontContent() {
               <a 
                 href="#stories" 
                 className="mobile-drawer-link" 
-                onClick={() => {
+                onClick={(e) => {
+                  e.preventDefault();
                   setMobileMenuOpen(false);
                   setSelectedProduct(null);
+                  setShowContactPage(false);
+                  setShowStoriesPage(true);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
               >
                 <span>02</span> Stories & Loom
@@ -324,9 +511,15 @@ function StorefrontContent() {
               <a 
                 href="#contact" 
                 className="mobile-drawer-link" 
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setMobileMenuOpen(false);
+                  setShowStoriesPage(false);
+                  setShowContactPage(true);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
               >
-                <span>03</span> Contact & Atelier
+                <span>03</span> Contact & Account
               </a>
               <a 
                 href="#cart" 
@@ -349,17 +542,40 @@ function StorefrontContent() {
         </div>
       )}
 
-      {/* MAIN CONTENT: Conditional Product Detail Page vs Homepage */}
-      {selectedProduct ? (
+      {/* MAIN CONTENT: Conditional Product Detail Page vs Collection vs Stories vs Contact vs Homepage */}
+      {showCollectionPage ? (
+        <main>
+          <CollectionPage
+            products={displayProducts}
+            collectionTitle={collectionInfo?.title}
+            collectionDescription={collectionInfo?.description}
+            onSelectProduct={(p) => navigateTo('product', p)}
+            onQuickAdd={handleQuickAdd}
+            loading={cartLoading}
+          />
+        </main>
+      ) : showStoriesPage ? (
+        <main>
+          <StoriesPage onBack={() => navigateTo('home')} />
+        </main>
+      ) : showProfilePage ? (
+        <main>
+          <ProfilePage onBack={() => setShowProfilePage(false)} />
+        </main>
+      ) : showContactPage ? (
+        <main>
+          <ContactPage 
+            onBack={() => navigateTo('home')} 
+            videoUrl={videoSettings?.contactVideoUrl || videoSettings?.videoUrl || undefined}
+          />
+        </main>
+      ) : selectedProduct ? (
         <main>
           <ProductDetailPage
             product={selectedProduct}
             allProducts={displayProducts}
-            onBack={() => {
-              setSelectedProduct(null);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-            onSelectProduct={(p) => setSelectedProduct(p)}
+            onBack={() => navigateTo('home')}
+            onSelectProduct={(p) => navigateTo('product', p)}
           />
         </main>
       ) : (
@@ -378,35 +594,44 @@ function StorefrontContent() {
               }}
             >
               <picture className="hero-picture">
-                <source media="(max-width: 768px)" srcSet="/assets/hero-banner-mobile-transparent.png" />
-                <img src="/assets/hero-banner-transparent.png" alt="AARTH Heritage Handloom Silhouettes" className="hero-image" />
+                <source media="(max-width: 768px)" srcSet={heroImages.mobile} />
+                <img src={heroImages.desktop} alt="AARTH Heritage Handloom Silhouettes" className="hero-image" />
               </picture>
             </div>
 
             <div className="hero-bottom-mark">
-              <span>AARTH • MDCCCCVI</span>
+              <span>AARTH</span>
               <div className="hero-scroll-line"></div>
             </div>
+
+            {/* Authentic Vintage Stamps stuck on hero parchment */}
+            <PageStamps />
           </section>
 
+          {/* Telegraph Tape Ticker — dispatches from the 1906 atelier */}
+          <TelegraphTape />
+
           {/* Collection Section with Interactive 3D Product Cards */}
-          <section className="products-section" id="collection">
+          <section className="products-section section-aged-corner" id="collection" style={{ position: 'relative', overflow: 'hidden' }}>
             <div className="container-wide">
-              <header className="section-header-1906">
-                <div className="folio-label-row">
-                  <span className="folio-label-left">CATALOGUE OF BESPOKE LOTS</span>
-                  <span className="folio-label-center">
-                    ❦ ANNO MDCCCCVI • {loadingProducts ? "CONSULTING REGISTER..." : "EDITION NO. I"} ❦
-                  </span>
-                  <span className="folio-label-right">MAYFAIR &amp; CALCUTTA REGISTRY</span>
-                </div>
-                <div className="oxford-double-line" />
-                <h2 className="broadsheet-headline">The Curated Broadside Archive</h2>
-                <p className="broadsheet-intro-p">
-                  Bespoke subcontinental silhouettes, loomed on wooden pedal frames in Eastern residencies and tailored in the West End of London.
-                </p>
-                <div className="oxford-single-line" />
-              </header>
+              {/* Ornamental Divider */}
+              <div className="ornament-divider"><span className="ornament-divider-symbol">✦ ✦ ✦</span></div>
+
+              {/* Exact Reference Header Bar */}
+              <div className="featured-collection-bar">
+                <h2 className="featured-collection-heading">FEATURED COLLECTION</h2>
+                <div className="featured-collection-divider-line" />
+                <a 
+                  href="#collection" 
+                  className="featured-collection-view-all"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigateTo('collection');
+                  }}
+                >
+                  VIEW ALL &rarr;
+                </a>
+              </div>
 
               <div className="products-grid-4">
                 {displayProducts.map((product, idx) => (
@@ -414,7 +639,7 @@ function StorefrontContent() {
                     key={product.id}
                     product={product}
                     index={idx}
-                    onSelect={(p) => setSelectedProduct(p)}
+                    onSelect={(p) => navigateTo('product', p)}
                     onQuickAdd={handleQuickAdd}
                     loading={cartLoading}
                   />
@@ -423,8 +648,17 @@ function StorefrontContent() {
             </div>
           </section>
 
-          {/* Moving Design Reel with Interactive Play/Pause */}
-          <section className="moving-design-section" id="stories">
+          {/* Moving Design Reel */}
+          <section className="moving-design-section" id="stories" style={{ position: 'relative' }}>
+            {/* Authentic Stamp stuck in reel corner */}
+            <div className="page-stuck-stamp stories-section-stamp" style={{ position: 'absolute', bottom: '24px', right: '28px', zIndex: 6 }}>
+              <PostalStamp
+                src="/assets/stamps/stamp-ashoka-blue.png"
+                alt="Royal India Service Stamp"
+                rotate={-5}
+                width={62}
+              />
+            </div>
             <div className="video-container">
               <video 
                 ref={videoRef}
@@ -433,103 +667,144 @@ function StorefrontContent() {
                 muted 
                 loop 
                 playsInline
+                key={videoSettings?.videoUrl || "default-video"}
               >
-                <source src="/assets/fashion-moving-seamless.mp4" type="video/mp4" />
+                <source src={videoSettings?.videoUrl || "/assets/fashion-moving-seamless.mp4"} type="video/mp4" />
               </video>
-              <div className="video-overlay"></div>
             </div>
 
-            <div className="video-content">
-              <span className="video-caption-eyebrow">CHINÉMATOGRAPHE DISPATCH • MDCCCCVI</span>
-              <h2 className="video-caption-title">The Drape of Living Tradition</h2>
+            {/* Centered Small Stories Button Only (No Text, No Halt Button) */}
+            <div className="video-stories-center-box">
               <button 
-                className="btn-stories"
-                onClick={() => {
-                  const el = document.getElementById("collection");
-                  if (el) el.scrollIntoView({ behavior: 'smooth' });
-                }}
+                className="video-stories-btn"
+                onClick={() => navigateTo('stories')}
               >
-                ACQUIRE FROM ARCHIVE ☞
+                Stories ☞
               </button>
             </div>
-
-            <button 
-              className="video-control-pill"
-              onClick={toggleVideo}
-              aria-label={isPlayingVideo ? "Halt motion reel" : "Resume motion reel"}
-            >
-              <span>{isPlayingVideo ? "❚❚" : "▶"}</span>
-              <span>{isPlayingVideo ? "HALT MOTION" : "RESUME MOTION"}</span>
-            </button>
           </section>
         </main>
       )}
 
-      {/* Global Site Footer */}
+      {/* Global Site Footer (Redesigned 4-Column Sleek Layout with 1/3rd Reduced Height) */}
       <footer className="site-footer" id="contact">
         <div className="container">
           <div className="footer-grid">
-            <div className="footer-col">
-              <img src="/assets/aarth-logo-white.png" alt="AARTH Logo" className="footer-logo" />
-              <p className="footer-text">Preserving the unyielding craft of the subcontinent through structured silhouettes and botanical dyes.</p>
-              <div className="newsletter-form">
-                <input type="email" placeholder="Join the Archive" className="newsletter-input" />
-                <button className="newsletter-submit">Subscribe</button>
-              </div>
+            {/* Column 1: Left - ONLY Logo */}
+            <div className="footer-col footer-col-logo">
+              <img
+                src="/assets/aarth-logo-white.png"
+                alt="AARTH Atelier Logo"
+                className="footer-logo"
+                style={{ maxHeight: '54px', width: 'auto', display: 'block' }}
+              />
             </div>
+
+            {/* Column 2: Collection & About */}
             <div className="footer-col">
               <h4>Atelier</h4>
               <ul className="footer-nav">
                 <li>
                   <a 
                     href="#collection"
-                    onClick={() => setSelectedProduct(null)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigateTo('collection');
+                    }}
                   >
-                    Collection 01
+                    Collection
                   </a>
                 </li>
                 <li>
                   <a 
                     href="#stories"
-                    onClick={() => setSelectedProduct(null)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigateTo('stories');
+                    }}
                   >
-                    The Process
+                    About
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            {/* Column 3: Contact (Number, Insta, Email) */}
+            <div className="footer-col">
+              <h4>Contact</h4>
+              <ul className="footer-nav footer-contact-list">
+                <li>
+                  <a href="tel:+919876543210" className="footer-contact-link">
+                    +91 98765 43210
                   </a>
                 </li>
                 <li>
                   <a 
-                    href="#hero"
-                    onClick={() => setSelectedProduct(null)}
+                    href="https://instagram.com" 
+                    target="_blank" 
+                    rel="noreferrer"
+                    className="footer-contact-link"
                   >
-                    Our Silhouettes
+                    Instagram
+                  </a>
+                </li>
+                <li>
+                  <a href="mailto:concierge@aarth.studio" className="footer-contact-link">
+                    concierge@aarth.studio
                   </a>
                 </li>
               </ul>
             </div>
+
+            {/* Column 4: Policy (Terms & Conditions, Return/Refund Policy) */}
             <div className="footer-col">
-              <h4>Support</h4>
+              <h4>Policy</h4>
               <ul className="footer-nav">
-                <li><a href="mailto:Hello@aarth.uk">Contact Us</a></li>
-                <li><a href="#collection">Shipping & Delivery</a></li>
-                <li><a href="#collection">Returns & Exchange</a></li>
-              </ul>
-            </div>
-            <div className="footer-col">
-              <h4>Legal</h4>
-              <ul className="footer-nav">
-                <li><a href="#">Terms of Service</a></li>
-                <li><a href="#">Privacy Policy</a></li>
+                <li>
+                  <a 
+                    href="#terms"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      alert("AARTH TERMS & CONDITIONS:\n\nAll garments are produced in archival numbered editions on traditional handlooms using non-synthetic botanical dyes. Subtle artisanal irregularities are hallmarks of genuine heritage craftsmanship.");
+                    }}
+                  >
+                    Terms & Conditions
+                  </a>
+                </li>
+                <li>
+                  <a 
+                    href="#returns"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      alert("AARTH RETURN & REFUND POLICY:\n\nWe provide a 14-day archival exchange or return window on unworn specimens with intact wax seals. Complimentary return dispatch for domestic UK clients.");
+                    }}
+                  >
+                    Return / Refund Policy
+                  </a>
+                </li>
               </ul>
             </div>
           </div>
+
           <div className="footer-bottom">
-            <span>© 2026 AARTH. All Rights Reserved.</span>
-            <span>Crafted in India</span>
+            <span>
+              © 2026 AARTH. All Rights Reserved. — Designed by{' '}
+              <a 
+                href="https://www.devora.page/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                style={{ textDecoration: 'underline', color: 'inherit' }}
+              >
+                Devoraaa
+              </a>
+            </span>
+            <span>Living Subcontinental Handloom Archive</span>
           </div>
         </div>
       </footer>
 
       {/* Slide-over Cart Drawer */}
+      <AuthModal onSuccess={() => setShowProfilePage(true)} />
       <CartDrawer />
 
       {/* Interactive Live Search & Filter Modal */}
@@ -559,10 +834,29 @@ function App() {
   }
 
   return (
-    <CartProvider>
-      <StorefrontContent />
-    </CartProvider>
+    <CustomerProvider>
+      <CartProvider>
+        <StorefrontContent />
+      </CartProvider>
+    </CustomerProvider>
   );
 }
 
 export default App;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

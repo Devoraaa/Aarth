@@ -23,15 +23,22 @@ export const CartDrawer: React.FC = () => {
     <div className="cart-drawer-overlay" onClick={closeCart}>
       <div
         className="cart-drawer-panel"
+        style={{
+          backgroundImage: "url('/assets/user-vintage-bg.jpg')",
+          backgroundRepeat: "repeat-y",
+          backgroundPosition: "top center",
+          backgroundSize: "100% auto",
+          backgroundColor: "#F3EBDD",
+        }}
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
-        aria-label="Archive Bag"
+        aria-label="Your Bag"
       >
         <div className="cart-drawer-header">
           <div className="cart-header-title-box">
-            <span className="cart-eyebrow">YOUR SELECTION</span>
-            <h3 className="cart-title">ARCHIVE BAG [{totalQuantity}]</h3>
+            <span className="cart-eyebrow">YOUR ITEMS</span>
+            <h3 className="cart-title">YOUR BAG [{totalQuantity}]</h3>
           </div>
           <button
             className="cart-drawer-close"
@@ -113,7 +120,7 @@ export const CartDrawer: React.FC = () => {
                         disabled={loading}
                         onClick={() => removeItem(item.id)}
                       >
-                        Remove
+                        Remove ✕
                       </button>
                     </div>
                   </div>
@@ -150,3 +157,4 @@ export const CartDrawer: React.FC = () => {
     </div>
   );
 };
+

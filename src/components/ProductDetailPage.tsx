@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import type { ShopifyProduct, ShopifyVariant } from "../lib/shopify";
 import { useCart } from "../context/CartContext";
 import { cartCreate } from "../lib/shopify";
+import { ProductCard } from "./ProductCard";
 
 interface ProductDetailPageProps {
   product: ShopifyProduct;
@@ -17,6 +18,14 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
   onSelectProduct,
 }) => {
   const { addItem, openCart, loading: cartLoading } = useCart();
+
+  const handleBack = () => {
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      onBack();
+    }
+  };
 
   // Active large image state
   const [activeImgIdx, setActiveImgIdx] = useState(0);
@@ -171,7 +180,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
       {/* Top Breadcrumb Bar (Tight & Compact Spacing with Full-Width Shield) */}
       <div className="pdp-top-bar-wrapper">
         <div className="pdp-top-bar container-wide">
-          <button className="pdp-back-btn" onClick={onBack}>
+          <button className="pdp-back-btn" onClick={handleBack}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <line x1="19" y1="12" x2="5" y2="12"></line>
               <polyline points="12 19 5 12 12 5"></polyline>
@@ -279,31 +288,6 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
 
               <div className="pdp-divider"></div>
 
-              {/* Description Dropdown (Accordion) */}
-              <div className="pdp-accordion-item">
-                <button
-                  className="pdp-accordion-trigger"
-                  onClick={() => setDescOpen(!descOpen)}
-                  aria-expanded={descOpen}
-                >
-                  <span className="pdp-acc-title">SILHOUETTE & CRAFT DETAILS</span>
-                  <span className="pdp-acc-icon">{descOpen ? "−" : "+"}</span>
-                </button>
-                {descOpen && (
-                  <div className="pdp-accordion-content">
-                    {product.descriptionHtml ? (
-                      <div dangerouslySetInnerHTML={{ __html: product.descriptionHtml }} />
-                    ) : (
-                      <p>
-                        Handcrafted artisanal silhouette cut and finished with heirloom precision.
-                        Woven on wooden pitlooms with living botanical dyes, celebrating timeless
-                        subcontinental craft tailored for modern living.
-                      </p>
-                    )}
-                  </div>
-                )}
-              </div>
-
               {/* Variants Selector if more than 1 */}
               {product.variants.length > 1 && (
                 <div className="pdp-variants-section">
@@ -312,6 +296,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
                     {product.variants.map((v) => (
                       <button
                         key={v.id}
+                        type="button"
                         className={`pdp-variant-chip ${selectedVariantId === v.id ? "selected" : ""}`}
                         onClick={() => setSelectedVariantId(v.id)}
                       >
@@ -322,19 +307,29 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
                 </div>
               )}
 
-              {/* Quantity Selector */}
+              {/* Quantity Selector - Fully Functional with Click Handlers */}
               <div className="pdp-qty-row">
                 <span className="pdp-qty-label">QUANTITY</span>
                 <div className="pdp-qty-selector">
                   <button
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setQuantity((prev) => Math.max(1, prev - 1));
+                    }}
                     aria-label="Decrease quantity"
                   >
                     −
                   </button>
-                  <span>{quantity}</span>
+                  <span className="pdp-qty-display-num">{quantity}</span>
                   <button
-                    onClick={() => setQuantity(quantity + 1)}
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setQuantity((prev) => prev + 1);
+                    }}
                     aria-label="Increase quantity"
                   >
                     +
@@ -346,21 +341,23 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
               <div className="pdp-cta-buttons">
                 {/* 1. Add to Bag */}
                 <button
+                  type="button"
                   className="btn-pdp-add-to-cart"
                   disabled={cartLoading || !currentVariant?.availableForSale}
                   onClick={handleAddToCart}
                 >
                   <span>
                     {cartLoading
-                      ? "RECORDING TO ARCHIVE..."
+                      ? "ADDING TO BAG..."
                       : currentVariant?.availableForSale !== false
                       ? `ADD TO BAG • ${formattedPrice}`
-                      : "OUT OF DISPATCH"}
+                      : "SOLD OUT"}
                   </span>
                 </button>
 
                 {/* 2. Buy Now (Direct Shopify Checkout) */}
                 <button
+                  type="button"
                   className="btn-pdp-buy-now"
                   disabled={buyingNow || !currentVariant?.availableForSale}
                   onClick={handleBuyNow}
@@ -373,9 +370,35 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
                 </button>
               </div>
 
+              {/* Description Accordion (Moved cleanly below Buy Now!) */}
+              <div className="pdp-accordion-item">
+                <button
+                  type="button"
+                  className="pdp-accordion-trigger"
+                  onClick={() => setDescOpen(!descOpen)}
+                  aria-expanded={descOpen}
+                >
+                  <span className="pdp-acc-title">DESCRIPTION</span>
+                  <span className="pdp-acc-icon">{descOpen ? "−" : "+"}</span>
+                </button>
+                {descOpen && (
+                  <div className="pdp-accordion-content">
+                    {product.descriptionHtml ? (
+                      <div dangerouslySetInnerHTML={{ __html: product.descriptionHtml }} />
+                    ) : (
+                      <p>
+                        {product.description ||
+                          "Handcrafted artisanal silhouette cut and finished with heirloom precision. Woven on wooden pitlooms with living botanical dyes, celebrating timeless subcontinental craft tailored for modern living."}
+                      </p>
+                    )}
+                  </div>
+                )}
+              </div>
+
               {/* Wash Care Dropdown (Accordion) */}
               <div className="pdp-accordion-item">
                 <button
+                  type="button"
                   className="pdp-accordion-trigger"
                   onClick={() => setWashCareOpen(!washCareOpen)}
                   aria-expanded={washCareOpen}
@@ -399,6 +422,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
               {/* Shipping & Returns Dropdown (Accordion) */}
               <div className="pdp-accordion-item">
                 <button
+                  type="button"
                   className="pdp-accordion-trigger"
                   onClick={() => setShippingOpen(!shippingOpen)}
                   aria-expanded={shippingOpen}
@@ -427,7 +451,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
         </div>
       </div>
 
-      {/* PRODUCTS YOU MAY LIKE SECTION (EXACTLY 3 PRODUCTS) */}
+      {/* PRODUCTS YOU MAY LIKE SECTION (EXACT SAME PRODUCT CARDS AS HOME PAGE) */}
       <section className="pdp-related-section">
         <div className="container-wide">
           <header className="section-header-antique">
@@ -441,46 +465,26 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
             </div>
           </header>
 
-          <div className="pdp-related-grid-3">
-            {relatedProducts.map((relProduct, idx) => {
-              const relPrice = relProduct.priceRange.minVariantPrice;
-              const formattedRelPrice = `${
-                relPrice.currencyCode === "GBP"
-                  ? "£"
-                  : relPrice.currencyCode === "INR"
-                  ? "₹"
-                  : relPrice.currencyCode + " "
-              }${parseFloat(relPrice.amount).toFixed(2)}`;
-              const relImg = relProduct.images[0]?.url || "/assets/product-1.jpg";
-
-              return (
-                <article
-                  key={relProduct.id}
-                  className="pdp-related-card"
-                  onClick={() => onSelectProduct(relProduct)}
-                >
-                  <div className="pdp-related-img-box">
-                    <span className="product-number-tag">№ 0{idx + 1}</span>
-                    <img src={relImg} alt={relProduct.title} loading="lazy" />
-
-                    <div className="pdp-related-overlay-btn">
-                      <span>✦ VIEW SILHOUETTE</span>
-                    </div>
-                  </div>
-
-                  <div className="pdp-related-meta">
-                    <span className="pdp-related-edition">
-                      {relProduct.tags[0] || "Heirloom Edition"}
-                    </span>
-                    <h3 className="pdp-related-title">{relProduct.title}</h3>
-                    <p className="pdp-related-price">{formattedRelPrice}</p>
-                  </div>
-                </article>
-              );
-            })}
+          <div className="products-grid-4">
+            {relatedProducts.map((relProduct, idx) => (
+              <ProductCard
+                key={relProduct.id}
+                product={relProduct}
+                index={idx}
+                onSelect={onSelectProduct}
+                onQuickAdd={async (e, p) => {
+                  e.stopPropagation();
+                  const variantId = p.variants[0]?.id;
+                  if (variantId) await addItem(variantId, 1, false);
+                }}
+                loading={cartLoading}
+              />
+            ))}
           </div>
         </div>
       </section>
     </div>
   );
 };
+
+

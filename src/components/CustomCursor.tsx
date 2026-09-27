@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 export const CustomCursor: React.FC = () => {
-  const [pos, setPos] = useState({ x: -100, y: -100 });
-  const [trailingPos, setTrailingPos] = useState({ x: -100, y: -100 });
+  const cursorRef = useRef<HTMLDivElement>(null);
   const [hoverState, setHoverState] = useState<"default" | "pointer">("default");
   const [isVisible, setIsVisible] = useState(false);
 
@@ -13,14 +12,18 @@ export const CustomCursor: React.FC = () => {
     }
 
     const onMouseMove = (e: MouseEvent) => {
-      setPos({ x: e.clientX, y: e.clientY });
+      // Instant 1:1 hardware-speed transform update without React re-render lag
+      if (cursorRef.current) {
+        cursorRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+      }
+
       if (!isVisible) setIsVisible(true);
 
       const target = e.target as HTMLElement | null;
       if (!target) return;
 
       const productCard = target.closest(".product-item");
-      const clickable = target.closest("button, a, input, select, textarea, .nav-link, .nav-icon");
+      const clickable = target.closest("button, a, input, select, textarea, .nav-link, .nav-icon, .clickable, [role='button']");
 
       if (clickable || productCard) {
         setHoverState("pointer");
@@ -29,10 +32,17 @@ export const CustomCursor: React.FC = () => {
       }
     };
 
-    const onMouseLeave = () => setIsVisible(false);
-    const onMouseEnter = () => setIsVisible(true);
+    const onMouseLeave = () => {
+      if (cursorRef.current) cursorRef.current.style.opacity = "0";
+      setIsVisible(false);
+    };
 
-    window.addEventListener("mousemove", onMouseMove);
+    const onMouseEnter = () => {
+      if (cursorRef.current) cursorRef.current.style.opacity = "1";
+      setIsVisible(true);
+    };
+
+    window.addEventListener("mousemove", onMouseMove, { passive: true });
     document.addEventListener("mouseleave", onMouseLeave);
     document.addEventListener("mouseenter", onMouseEnter);
 
@@ -43,39 +53,21 @@ export const CustomCursor: React.FC = () => {
     };
   }, [isVisible]);
 
-  // Smooth lerp for trailing ring
-  useEffect(() => {
-    let animId: number;
-    const lerp = () => {
-      setTrailingPos((prev) => ({
-        x: prev.x + (pos.x - prev.x) * 0.18,
-        y: prev.y + (pos.y - prev.y) * 0.18,
-      }));
-      animId = requestAnimationFrame(lerp);
-    };
-    animId = requestAnimationFrame(lerp);
-    return () => cancelAnimationFrame(animId);
-  }, [pos]);
-
-  if (!isVisible) return null;
-
   return (
     <div className="custom-cursor-container" aria-hidden="true">
-      {/* Central Crosshair Dot */}
       <div
-        className={`custom-cursor-dot ${hoverState !== "default" ? "hovered" : ""}`}
+        ref={cursorRef}
+        className={`peacock-cursor-feather ${hoverState !== "default" ? "hovered" : ""}`}
         style={{
-          transform: `translate3d(${pos.x}px, ${pos.y}px, 0)`,
+          opacity: isVisible ? 1 : 0,
         }}
-      />
-
-      {/* Trailing Antique Ring */}
-      <div
-        className={`custom-cursor-follower ${hoverState}`}
-        style={{
-          transform: `translate3d(${trailingPos.x}px, ${trailingPos.y}px, 0)`,
-        }}
-      />
+      >
+        <img
+          src="/assets/peacock-feather-cursor.png"
+          alt="Peacock Feather Cursor"
+          className="peacock-feather-img"
+        />
+      </div>
     </div>
   );
 };

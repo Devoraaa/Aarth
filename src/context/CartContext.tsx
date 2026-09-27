@@ -15,7 +15,7 @@ interface CartContextType {
   loading: boolean;
   openCart: () => void;
   closeCart: () => void;
-  addItem: (merchandiseId: string, quantity?: number) => Promise<void>;
+  addItem: (merchandiseId: string, quantity?: number, openDrawer?: boolean) => Promise<void>;
   updateItem: (lineId: string, quantity: number) => Promise<void>;
   removeItem: (lineId: string) => Promise<void>;
 }
@@ -48,7 +48,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   const openCart = () => setIsOpen(true);
   const closeCart = () => setIsOpen(false);
 
-  const addItem = async (merchandiseId: string, quantity = 1) => {
+  const addItem = async (merchandiseId: string, quantity = 1, openDrawer = true) => {
     setLoading(true);
     try {
       if (!cart || !cart.id) {
@@ -60,7 +60,9 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
         ]);
         setCart(updatedCart);
       }
-      setIsOpen(true);
+      if (openDrawer) {
+        setIsOpen(true);
+      }
     } catch (err) {
       console.error("Failed to add item to bag:", err);
       alert("Could not add item to bag. Please try again.");
