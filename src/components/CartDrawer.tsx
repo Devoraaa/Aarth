@@ -1,8 +1,10 @@
 import React from "react";
 import { useCart } from "../context/CartContext";
+import { useCustomer } from '../context/CustomerContext';
 
 export const CartDrawer: React.FC = () => {
   const { cart, isOpen, closeCart, updateItem, removeItem, loading } = useCart();
+  const { customer, openAuth } = useCustomer();
 
   if (!isOpen) return null;
 
@@ -14,6 +16,11 @@ export const CartDrawer: React.FC = () => {
     : "£0.00";
 
   const handleCheckout = () => {
+    if (!customer) {
+      closeCart();
+      openAuth();
+      return;
+    }
     if (cart?.checkoutUrl) {
       window.location.href = cart.checkoutUrl;
     }

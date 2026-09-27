@@ -96,73 +96,7 @@ function StorefrontContent() {
       }
     });
   }, []);
-
-  // Fallback curated mock products if Shopify store has no products yet
-  const fallbackProducts: ShopifyProduct[] = [
-    {
-      id: "mock-1",
-      handle: "cacao-handloom-raw-silk-kurta",
-      title: "Cacao Handloom Raw Silk Kurta",
-      description: "Pitloom Silk • Bhagalpur",
-      descriptionHtml: "<p>Pitloom Silk • Bhagalpur. Hand-spun raw silk with natural luster.</p>",
-      tags: ["Pitloom Silk • Bhagalpur"],
-      priceRange: { minVariantPrice: { amount: "35.00", currencyCode: "GBP" } },
-      images: [
-        { url: "/assets/product-1.jpg", altText: "Cacao Kurta" },
-        { url: "/assets/product-2.jpg", altText: "Cacao Kurta Back" },
-        { url: "/assets/product-3.jpg", altText: "Cacao Kurta Detail" },
-        { url: "/assets/product-4.jpg", altText: "Cacao Kurta Texture" }
-      ],
-      variants: [{ id: "mock-v-1", title: "Default", availableForSale: true, price: { amount: "35.00", currencyCode: "GBP" } }]
-    },
-    {
-      id: "mock-2",
-      handle: "taupe-block-print-artisanal-kimono",
-      title: "Taupe Block-Print Artisanal Kimono",
-      description: "Bagru Mud-Resist • Handloom Cotton",
-      descriptionHtml: "<p>Bagru Mud-Resist • Handloom Cotton. Traditional mud-resist hand-block print.</p>",
-      tags: ["Bagru Mud-Resist • Handloom Cotton"],
-      priceRange: { minVariantPrice: { amount: "35.00", currencyCode: "GBP" } },
-      images: [
-        { url: "/assets/product-2.jpg", altText: "Taupe Kimono" },
-        { url: "/assets/product-3.jpg", altText: "Taupe Kimono Detail" },
-        { url: "/assets/product-1.jpg", altText: "Taupe Kimono Texture" }
-      ],
-      variants: [{ id: "mock-v-2", title: "Default", availableForSale: true, price: { amount: "35.00", currencyCode: "GBP" } }]
-    },
-    {
-      id: "mock-3",
-      handle: "pearl-pleated-chanderi-tunic",
-      title: "Pearl Pleated Chanderi Tunic",
-      description: "Chanderi Weave • Pure Zari Thread",
-      descriptionHtml: "<p>Chanderi Weave • Pure Zari Thread. Ethereal drape with delicate gold zari.</p>",
-      tags: ["Chanderi Weave • Pure Zari Thread"],
-      priceRange: { minVariantPrice: { amount: "35.00", currencyCode: "GBP" } },
-      images: [
-        { url: "/assets/product-3.jpg", altText: "Pearl Tunic" },
-        { url: "/assets/product-4.jpg", altText: "Pearl Tunic Texture" },
-        { url: "/assets/product-2.jpg", altText: "Pearl Tunic Back" }
-      ],
-      variants: [{ id: "mock-v-3", title: "Default", availableForSale: true, price: { amount: "35.00", currencyCode: "GBP" } }]
-    },
-    {
-      id: "mock-4",
-      handle: "leather-dyed-relaxed-trousers",
-      title: "Leather-Dyed Relaxed Trousers",
-      description: "Iron-Vat Fermented • Structured Drape",
-      descriptionHtml: "<p>Iron-Vat Fermented • Structured Drape. Fermented botanical dye tailored trousers.</p>",
-      tags: ["Iron-Vat Fermented • Structured Drape"],
-      priceRange: { minVariantPrice: { amount: "35.00", currencyCode: "GBP" } },
-      images: [
-        { url: "/assets/product-4.jpg", altText: "Relaxed Trousers" },
-        { url: "/assets/product-1.jpg", altText: "Relaxed Trousers Model" },
-        { url: "/assets/product-3.jpg", altText: "Relaxed Trousers Detail" }
-      ],
-      variants: [{ id: "mock-v-4", title: "Default", availableForSale: true, price: { amount: "35.00", currencyCode: "GBP" } }]
-    }
-  ];
-
-  const displayProducts = products.length > 0 ? products : fallbackProducts;
+  const displayProducts = products;
 
   const handleQuickAdd = async (e: React.MouseEvent, product: ShopifyProduct) => {
     e.stopPropagation();
@@ -439,7 +373,7 @@ function StorefrontContent() {
             products={products}
             loading={loadingProducts}
             onSelectProduct={(p) => { setSelectedProduct(p); setShowCollectionPage(false); }}
-            onQuickAdd={(e, p) => { e.stopPropagation(); addItem(p.id, 1); }}
+            onQuickAdd={(e, p) => { e.stopPropagation(); addItem(p.variants[0]?.id || p.id, 1); }}
           />
         </main>
       ) : showStoriesPage ? (
