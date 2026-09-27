@@ -61,6 +61,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       style={{
+        position: "relative",
+        zIndex: 10,
+        backgroundColor: "#FAF7F0",
         transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
         transition: isHovered
           ? "transform 0.1s ease-out"

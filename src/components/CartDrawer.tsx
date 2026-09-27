@@ -27,13 +27,13 @@ export const CartDrawer: React.FC = () => {
         role="dialog"
         aria-modal="true"
         aria-label="Your Bag"
-        style={{ position: "relative", overflow: "hidden" }}
+        style={{ position: "relative", overflow: "hidden", isolation: "isolate" }}
       >
 
         {/* Background Vintage Stamps for Cart */}
-        <img src="/assets/stamps/stamp2.png" style={{ position: "absolute", top: "5%", left: "10%", width: "clamp(60px, 8vw, 90px)", transform: "rotate(-15deg)", opacity: 0.25, mixBlendMode: "multiply", zIndex: 0, pointerEvents: "none" }} alt="Vintage Stamp" />
-        <img src="/assets/stamps/stamp5.png" style={{ position: "absolute", top: "45%", right: "5%", width: "clamp(75px, 9vw, 105px)", transform: "rotate(20deg)", opacity: 0.3, mixBlendMode: "multiply", zIndex: 0, pointerEvents: "none" }} alt="Vintage Stamp" />
-        <img src="/assets/stamps/stamp3.png" style={{ position: "absolute", bottom: "15%", left: "8%", width: "clamp(55px, 7vw, 85px)", transform: "rotate(-25deg)", opacity: 0.35, mixBlendMode: "multiply", zIndex: 0, pointerEvents: "none" }} alt="Vintage Stamp" />
+        <img className="vintage-bg-stamp" src="/assets/stamps/stamp2.png" style={{ position: "absolute", top: "5%", left: "10%", width: "clamp(60px, 8vw, 90px)", transform: "rotate(-15deg)", opacity: 0.25, mixBlendMode: "multiply", zIndex: 1, pointerEvents: "none" }} alt="Vintage Stamp" />
+        <img className="vintage-bg-stamp" src="/assets/stamps/stamp5.png" style={{ position: "absolute", top: "45%", right: "5%", width: "clamp(75px, 9vw, 105px)", transform: "rotate(20deg)", opacity: 0.3, mixBlendMode: "multiply", zIndex: 1, pointerEvents: "none" }} alt="Vintage Stamp" />
+        <img className="vintage-bg-stamp" src="/assets/stamps/stamp3.png" style={{ position: "absolute", bottom: "15%", left: "8%", width: "clamp(55px, 7vw, 85px)", transform: "rotate(-25deg)", opacity: 0.35, mixBlendMode: "multiply", zIndex: 1, pointerEvents: "none" }} alt="Vintage Stamp" />
 
         <div className="cart-drawer-header">
           <div className="cart-header-title-box">
