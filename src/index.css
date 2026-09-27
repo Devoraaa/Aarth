@@ -1131,9 +1131,9 @@ button {
   background: rgba(0, 0, 0, 0.65);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
-  z-index: 999;
+  z-index: 99999;
   display: flex;
-  justify-content: flex-start;
+  justify-content: flex-end;
   animation: fadeIn 0.25s ease-out;
 }
 
@@ -1141,15 +1141,15 @@ button {
   width: 82%;
   max-width: 340px;
   height: 100%;
-  background-color: #242220;
-  color: #FBF9F4;
+  background-color: #f7f2e9;
+  color: #111111;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   padding: 28px 24px;
-  box-shadow: 6px 0 30px rgba(0, 0, 0, 0.6);
-  border-right: 1px solid rgba(184, 146, 58, 0.35);
-  animation: slideInLeft 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: -6px 0 30px rgba(0, 0, 0, 0.6);
+  border-left: 1px solid var(--border-antique);
+  animation: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .mobile-drawer-header {
@@ -1159,25 +1159,27 @@ button {
 }
 
 .mobile-drawer-logo {
-  height: 46px;
+  height: 38px;
   width: auto;
   object-fit: contain;
 }
 
 .mobile-drawer-close {
-  font-size: 22px;
-  color: #FBF9F4;
+  font-size: 32px;
+  font-weight: 300;
+  color: #111111;
   background: none;
   border: none;
   cursor: pointer;
-  padding: 6px;
+  padding: 0 0 6px 12px;
   line-height: 1;
+  margin-left: auto;
 }
 
 .mobile-drawer-flourish {
   color: var(--color-cacao);
   text-align: center;
-  margin: 20px 0 28px;
+  margin: 40px 0 32px;
   font-size: 13px;
   letter-spacing: 0.3em;
 }
@@ -1190,16 +1192,16 @@ button {
 
 .mobile-drawer-link {
   font-family: var(--font-display);
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: #FBF9F4;
+  color: #111111;
   display: flex;
   align-items: center;
   gap: 12px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid rgba(251, 249, 244, 0.1);
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(74, 59, 50, 0.15);
   transition: color var(--transition-smooth);
 }
 
@@ -1214,12 +1216,12 @@ button {
 }
 
 .mobile-drawer-footer {
-  border-top: 1px solid rgba(251, 249, 244, 0.15);
+  border-top: 1px solid rgba(74, 59, 50, 0.15);
   padding-top: 20px;
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 10px;
   letter-spacing: 0.12em;
-  color: rgba(251, 249, 244, 0.6);
+  color: var(--color-ink-faded);
   text-transform: uppercase;
 }
 
@@ -1230,7 +1232,7 @@ button {
 
 .mobile-drawer-footer span {
   color: var(--color-cacao);
-  font-size: 10px;
+  font-size: 9px;
 }
 
 @keyframes fadeIn {
@@ -1238,8 +1240,8 @@ button {
   to { opacity: 1; }
 }
 
-@keyframes slideInLeft {
-  from { transform: translateX(-100%); }
+@keyframes slideInRight {
+  from { transform: translateX(100%); }
   to { transform: translateX(0); }
 }
 
@@ -1415,8 +1417,13 @@ button {
 
   /* Moving / Video Section */
   .moving-design-section {
-    height: 60vh;
-    min-height: 420px;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    min-height: auto;
+    background-color: #000;
+  }
+  .bg-video {
+    object-fit: contain;
   }
   .video-caption-eyebrow {
     font-size: 10px;
@@ -3595,7 +3602,7 @@ button {
   position: fixed;
   bottom: 24px;
   right: 24px;
-  z-index: 999;
+  z-index: 99999;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -7020,7 +7027,7 @@ button {
   position: fixed;
   bottom: 24px;
   right: 24px;
-  z-index: 999;
+  z-index: 99999;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -7361,7 +7368,7 @@ button {
   position: fixed;
   bottom: 24px;
   right: 24px;
-  z-index: 999;
+  z-index: 99999;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -7800,6 +7807,43 @@ button {
   text-shadow: 0 2px 4px rgba(0,0,0,0.5);
   margin: 0;
 }
+
+
+
+
+
+@media (max-width: 768px) {
+  .pocket-chronometer-wrap {
+    display: none !important;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .nav-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .desktop-account-link span {
+    display: none !important;
+  }
+  .search-toggle-btn {
+    display: flex !important; /* Restore search */
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

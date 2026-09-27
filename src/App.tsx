@@ -19,6 +19,15 @@ import { StoriesPage } from './components/StoriesPage';
 function StorefrontContent() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [mobileMenuOpen]);
   const [searchOpen, setSearchOpen] = useState(false);
   const [storiesMenuOpen, setStoriesMenuOpen] = useState(false);
   const [products, setProducts] = useState<ShopifyProduct[]>([]);
@@ -200,19 +209,6 @@ function StorefrontContent() {
         <div className="nav-scroll-wax-wave" aria-hidden="true" />
 
         <div className="nav-left">
-          {/* Mobile hamburger toggle */}
-          <button 
-            className="mobile-menu-btn" 
-            onClick={() => setMobileMenuOpen(true)}
-            aria-label="Open navigation menu"
-          >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="3" y1="12" x2="21" y2="12"></line>
-              <line x1="3" y1="6" x2="21" y2="6"></line>
-              <line x1="3" y1="18" x2="21" y2="18"></line>
-            </svg>
-          </button>
-
           {/* Desktop navigation links with Running Stitch */}
           <div className="desktop-nav-links">
             <a href="#collection" className="nav-link" onClick={(e) => { e.preventDefault(); setSelectedProduct(null); setShowContactPage(false); setShowStoriesPage(false); setShowCollectionPage(true); window.scrollTo({ top: 0, behavior: "smooth" }); }}
@@ -315,7 +311,7 @@ function StorefrontContent() {
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="nav-svg-icon"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
             <span className="nav-icon-tooltip">SEARCH</span>
           </button>
-          <a href="#account" onClick={(e) => { e.preventDefault(); if(customer) { setShowProfilePage(true); setShowCollectionPage(false); setShowContactPage(false); setShowStoriesPage(false); setSelectedProduct(null); } else { openAuth(); } }} className="nav-icon desktop-account-link nav-action-btn" aria-label="Account" title="My Account" style={{ position: "relative", display: "flex", alignItems: "center", gap: "6px", textDecoration: "none" }}>
+          <a href="#account" onClick={(e) => { e.preventDefault(); if(customer) { setShowProfilePage(true); setShowCollectionPage(false); setShowContactPage(false); setShowStoriesPage(false); setSelectedProduct(null); } else { openAuth(); } }} className="nav-icon desktop-account-link nav-action-btn" aria-label="Account" title="My Account" style={{ position: "relative", alignItems: "center", gap: "6px", textDecoration: "none" }}>
             {customer ? (
               <>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="nav-svg-icon"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
@@ -339,6 +335,19 @@ function StorefrontContent() {
               <span className={`cart-count-badge ${(cart?.totalQuantity || 0) > 0 ? 'has-items' : ''}`}>({cart?.totalQuantity || 0})</span>
             </span>
           </button>
+          
+          {/* Mobile hamburger toggle */}
+          <button 
+            className="mobile-menu-btn" 
+            onClick={() => setMobileMenuOpen(true)}
+            aria-label="Open navigation menu"
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
         </div>
 
         {/* Animated Loom Weave Thread Shimmer */}
@@ -350,7 +359,7 @@ function StorefrontContent() {
         <div className="mobile-drawer-overlay" onClick={() => setMobileMenuOpen(false)}>
           <div className="mobile-drawer-content" onClick={(e) => e.stopPropagation()}>
             <div className="mobile-drawer-header">
-              <img src="/assets/aarth-logo-white.png" alt="AARTH Logo" className="mobile-drawer-logo" />
+              <img src="/assets/aarth-logo.png" alt="AARTH Logo" className="mobile-drawer-logo" />
               <button 
                 className="mobile-drawer-close" 
                 onClick={() => setMobileMenuOpen(false)}
@@ -418,10 +427,7 @@ function StorefrontContent() {
               </a>
             </nav>
 
-            <div className="mobile-drawer-footer">
-              <p>A UK-based clothing brand bringing Indian culture into everyday fashion</p>
-              <span>Made in India</span>
-            </div>
+            
           </div>
         </div>
       )}
@@ -667,6 +673,11 @@ function App() {
 }
 
 export default App;
+
+
+
+
+
 
 
 
