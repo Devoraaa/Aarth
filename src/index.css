@@ -8081,11 +8081,10 @@ button {
 }
 
 /* FIX STAMPS Z-INDEX: Force them behind components */
-.product-card,
+.product-item,
 .cart-drawer-header,
 .cart-items-list,
 .cart-drawer-footer,
-.video-content,
 .hero-content,
 .pdp-top-bar-wrapper,
 .pdp-three-column-grid,
@@ -8096,9 +8095,18 @@ button {
   z-index: 2 !important;
 }
 
-/* Explicitly make sure the video container in the moving design section is above stamps */
-.moving-design-section .video-container {
+.video-content {
   position: relative;
+  z-index: 3 !important;
+}
+
+/* Explicitly make sure the video container in the moving design section is above stamps but remains absolute */
+.moving-design-section .video-container {
+  position: absolute !important;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   z-index: 2 !important;
 }
 
