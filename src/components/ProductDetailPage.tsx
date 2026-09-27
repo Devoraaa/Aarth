@@ -195,64 +195,34 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
             <div
               ref={imgBoxRef}
               className="pdp-large-img-box magnifier-target-box"
-              onMouseMove={handleMouseMove}
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
+              
             >
               <img
                 src={mainImage.url}
                 alt={mainImage.altText || product.title}
                 className="pdp-large-main-img"
-              />
+                />
 
-              {/* Antique Corner Registration Marks */}
-              <span className="magnifier-corner top-left">⌜</span>
-              <span className="magnifier-corner top-right">⌝</span>
-              <span className="magnifier-corner bottom-left">⌞</span>
-              <span className="magnifier-corner bottom-right">⌟</span>
-
-              {/* Vintage Magnifying Loupe Lens (Anchored Exactly to Cursor Position) */}
-              {loupe.active && (
-                <div
-                  className="vintage-fabric-loupe"
-                  style={{
-                    left: `${loupe.x}px`,
-                    top: `${loupe.y}px`,
-                    backgroundImage: `url(${mainImage.url})`,
-                    backgroundPosition: `${loupe.bgX}px ${loupe.bgY}px`,
-                    backgroundSize: `${loupe.bgW}px ${loupe.bgH}px`,
-                  }}
-                >
-                  <div className="loupe-tag">1.6X ZOOM</div>
-                </div>
-              )}
-            </div>
-
-            <div className="magnifier-hint-badge">
-              <span>✦ HOVER SILHOUETTE TO ZOOM (1.6X) ✦</span>
-            </div>
-          </div>
-
-          {/* COLUMN 2: CENTER SCROLLABLE OTHER PRODUCT IMAGES */}
-          <div className="pdp-col-center-gallery">
-            
-
-            <div className="pdp-center-images-stack">
+            <div className="pdp-thumbnail-strip">
               {images.map((img, idx) => (
                 <div
                   key={idx}
-                  className={`pdp-stack-thumb-box ${activeImgIdx === idx ? "active-thumb" : ""}`}
+                  className={`pdp-thumb-box ${activeImgIdx === idx ? "active-thumb" : ""}`}
                   onClick={() => setActiveImgIdx(idx)}
-                  title={`View angle 0${idx + 1}`}
                 >
                   <img src={img.url} alt={`${product.title} angle ${idx + 1}`} loading="lazy" />
-                  <span className="pdp-thumb-number">0{idx + 1}</span>
                 </div>
               ))}
             </div>
+              
+
+              {/* Vintage Magnifying Loupe Lens (Anchored Exactly to Cursor Position) */}
+              
+            </div>
+
+            
           </div>
 
-          {/* COLUMN 3: RIGHT STICKY PRODUCT DETAILS & ACTIONS */}
           <div className="pdp-col-right-details">
             <div className="pdp-details-sticky-wrap">
               {/* Product Header: Name & Price */}
@@ -462,6 +432,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
     </div>
   );
 };
+
 
 
 
