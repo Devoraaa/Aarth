@@ -73,24 +73,9 @@ export function ContactPage({ onBack }: ContactPageProps) {
         </div>
       </div>
 
-      <div style={{ 
-        display: "flex", 
-        flex: 1,
-        flexDirection: "row", 
-        borderTop: "1px solid var(--border-antique)",
-        flexWrap: "wrap",
-        alignItems: "stretch"
-      }}>
+      <div className="contact-split-layout">
         {/* Left Side: Video (16:9 Centered vertically) */}
-        <div style={{ 
-          flex: "1 1 50%", 
-          borderRight: "1px solid var(--border-antique)", 
-          position: "relative",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          backgroundColor: "transparent"
-        }}>
+        <div className="contact-split-left">
           <div style={{
             width: "100%",
             aspectRatio: "16/9",
@@ -116,15 +101,7 @@ export function ContactPage({ onBack }: ContactPageProps) {
         </div>
 
         {/* Right Side: Contact Form (Tighter Spacing & Transparent BG) */}
-        <div style={{ 
-          flex: "1 1 50%", 
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          padding: "3rem 2rem",
-          backgroundColor: "transparent", 
-          zIndex: 1
-        }}>
+        <div className="contact-split-right">
           <div style={{ maxWidth: "440px", width: "100%", margin: "0 auto" }}>
             
             <h1 style={{ 
@@ -271,6 +248,7 @@ export function ContactPage({ onBack }: ContactPageProps) {
     </div>
   );
 }
+
 
 
 

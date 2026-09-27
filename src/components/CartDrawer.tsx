@@ -45,9 +45,7 @@ export const CartDrawer: React.FC = () => {
 
         {lines.length === 0 ? (
           <div className="cart-empty-state">
-            <div className="cart-empty-icon">✦</div>
-            <p className="cart-empty-text">Your archive bag is currently empty.</p>
-            <p className="cart-empty-subtext">Explore our edition of handloom silhouettes and living tradition.</p>
+            <p className="cart-empty-text">Your bag is currently empty.</p>
             <button
               className="cart-btn-explore"
               onClick={() => {

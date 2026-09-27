@@ -8021,3 +8021,61 @@ button {
     flex: 0 1 auto !important;
   }
 }
+
+/* NAVBAR SCROLLED ITEMS COLOR FIX (Cart Badge & Hamburger) */
+.navbar.scrolled .cart-count-badge,
+.navbar.scrolled .mobile-menu-btn,
+.navbar.pdp-navbar-mode.scrolled .cart-count-badge,
+.navbar.pdp-navbar-mode.scrolled .mobile-menu-btn {
+  color: #f7f2e9 !important;
+}
+
+/* Also ensure SVG paths in hamburger inherit the white color if they are hardcoded */
+.navbar.scrolled .mobile-menu-btn svg line,
+.navbar.pdp-navbar-mode.scrolled .mobile-menu-btn svg line {
+  stroke: #f7f2e9 !important;
+}
+
+/* CONTACT PAGE SPLIT LAYOUT */
+.contact-split-layout {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  border-top: 1px solid var(--border-antique);
+  flex-wrap: wrap;
+  align-items: stretch;
+}
+.contact-split-left {
+  flex: 1 1 50%;
+  border-right: 1px solid var(--border-antique);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: transparent;
+}
+.contact-split-right {
+  flex: 1 1 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 3rem 2rem;
+  background-color: transparent;
+  z-index: 1;
+}
+
+@media (max-width: 768px) {
+  .contact-split-layout {
+    flex-direction: column;
+  }
+  .contact-split-left {
+    flex: 1 1 auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border-antique);
+    min-height: auto;
+  }
+  .contact-split-right {
+    flex: 1 1 auto;
+    padding: 2rem 1.25rem;
+  }
+}
