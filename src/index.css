@@ -7998,3 +7998,9 @@ button {
     margin-top: 0 !important; 
   }
 }
+
+/* NAVBAR COLOR FIX */
+.navbar.pdp-navbar-mode.scrolled,
+.navbar.scrolled {
+  background-color: rgba(74, 54, 40, 0.96) !important;
+}
