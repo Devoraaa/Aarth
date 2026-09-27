@@ -7943,3 +7943,33 @@ button {
   width: 14px !important;
   height: 14px !important;
 }
+
+/* FINAL PDP TOP BAR OVERRIDES */
+.pdp-top-bar {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  flex-wrap: wrap !important; /* ensures responsiveness if it gets too tight */
+  gap: 16px !important;
+  padding-top: 18px !important;
+  padding-bottom: 14px !important;
+}
+
+.pdp-back-btn {
+  padding: 4px 10px !important;
+  font-size: 8.5px !important;
+  gap: 6px !important;
+  letter-spacing: 0.12em !important;
+  line-height: 1 !important;
+}
+
+.pdp-back-btn svg {
+  width: 11px !important;
+  height: 11px !important;
+}
+
+.pdp-breadcrumb {
+  margin: 0 !important;
+  padding: 0 !important;
+}
