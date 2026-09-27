@@ -200,10 +200,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
               <img
                 src={mainImage.url}
                 alt={mainImage.altText || product.title}
-                className="pdp-large-main-img"
-                />
-
-            <div className="pdp-thumbnail-strip">
+                className="pdp-large-main-img" /></div><div className="pdp-thumbnail-strip">
               {images.map((img, idx) => (
                 <div
                   key={idx}
@@ -216,14 +213,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
             </div>
               
 
-              {/* Vintage Magnifying Loupe Lens (Anchored Exactly to Cursor Position) */}
-              
-            </div>
-
-            
-          </div>
-
-          <div className="pdp-col-right-details">
+              </div><div className="pdp-col-right-details">
             <div className="pdp-details-sticky-wrap">
               {/* Product Header: Name & Price */}
               <div className="pdp-header-row">
@@ -432,6 +422,9 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
     </div>
   );
 };
+
+
+
 
 
 
