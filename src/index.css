@@ -8004,3 +8004,20 @@ button {
 .navbar.scrolled {
   background-color: rgba(74, 54, 40, 0.96) !important;
 }
+
+/* MOBILE NAVBAR LOGO LEFT ALIGNMENT */
+@media (max-width: 768px) {
+  .nav-left {
+    display: none !important;
+  }
+  .nav-center {
+    position: static !important;
+    left: auto !important;
+    transform: none !important;
+    flex: 1 !important;
+    justify-content: flex-start !important;
+  }
+  .nav-right {
+    flex: 0 1 auto !important;
+  }
+}
