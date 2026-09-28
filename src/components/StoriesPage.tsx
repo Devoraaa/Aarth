@@ -123,10 +123,10 @@ export function StoriesPage({ products, initialProductId, onBack }: StoriesPageP
           z-index: 10;
           transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .story-text-box.pos-0 { top: 80px; left: 60px; right: auto; bottom: auto; }
-        .story-text-box.pos-1 { top: auto; left: 60px; right: auto; bottom: 80px; }
-        .story-text-box.pos-2 { top: auto; left: auto; right: 60px; bottom: 80px; }
-        .story-text-box.pos-3 { top: 80px; left: auto; right: 60px; bottom: auto; }
+        .story-text-box.pos-0 { top: 80px; right: calc(50% + 220px); left: auto; bottom: auto; }
+        .story-text-box.pos-1 { top: auto; right: calc(50% + 220px); left: auto; bottom: 80px; }
+        .story-text-box.pos-2 { top: auto; left: calc(50% + 220px); right: auto; bottom: 80px; }
+        .story-text-box.pos-3 { top: 80px; left: calc(50% + 220px); right: auto; bottom: auto; }
         
         @media (max-width: 768px) {
           .story-text-box, .story-text-box.pos-0, .story-text-box.pos-1, .story-text-box.pos-2, .story-text-box.pos-3 {
@@ -240,7 +240,9 @@ export function StoriesPage({ products, initialProductId, onBack }: StoriesPageP
       {/* Story Text Box */}
       {currentText && (
         <div className={`story-text-box pos-${currentSlide % 4}`}>
-          {currentText}
+          <div className="royal-story-text">
+            {currentText}
+          </div>
         </div>
       )}
     </div>

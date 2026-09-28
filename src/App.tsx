@@ -306,7 +306,7 @@ function StorefrontContent() {
             <div className="mobile-drawer-flourish">❦ — ✦ — ❧</div>
 
             <nav className="mobile-drawer-nav">
-              <a 
+              {/* <a 
                 href="#search" 
                 className="mobile-drawer-link" 
                 onClick={(e) => {
@@ -316,7 +316,7 @@ function StorefrontContent() {
                 }}
               >
                 <span>00</span> Search
-              </a>
+              </a> */}
               <a href="#collection" className="mobile-drawer-link" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); setSelectedProduct(null); setShowContactPage(false); setShowStoriesPage(false); setShowCollectionPage(true); window.scrollTo({ top: 0, behavior: "smooth" }); }}
               >
                 <span>01</span> Collection
@@ -510,65 +510,46 @@ function StorefrontContent() {
         <div className="container">
           <div className="footer-grid">
             <div className="footer-col">
-              <img src="/assets/aarth-logo-white.png" alt="AARTH Logo" className="footer-logo" />
-              <p className="footer-text">Preserving the unyielding craft of the subcontinent through structured silhouettes and botanical dyes.</p>
-              <div className="newsletter-form">
-                <input type="email" placeholder="Join the Archive" className="newsletter-input" />
-                <button className="newsletter-submit">Subscribe</button>
-              </div>
+              <img src="/assets/aarth-logo-white.png" alt="AARTH Logo" className="footer-logo" style={{ marginTop: '0' }} />
             </div>
             <div className="footer-col">
-              <h4>Account</h4>
+              <h4>Pages</h4>
               <ul className="footer-nav">
                 <li>
-                  <a href="#collection" onClick={(e) => { e.preventDefault(); setSelectedProduct(null); setShowContactPage(false); setShowStoriesPage(false); setShowCollectionPage(true); window.scrollTo({ top: 0, behavior: "smooth" }); }}
-                  >
-                    Collection 01
+                  <a href="#collection" onClick={(e) => { e.preventDefault(); setSelectedProduct(null); setShowContactPage(false); setShowStoriesPage(false); setShowCollectionPage(true); window.scrollTo({ top: 0, behavior: "smooth" }); }}>
+                    Collection
                   </a>
                 </li>
                 <li>
-                  <a 
-                    href="#stories"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setSelectedProduct(null);
-                      setShowContactPage(false);
-                      setShowStoriesPage(true); setShowCollectionPage(false);
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }}
-                  >
-                    The Process
+                  <a href="#stories" onClick={(e) => { e.preventDefault(); setSelectedProduct(null); setShowContactPage(false); setShowCollectionPage(false); setShowStoriesPage(true); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
+                    Stories
                   </a>
                 </li>
-                <li>
-                  <a 
-                    href="#hero"
-                    onClick={() => setSelectedProduct(null)}
-                  >
-                    Our Silhouettes
-                  </a>
-                </li>
+                <li><a href="#about" onClick={(e) => e.preventDefault()}>About</a></li>
               </ul>
             </div>
             <div className="footer-col">
-              <h4>Support</h4>
+              <h4>Contact</h4>
               <ul className="footer-nav">
-                <li><a href="#contact" onClick={(e) => { e.preventDefault(); setShowStoriesPage(false); setShowContactPage(true); setShowCollectionPage(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>Contact Us</a></li>
-                <li><a href="#collection">Shipping & Delivery</a></li>
-                <li><a href="#collection">Returns & Exchange</a></li>
+                <li><a href="#">Number</a></li>
+                <li><a href="#">Instagram</a></li>
+                <li><a href="#">Email</a></li>
               </ul>
             </div>
             <div className="footer-col">
-              <h4>Legal</h4>
+              <h4>Policy</h4>
               <ul className="footer-nav">
-                <li><a href="#">Terms of Service</a></li>
-                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms and Condition</a></li>
+                <li><a href="#">Refund Policy</a></li>
               </ul>
             </div>
           </div>
-          <div className="footer-bottom">
-            <span>© 2026 AARTH. All Rights Reserved.</span>
-            <span>Crafted in India</span>
+          <div className="footer-bottom" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', paddingTop: '24px', marginTop: '24px', borderTop: '1px solid rgba(255, 255, 255, 0.1)' }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              © 2026 AARTH UK Ltd. — Designed by 
+              <img src="/assets/devoraaa-logo.jpg" alt="Devoraaa Logo" style={{ width: '20px', height: '20px', borderRadius: '50%', objectFit: 'cover' }} /> 
+              <a href="https://www.devora.page/" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'underline' }}>Devoraaa</a>
+            </span>
           </div>
         </div>
       </footer>
