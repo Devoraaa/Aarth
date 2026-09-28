@@ -7859,11 +7859,7 @@ button {
 .pdp-col-large-sticky {
   top: calc(var(--nav-height) + 16px) !important;
 }
-@media (min-width: 1025px) {
-  .pdp-three-column-grid {
-    grid-template-columns: 1.5fr 1fr !important;
-  }
-}
+
 .pdp-thumbnail-strip {
   display: flex;
   flex-direction: row;
@@ -7924,10 +7920,7 @@ button {
 
 
 @media (max-width: 640px) {
-  .pdp-related-grid-3 {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 14px !important;
-  }
+  .pdp-related-grid-3 { grid-template-columns: 1fr !important; gap: 24px !important; }
 }
 
 /* Override for PDP Back Button and Top Spacing */
@@ -8203,11 +8196,201 @@ button {
 .hero-image-wrapper,
 .pdp-top-bar-wrapper,
 .pdp-three-column-grid,
-.pdp-col-large-sticky,
-.pdp-col-right-details,
 .pdp-main-image-viewport,
 .pdp-related-section,
 .footer-content {
   position: relative !important;
   z-index: 10 !important;
+}
+
+/* Restore sticky behavior */
+.pdp-col-large-sticky,
+.pdp-col-right-details {
+  z-index: 10 !important;
+}
+
+
+
+.luxury-atelier-card .product-image-box {
+    border: none !important;
+}
+.luxury-atelier-card .product-image-box::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url('/assets/designer-border-final.png');
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    pointer-events: none;
+    mix-blend-mode: multiply;
+    z-index: 2;
+    opacity: 0.95;
+}
+.product-card-quick-actions {
+    z-index: 10 !important;
+    position: absolute !important;
+    bottom: 22% !important; /* sit exactly at the bottom edge of the product photo */
+    left: 16% !important;
+    right: 16% !important;
+    padding: 0 !important;
+}
+
+
+/* Designer Border Override Refined */
+.luxury-atelier-card {
+    padding: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+.luxury-atelier-card .product-image-box {
+    width: 86% !important;
+    margin: 0 auto !important;
+    aspect-ratio: 9 / 16 !important;
+    background-image: url('/assets/designer-border-final.png') !important;
+    background-size: 100% 100% !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-color: transparent !important;
+    border: none !important;
+    padding: 14% 16% 16% 16% !important; 
+    display: grid !important;
+}
+.luxury-atelier-card .product-image-box::after {
+    display: none !important;
+}
+.luxury-atelier-card .product-image-box img {
+    border-radius: 2px;
+    box-shadow: 0 4px 15px rgba(36, 26, 18, 0.2);
+    /* Grid stacking to make both primary and secondary images overlap within the padded area */
+    grid-area: 1 / 1 !important;
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+.product-card-quick-actions {
+    z-index: 10 !important;
+    position: absolute !important;
+    bottom: 16% !important;
+    left: 16% !important;
+    right: 16% !important;
+    padding: 0 !important;
+}
+.luxury-atelier-card .product-meta-content {
+    width: 86% !important;
+    margin: 0 auto !important;
+    padding: 10px 4px 4px 4px !important;
+    text-align: center;
+}
+
+
+/* Correct Hover Zoom Behavior */
+.luxury-atelier-card .product-image-box {
+    transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.luxury-atelier-card:hover .product-image-box {
+    transform: scale(1.04) !important;
+}
+.luxury-atelier-card:hover .product-image-box img {
+    transform: scale(1) !important; /* Keep images perfectly locked inside the scaling frame */
+}
+
+
+/* Redesigned Meta Layout for Product Card */
+.luxury-atelier-card .product-meta-content.new-meta-layout {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+    margin-top: 4px !important;
+    width: 86% !important;
+    margin: 0 auto !important;
+    padding: 10px 4px 4px 4px !important;
+}
+.luxury-atelier-card .product-meta-left {
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1 !important;
+    padding-right: 12px !important;
+}
+.luxury-atelier-card .product-title {
+    margin: 0 !important;
+    margin-bottom: 2px !important;
+    font-size: 20px !important;
+    text-align: left !important;
+}
+.luxury-atelier-card .product-price-val {
+    font-size: 14px !important;
+    text-align: left !important;
+}
+.luxury-atelier-card .product-meta-right {
+    display: flex !important;
+    align-items: flex-start !important;
+}
+.luxury-atelier-card button.btn-card-quick-add-icon {
+    background: none !important;
+    border: 1px solid #362d24 !important;
+    border-radius: 50% !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 32px !important;
+    height: 32px !important;
+    padding: 0 !important;
+    color: #242220 !important;
+    transition: all 0.2s ease !important;
+    position: relative !important;
+    margin-top: 2px !important;
+}
+.luxury-atelier-card button.btn-card-quick-add-icon:hover {
+    background: #362d24 !important;
+    color: #f7f2e9 !important;
+}
+.luxury-atelier-card button.btn-card-quick-add-icon svg {
+    width: 16px !important;
+    height: 16px !important;
+}
+.luxury-atelier-card .qty-badge {
+    position: absolute !important;
+    top: -6px !important;
+    right: -6px !important;
+    background: #242220 !important;
+    color: #fff !important;
+    font-size: 10px !important;
+    width: 16px !important;
+    height: 16px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-weight: bold !important;
+}
+
+@media (max-width: 1024px) {
+  .pdp-col-center-gallery .pdp-center-images-stack {
+    display: flex !important;
+    flex-direction: row !important;
+    overflow-x: auto !important;
+    gap: 12px !important;
+    padding-bottom: 8px !important;
+  }
+  .pdp-col-center-gallery .pdp-stack-thumb-box {
+    flex: 0 0 80px !important;
+    height: 120px !important;
+  }
+  .pdp-col-center-gallery .pdp-gallery-header {
+    display: none !important;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .product-grid, .pdp-related-grid-3 {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
 }

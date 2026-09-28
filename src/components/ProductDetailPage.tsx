@@ -40,6 +40,34 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
   const [washCareOpen, setWashCareOpen] = useState(false);
   const [shippingOpen, setShippingOpen] = useState(false);
 
+  // Swipe logic states
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
+  const [touchEndX, setTouchEndX] = useState<number | null>(null);
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEndX(null); 
+    setTouchStartX(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEndX(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStartX || !touchEndX) return;
+    const distance = touchStartX - touchEndX;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+    
+    if (isLeftSwipe && activeImgIdx < images.length - 1) {
+      setActiveImgIdx(activeImgIdx + 1);
+    }
+    if (isRightSwipe && activeImgIdx > 0) {
+      setActiveImgIdx(activeImgIdx - 1);
+    }
+  };
+
 
   // Scroll to top when product changes
   useEffect(() => {
@@ -158,25 +186,33 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
           <div className="pdp-col-large-sticky">
             <div
               className="pdp-large-img-box magnifier-target-box"
-              
+              onTouchStart={onTouchStart}
+              onTouchMove={onTouchMove}
+              onTouchEnd={onTouchEnd}
             >
               <img
                 src={mainImage.url}
                 alt={mainImage.altText || product.title}
-                className="pdp-large-main-img" /></div><div className="pdp-thumbnail-strip">
+                className="pdp-large-main-img" />
+            </div>
+          </div>
+
+          {/* COLUMN 2: CENTER SCROLLABLE OTHER PRODUCT IMAGES */}
+          <div className="pdp-col-center-gallery">
+            <div className="pdp-center-images-stack">
               {images.map((img, idx) => (
                 <div
                   key={idx}
-                  className={`pdp-thumb-box ${activeImgIdx === idx ? "active-thumb" : ""}`}
+                  className={`pdp-stack-thumb-box ${activeImgIdx === idx ? "active-thumb" : ""}`}
                   onClick={() => setActiveImgIdx(idx)}
                 >
                   <img src={img.url} alt={`${product.title} angle ${idx + 1}`} loading="lazy" />
                 </div>
               ))}
             </div>
-              
+          </div>
 
-              </div><div className="pdp-col-right-details">
+          <div className="pdp-col-right-details">
             <div className="pdp-details-sticky-wrap">
               {/* Product Header: Name & Price */}
               <div className="pdp-header-row">

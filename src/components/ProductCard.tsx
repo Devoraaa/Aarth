@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import { useCart } from "../context/CartContext";
 import type { ShopifyProduct } from "../lib/shopify";
 
 interface ProductCardProps {
@@ -21,9 +22,15 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   const cardRef = useRef<HTMLDivElement>(null);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
+  const { cart } = useCart();
 
   const price = product.priceRange.minVariantPrice;
   const formattedPrice = `${price.currencyCode === "GBP" ? "£" : price.currencyCode === "INR" ? "₹" : price.currencyCode + " "}${parseFloat(price.amount).toFixed(2)}`;
+
+  
+  const variantId = product.variants?.[0]?.id || product.id;
+  const cartItem = cart?.lines?.find((item: any) => item.merchandise.id === variantId);
+  const quantityInCart = cartItem ? cartItem.quantity : 0;
 
   const frontImg = product.images[0]?.url || "/assets/product-1.jpg";
   const backImg = product.images[1]?.url || null;
@@ -92,23 +99,30 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           />
         )}
 
-        {/* Quick Add Overlay Button inside photo bottom */}
-        <div className="product-card-quick-actions">
-          <button
-            className="btn-card-quick-add"
-            disabled={loading}
-            onClick={(e) => onQuickAdd(e, product)}
-          >
-            <span>Add To Cart</span>
-          </button>
-        </div>
       </div>
 
-      {/* Product Meta Section */}
-      <div className="product-meta-content">
-        <h3 className="product-title">{product.title}</h3>
-        <div className="product-price-row">
+      {/* Product Meta Section - Redesigned */}
+      <div className="product-meta-content new-meta-layout">
+        <div className="product-meta-left">
+          <h3 className="product-title">{product.title}</h3>
           <span className="product-price-val">{formattedPrice}</span>
+        </div>
+        <div className="product-meta-right">
+          <button 
+             className="btn-card-quick-add-icon"
+             disabled={loading}
+             onClick={(e) => onQuickAdd(e, product)}
+             title="Add to Cart"
+          >
+             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+               <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+             </svg>
+             {quantityInCart > 0 && (
+                <span className="qty-badge">
+                  {quantityInCart}
+                </span>
+             )}
+          </button>
         </div>
       </div>
     </article>
