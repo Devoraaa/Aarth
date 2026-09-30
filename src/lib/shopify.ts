@@ -49,6 +49,7 @@ export interface ShopifyProduct {
   storyBgPc?: string;
   storyBgMobile?: string;
   storyTexts?: string[];
+  sizeChart?: string | null;
 }
 
 export interface CartLineItem {
@@ -87,6 +88,8 @@ const PRODUCT_FRAGMENT = `
     descriptionHtml
     tags
     wash_care: metafield(namespace: "custom", key: "wash_care") { value }
+    size_chart: metafield(namespace: "custom", key: "size_chart") { value }
+    size_chart: metafield(namespace: "custom", key: "size_chart") { value }
     shipping: metafield(namespace: "custom", key: "shipping") { value }
       story_bg_pc: metafield(namespace: "custom", key: "story_bg_pc") {
         value
@@ -230,6 +233,7 @@ function normalizeProduct(raw: any): ShopifyProduct {
     descriptionHtml: raw.descriptionHtml ?? "",
     tags: raw.tags ?? [],
     washCare: raw.wash_care?.value,
+    sizeChart: raw.size_chart?.value ?? null,
     shipping: raw.shipping?.value,
     storyBgPc: raw.story_bg_pc?.reference?.image?.url || raw.story_bg_pc?.value,
     storyBgMobile: raw.story_bg_mobile?.reference?.image?.url || raw.story_bg_mobile?.value,

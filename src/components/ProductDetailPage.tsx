@@ -3,6 +3,8 @@ import type { ShopifyProduct, ShopifyVariant } from "../lib/shopify";
 import { useCart } from "../context/CartContext";
 import { cartCreate } from "../lib/shopify";
 import { ProductCard } from "./ProductCard";
+import { SizeChart } from "./SizeChart";
+import { AnimatePresence } from "framer-motion";
 
 interface ProductDetailPageProps {
   product: ShopifyProduct;
@@ -34,6 +36,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
     product.variants[0]?.id || ""
   );
   const [buyingNow, setBuyingNow] = useState(false);
+  const [sizeChartOpen, setSizeChartOpen] = useState(false);
 
   // Accordion dropdown states
   const [descOpen, setDescOpen] = useState(false);
@@ -226,32 +229,35 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
 
               <div className="pdp-divider"></div>
 
-              {/* Variants Selector if more than 1 */}
-              {product.variants.length > 1 && (
-                <div className="pdp-variants-section">
-                  <label className="pdp-variant-label">SELECT SIZE / EDITION</label>
-                  <div className="pdp-variant-chips">
-                    {product.variants.map((v) => (
-                      <button
-                        key={v.id}
-                        className={`pdp-variant-chip ${selectedVariantId === v.id ? "selected" : ""}`}
-                        onClick={() => setSelectedVariantId(v.id)}
-                      >
-                        {v.title}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-
               {/* Quantity Selector */}
-              <div className="pdp-qty-row">
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "10px", marginTop: "-10px" }}>
+                <span className="pdp-meta-label" style={{ marginBottom: 0 }}></span>
+                {product.sizeChart && (
+                  <button 
+                    onClick={() => setSizeChartOpen(!sizeChartOpen)}
+                    style={{ 
+                      fontSize: "10px", 
+                      fontFamily: "var(--font-mono)", 
+                      textTransform: "uppercase", 
+                      letterSpacing: "0.1em",
+                      textDecoration: "underline",
+                      cursor: "pointer",
+                      background: "none",
+                      border: "none",
+                      color: "var(--color-taupe)"
+                    }}
+                  >
+                    Size Guide
+                  </button>
+                )}
+              </div>
+              <div className="pdp-qty-row" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
                 <div className="pdp-qty-selector">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
                     aria-label="Decrease quantity"
                   >
-                    −
+                    -
                   </button>
                   <span>{quantity}</span>
                   <button
@@ -261,7 +267,46 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
                     +
                   </button>
                 </div>
+
+                <div className="pdp-size-selector-row" style={{ display: 'flex', gap: '6px' }}>
+                  {['S', 'M', 'L', 'XL'].map(sizeLabel => {
+                    const sizeMapping: Record<string, string[]> = {
+                      'S': ['s', 'small'],
+                      'M': ['m', 'medium'],
+                      'L': ['l', 'large'],
+                      'XL': ['xl', 'extra large', 'extra-large', 'extralarge']
+                    };
+                    const matchedVariant = product.variants.find(v => {
+                      const t = v.title.toLowerCase().trim();
+                      return sizeMapping[sizeLabel].includes(t);
+                    });
+                    
+                    const isAvailable = matchedVariant && matchedVariant.availableForSale;
+
+                    return (
+                      <button
+                        key={sizeLabel}
+                        className={`pdp-size-btn ${selectedVariantId === matchedVariant?.id ? 'selected' : ''}`}
+                        disabled={!isAvailable}
+                        onClick={() => {
+                          if (matchedVariant) {
+                            setSelectedVariantId(matchedVariant.id);
+                          }
+                        }}
+                        title={isAvailable ? `Select Size ${sizeLabel}` : `Size ${sizeLabel} Unavailable`}
+                      >
+                        {sizeLabel}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
+              
+              <AnimatePresence>
+                {sizeChartOpen && product.sizeChart && (
+                  <SizeChart rawTsvData={product.sizeChart} />
+                )}
+              </AnimatePresence>
 
               {/* CTA Action Buttons: Add to Bag & Buy Now */}
               <div className="pdp-cta-buttons">

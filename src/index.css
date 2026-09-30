@@ -2388,8 +2388,8 @@ button {
 .archival-seal-center {
   position: relative;
   z-index: 2;
-  width: 44px;
-  height: 44px;
+  width: 42px;
+  height: 42px;
   background-color: #f7f2e9;
   background-image: url('/assets/new-paper.png');
   border: 1px solid var(--border-antique);
@@ -8413,4 +8413,47 @@ button {
   text-align: center;
   /* Subtle distressed/engraved effect */
   text-shadow: 0px 1px 1px rgba(255,255,255,0.7), 0px -1px 0px rgba(0,0,0,0.08);
+}
+
+.pdp-size-btn {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-antique);
+  background: transparent;
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--color-cacao);
+  border-radius: 0;
+  text-transform: uppercase;
+}
+.pdp-size-btn:hover:not(:disabled) {
+  border-color: var(--color-cacao);
+  background: rgba(74, 59, 50, 0.05);
+}
+.pdp-size-btn.selected {
+  background: var(--color-cacao);
+  color: #F7F2E9;
+  border-color: var(--color-cacao);
+}
+.pdp-size-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  position: relative;
+  overflow: hidden;
+}
+.pdp-size-btn:disabled::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -20%;
+  width: 140%;
+  height: 1px;
+  background-color: var(--color-cacao);
+  transform: rotate(-45deg);
 }
