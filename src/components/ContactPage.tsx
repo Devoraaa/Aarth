@@ -1,13 +1,27 @@
-import React, { useRef, useState } from 'react';
-import { subscribeToNewsletter } from '../lib/shopify';
+import React, { useRef, useState, useEffect } from 'react';
+import { subscribeToNewsletter, getContactSettings } from '../lib/shopify';
 
 interface ContactPageProps {
   onBack: () => void;
+  videoUrl?: string | null;
 }
 
-export function ContactPage({ onBack }: ContactPageProps) {
+export function ContactPage({ onBack, videoUrl: initialVideoUrl }: ContactPageProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlayingVideo, setIsPlayingVideo] = useState(true);
+  const [videoSrc, setVideoSrc] = useState<string>(initialVideoUrl || "/assets/fashion-loop.mp4");
+
+  useEffect(() => {
+    if (initialVideoUrl) {
+      setVideoSrc(initialVideoUrl);
+    } else {
+      getContactSettings().then(settings => {
+        if (settings?.videoUrl) {
+          setVideoSrc(settings.videoUrl);
+        }
+      });
+    }
+  }, [initialVideoUrl]);
   
   // Newsletter Form State
   const [email, setEmail] = useState('');
@@ -90,7 +104,7 @@ export function ContactPage({ onBack }: ContactPageProps) {
                 objectFit: "cover",
                 filter: "sepia(0.3) grayscale(0.2) contrast(1.1)"
               }}
-              src="/assets/user-hero-video.mp4"
+              src={videoSrc}
               autoPlay
               loop
               muted

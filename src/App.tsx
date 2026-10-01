@@ -9,7 +9,7 @@ import { ProductCard } from './components/ProductCard';
 import { CustomCursor } from './components/CustomCursor';
 import { VintagePocketChronometer } from './components/VintagePocketChronometer';
 import { VintageAtmosphere } from './components/VintageAtmosphere';
-import { getProducts, getHeroSettings, type ShopifyProduct } from './lib/shopify';
+import { getProducts, getHeroSettings, getContactSettings, type ShopifyProduct } from './lib/shopify';
 import { ContactPage } from './components/ContactPage';
 import { RefundsPage } from './components/RefundsPage';
 import { ShippingPage } from './components/ShippingPage';
@@ -41,6 +41,7 @@ function StorefrontContent() {
   const [showShippingPage, setShowShippingPage] = useState(false);
   const [showTermsPage, setShowTermsPage] = useState(false);
   const [heroImages, setHeroImages] = useState({ desktop: '/assets/hero-banner-transparent.png', mobile: '/assets/hero-banner-mobile-transparent.png' });
+  const [contactVideoUrl, setContactVideoUrl] = useState<string | null>(null);
 
   // Video Reel Interactive Play/Pause
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -95,6 +96,12 @@ function StorefrontContent() {
           desktop: settings.desktopUrl || prev.desktop,
           mobile: settings.mobileUrl || settings.desktopUrl || prev.mobile
         }));
+      }
+    });
+
+    getContactSettings().then((settings) => {
+      if (settings && settings.videoUrl) {
+        setContactVideoUrl(settings.videoUrl);
       }
     });
   }, []);
@@ -396,10 +403,13 @@ function StorefrontContent() {
         </main>
       ) : showContactPage ? (
         <main>
-          <ContactPage onBack={() => {
-            setShowContactPage(false);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }} />
+          <ContactPage 
+            videoUrl={contactVideoUrl}
+            onBack={() => {
+              setShowContactPage(false);
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }} 
+          />
         </main>
       ) : selectedProduct ? (
         <main>
@@ -538,9 +548,33 @@ function StorefrontContent() {
             <div className="footer-col">
               <h4>Contact</h4>
               <ul className="footer-nav">
-                {/* <li><a href="#">Number</a></li> */}
-                <li><a href="https://www.instagram.com/aarth.uk?stkn=MTVsc3VweGczN2ptNQ==">Instagram</a></li>
-                <li><a href="#">Email: Hello@aarth.uk</a></li>
+                <li>
+                  <a 
+                    href="https://www.instagram.com/aarth.uk?stkn=MTVsc3VweGczN2ptNQ==" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                  >
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                      <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+                      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                      <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+                    </svg>
+                    <span>aarth.uk</span>
+                  </a>
+                </li>
+                <li>
+                  <a 
+                    href="mailto:hello@aarth.uk"
+                    style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                  >
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                      <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                    </svg>
+                    <span>Email: hello@aarth.uk</span>
+                  </a>
+                </li>
               </ul>
             </div>
             <div className="footer-col">

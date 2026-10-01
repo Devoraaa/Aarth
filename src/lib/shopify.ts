@@ -662,6 +662,92 @@ export async function getHeroSettings() {
   }
 }
 
+export async function getContactSettings(): Promise<{ videoUrl: string | null }> {
+  const query = `
+    query getContactPage {
+      contactMetaobject: metaobject(handle: {handle: "main-contact-page", type: "contact_page"}) {
+        fields {
+          key
+          value
+          reference {
+            ... on Video {
+              sources {
+                url
+                mimeType
+              }
+            }
+            ... on GenericFile {
+              url
+            }
+          }
+        }
+      }
+      contactSettings: metaobject(handle: {handle: "contact-settings", type: "contact_settings"}) {
+        fields {
+          key
+          value
+          reference {
+            ... on Video {
+              sources {
+                url
+                mimeType
+              }
+            }
+            ... on GenericFile {
+              url
+            }
+          }
+        }
+      }
+      heroBanner: metaobject(handle: {handle: "main-hero-banner", type: "hero_banner"}) {
+        fields {
+          key
+          value
+          reference {
+            ... on Video {
+              sources {
+                url
+                mimeType
+              }
+            }
+            ... on GenericFile {
+              url
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  try {
+    const data = await shopifyFetch<any>(query);
+    const extractVideo = (fields: any[] | undefined) => {
+      if (!fields || !Array.isArray(fields)) return null;
+      for (const field of fields) {
+        if (field.key === 'video' || field.key === 'contact_video' || field.key === 'video_url') {
+          const videoSource = field.reference?.sources?.[0]?.url;
+          if (videoSource) return videoSource;
+          const fileUrl = field.reference?.url;
+          if (fileUrl) return fileUrl;
+          if (field.value && (field.value.startsWith('http') || field.value.endsWith('.mp4'))) {
+            return field.value;
+          }
+        }
+      }
+      return null;
+    };
+
+    const videoUrl = 
+      extractVideo(data?.contactMetaobject?.fields) ||
+      extractVideo(data?.contactSettings?.fields) ||
+      extractVideo(data?.heroBanner?.fields);
+
+    return { videoUrl: videoUrl || null };
+  } catch (err) {
+    return { videoUrl: null };
+  }
+}
+
 
 
 
