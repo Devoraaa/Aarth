@@ -38,7 +38,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) 
     product.variants[0];
 
   const price = currentVariant?.price || product.priceRange.minVariantPrice;
-  const formattedPrice = `${price.currencyCode === "GBP" ? "£" : price.currencyCode === "INR" ? "₹" : price.currencyCode + " "}${parseFloat(price.amount).toFixed(2)}`;
+  const formattedPrice = new Intl.NumberFormat('en-GB', { style: 'currency', currency: price.currencyCode }).format(parseFloat(price.amount));
   const currentImg = product.images[selectedImageIdx]?.url || "";
 
   const handleAddToCart = async () => {

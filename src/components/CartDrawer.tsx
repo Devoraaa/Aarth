@@ -1,10 +1,8 @@
 import React from "react";
 import { useCart } from "../context/CartContext";
-import { useCustomer } from '../context/CustomerContext';
 
 export const CartDrawer: React.FC = () => {
   const { cart, isOpen, closeCart, updateItem, removeItem, loading } = useCart();
-  const { customer, openAuth } = useCustomer();
 
   if (!isOpen) return null;
 
@@ -12,15 +10,10 @@ export const CartDrawer: React.FC = () => {
   const totalQuantity = cart?.totalQuantity || 0;
   const totalAmount = cart?.cost?.totalAmount;
   const formattedTotal = totalAmount
-    ? `${totalAmount.currencyCode === "GBP" ? "£" : totalAmount.currencyCode === "INR" ? "₹" : totalAmount.currencyCode + " "}${parseFloat(totalAmount.amount).toFixed(2)}`
+    ? new Intl.NumberFormat('en-GB', { style: 'currency', currency: totalAmount.currencyCode }).format(parseFloat(totalAmount.amount))
     : "£0.00";
 
   const handleCheckout = () => {
-    if (!customer) {
-      closeCart();
-      openAuth();
-      return;
-    }
     if (cart?.checkoutUrl) {
       window.location.href = cart.checkoutUrl;
     }
@@ -75,7 +68,7 @@ export const CartDrawer: React.FC = () => {
           <div className="cart-items-list">
             {lines.map((item) => {
               const price = item.merchandise.price;
-              const formattedPrice = `${price.currencyCode === "GBP" ? "£" : price.currencyCode === "INR" ? "₹" : price.currencyCode + " "}${parseFloat(price.amount).toFixed(2)}`;
+              const formattedPrice = new Intl.NumberFormat('en-GB', { style: 'currency', currency: price.currencyCode }).format(parseFloat(price.amount));
 
               return (
                 <div key={item.id} className="cart-item-row">

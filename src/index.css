@@ -687,7 +687,7 @@ button {
   align-items: flex-end;
   justify-content: center;
   overflow: hidden;
-  padding-bottom: 24px;
+  padding-bottom: 0px;
 }
 .hero-picture {
   display: flex;
@@ -697,12 +697,10 @@ button {
   height: 100%;
 }
 .hero-image {
-  width: auto;
-  max-width: 95%;
-  height: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  object-position: center bottom;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center bottom;
   filter: none;
   opacity: 1;
   user-select: none;
@@ -752,7 +750,7 @@ button {
   text-align: center;
   margin-bottom: 60px;
   position: relative;
-  padding-bottom: 24px;
+  padding-bottom: 0px;
   mix-blend-mode: multiply;
 }
 .section-header-flourish {
@@ -1318,7 +1316,7 @@ button {
     align-items: flex-end;
     justify-content: center;
     overflow: hidden;
-    padding-bottom: 20px;
+    padding-bottom: 0px;
   }
   .hero-picture {
     width: 100%;
@@ -1328,12 +1326,10 @@ button {
     justify-content: center;
   }
   .hero-image {
-    object-fit: contain;
-    object-position: center bottom;
-    width: auto;
-    max-width: 95%;
-    height: 100%;
-    max-height: 100%;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center bottom;
     filter: none;
     opacity: 1;
   }
@@ -1645,7 +1641,7 @@ button {
 .cart-item-row {
   display: flex;
   gap: 16px;
-  padding-bottom: 20px;
+  padding-bottom: 0px;
   border-bottom: 1px solid rgba(74, 59, 50, 0.15);
 }
 
@@ -4701,7 +4697,7 @@ button {
   text-align: center;
   margin-bottom: 36px;
   border-bottom: 1px solid var(--border-fine);
-  padding-bottom: 24px;
+  padding-bottom: 0px;
 }
 
 .scroll-registry {
@@ -8193,7 +8189,6 @@ button {
 
 /* 6. Hero and PDP elements strictly above stamps */
 .hero-content,
-.hero-image-wrapper,
 .pdp-top-bar-wrapper,
 .pdp-three-column-grid,
 .pdp-main-image-viewport,
@@ -8403,16 +8398,16 @@ button {
 }
 
 .royal-story-text {
-  font-family: 'Bodoni Moda', 'Playfair Display', serif;
-  font-weight: 700;
-  color: #68401F;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-size: 22px;
-  line-height: 1.6;
+  font-family: var(--font-serif, 'Cormorant Garamond', Georgia, serif);
+  font-weight: 400;
+  font-style: italic;
+  color: #1F1712;
+  text-transform: none;
+  letter-spacing: 0.015em;
+  font-size: clamp(20px, 1.55vw, 24px);
+  line-height: 1.75;
   text-align: center;
-  /* Subtle distressed/engraved effect */
-  text-shadow: 0px 1px 1px rgba(255,255,255,0.7), 0px -1px 0px rgba(0,0,0,0.08);
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.9);
 }
 
 .pdp-size-btn {
@@ -8456,4 +8451,54 @@ button {
   height: 1px;
   background-color: var(--color-cacao);
   transform: rotate(-45deg);
+}
+
+/* Legal / Policy Pages */
+.legal-content {
+  max-width: 800px;
+  margin: 0 auto;
+  font-family: var(--font-sans);
+  color: var(--color-leather);
+  line-height: 1.8;
+  font-size: 16px;
+  text-align: justify;
+}
+
+.legal-content .legal-date {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-taupe);
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.legal-content h2 {
+  font-family: var(--font-serif);
+  font-size: 24px;
+  color: var(--color-cacao);
+  margin-top: 50px;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+.legal-content p {
+  margin-bottom: 20px;
+}
+
+.legal-content ul {
+  list-style-type: disc;
+  padding-left: 20px;
+  margin-bottom: 20px;
+}
+
+.legal-content li {
+  margin-bottom: 8px;
+}
+
+.legal-content a {
+  color: var(--color-cacao);
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }

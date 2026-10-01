@@ -85,13 +85,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
     product.variants[0];
 
   const price = currentVariant?.price || product.priceRange.minVariantPrice;
-  const formattedPrice = `${
-    price.currencyCode === "GBP"
-      ? "£"
-      : price.currencyCode === "INR"
-      ? "₹"
-      : price.currencyCode + " "
-  }${parseFloat(price.amount).toFixed(2)}`;
+  const formattedPrice = new Intl.NumberFormat('en-GB', { style: 'currency', currency: price.currencyCode }).format(parseFloat(price.amount));
 
   // Product images list
   const baseImages =

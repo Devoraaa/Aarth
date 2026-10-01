@@ -172,13 +172,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
             <div className="search-results-grid">
               {filteredProducts.map((product) => {
                 const price = product.priceRange.minVariantPrice;
-                const formattedPrice = `${
-                  price.currencyCode === "GBP"
-                    ? "£"
-                    : price.currencyCode === "INR"
-                    ? "₹"
-                    : price.currencyCode + " "
-                }${parseFloat(price.amount).toFixed(2)}`;
+                const formattedPrice = new Intl.NumberFormat('en-GB', { style: 'currency', currency: price.currencyCode }).format(parseFloat(price.amount));
                 const img = product.images[0]?.url || "/assets/product-1.jpg";
 
                 return (

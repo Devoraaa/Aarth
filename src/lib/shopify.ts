@@ -203,13 +203,16 @@ export async function shopifyFetch<T>(
 
   const endpoint = `https://${domain}/api/${API_VERSION}/graphql.json`;
 
+  const country = typeof window !== 'undefined' ? (localStorage.getItem('aarth_country') || 'GB') : 'GB';
+  const modifiedQuery = query.replace(/(query|mutation)(\s+[a-zA-Z0-9_]+)?(\([^)]*\))?\s*\{/, `$1$2$3 @inContext(country: ${country}) {`);
+
   const res = await fetch(endpoint, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       "X-Shopify-Storefront-Access-Token": token,
     },
-    body: JSON.stringify({ query, variables }),
+    body: JSON.stringify({ query: modifiedQuery, variables }),
   });
 
   if (!res.ok) {

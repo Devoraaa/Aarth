@@ -1,18 +1,19 @@
 import { useEffect, useRef, useState } from 'react';
 import ComingSoon from './ComingSoon';
 import { CartProvider, useCart } from './context/CartContext';
-import { CustomerProvider, useCustomer } from './context/CustomerContext';
 import { CartDrawer } from './components/CartDrawer';
-import { AuthModal } from './components/AuthModal';
 import { ProductDetailPage } from './components/ProductDetailPage';
-import { ProfilePage } from './components/ProfilePage';
 import { SearchModal } from './components/SearchModal';
+import { CountrySelector } from './components/CountrySelector';
 import { ProductCard } from './components/ProductCard';
 import { CustomCursor } from './components/CustomCursor';
 import { VintagePocketChronometer } from './components/VintagePocketChronometer';
 import { VintageAtmosphere } from './components/VintageAtmosphere';
 import { getProducts, getHeroSettings, type ShopifyProduct } from './lib/shopify';
 import { ContactPage } from './components/ContactPage';
+import { RefundsPage } from './components/RefundsPage';
+import { ShippingPage } from './components/ShippingPage';
+import { TermsPage } from './components/TermsPage';
 import { CollectionPage } from './components/CollectionPage';
 import { StoriesPage } from './components/StoriesPage';
 
@@ -36,7 +37,9 @@ function StorefrontContent() {
   const [showContactPage, setShowContactPage] = useState(false);
   const [showStoriesPage, setShowStoriesPage] = useState(false);
   const [showCollectionPage, setShowCollectionPage] = useState(false);
-  const [showProfilePage, setShowProfilePage] = useState(false);
+  const [showRefundsPage, setShowRefundsPage] = useState(false);
+  const [showShippingPage, setShowShippingPage] = useState(false);
+  const [showTermsPage, setShowTermsPage] = useState(false);
   const [heroImages, setHeroImages] = useState({ desktop: '/assets/hero-banner-transparent.png', mobile: '/assets/hero-banner-mobile-transparent.png' });
 
   // Video Reel Interactive Play/Pause
@@ -47,7 +50,6 @@ function StorefrontContent() {
   const [heroParallax, setHeroParallax] = useState({ x: 0, y: 0 });
 
   const { cart, openCart, addItem, loading: cartLoading } = useCart();
-  const { openAuth, customer } = useCustomer();
   const [firstScrollTriggered, setFirstScrollTriggered] = useState(false);
   const prevScrolledRef = useRef(false);
 
@@ -223,7 +225,6 @@ function StorefrontContent() {
                 setShowContactPage(false);
                 setShowStoriesPage(false);
                 setShowCollectionPage(false);
-                setShowProfilePage(false);
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
           >
@@ -236,6 +237,7 @@ function StorefrontContent() {
         </div>
 
         <div className="nav-right">
+          <CountrySelector />
           <button 
             className="search-toggle-btn nav-icon nav-action-btn" 
             aria-label="Search"
@@ -245,19 +247,7 @@ function StorefrontContent() {
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="nav-svg-icon"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
             <span className="nav-icon-tooltip">SEARCH</span>
           </button>
-          <a href="#account" onClick={(e) => { e.preventDefault(); if(customer) { setShowProfilePage(true); setShowCollectionPage(false); setShowContactPage(false); setShowStoriesPage(false); setSelectedProduct(null); } else { openAuth(); } }} className="nav-icon desktop-account-link nav-action-btn" aria-label="Account" title="My Account" style={{ position: "relative", alignItems: "center", gap: "6px", textDecoration: "none" }}>
-            {customer ? (
-              <>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="nav-svg-icon"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                <span style={{ fontFamily: "var(--font-mono)", fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.05em", paddingTop: "2px", minWidth: "max-content" }}>{customer.firstName}</span>
-              </>
-            ) : (
-              <>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="nav-svg-icon"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                <span className="nav-icon-tooltip" style={{ minWidth: "max-content", right: "0", transform: "translateX(0)" }}>ACCOUNT</span>
-              </>
-            )}
-          </a>
+          
           <button 
             className="cart-toggle-btn nav-link-cart" 
             onClick={openCart}
@@ -378,14 +368,31 @@ function StorefrontContent() {
         </main>
       ) : showStoriesPage ? (
         <main>
-          <StoriesPage products={displayProducts.slice(0,4)} initialProductId={selectedProduct?.id || displayProducts[0]?.id || ""} onBack={() => {
-            setShowStoriesPage(false);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }} />
+          <StoriesPage 
+            products={displayProducts.slice(0,4)} 
+            initialProductId={selectedProduct?.id || displayProducts[0]?.id || ""} 
+            onBack={() => {
+              setShowStoriesPage(false);
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            onSelectProduct={(p) => {
+              setSelectedProduct(p);
+              setShowStoriesPage(false);
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+          />
         </main>
-      ) : showProfilePage ? (
+      ) : showTermsPage ? (
         <main>
-          <ProfilePage onBack={() => setShowProfilePage(false)} />
+          <TermsPage onClose={() => { setShowTermsPage(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} />
+        </main>
+      ) : showShippingPage ? (
+        <main>
+          <ShippingPage onClose={() => { setShowShippingPage(false); setShowTermsPage(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} />
+        </main>
+      ) : showRefundsPage ? (
+        <main>
+          <RefundsPage onClose={() => { setShowRefundsPage(false); setShowShippingPage(false); setShowTermsPage(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }} />
         </main>
       ) : showContactPage ? (
         <main>
@@ -539,8 +546,9 @@ function StorefrontContent() {
             <div className="footer-col">
               <h4>Policy</h4>
               <ul className="footer-nav">
-                <li><a href="#">Terms and Condition</a></li>
-                <li><a href="#">Refund Policy</a></li>
+                <li><a href="#" onClick={(e) => { e.preventDefault(); setSelectedProduct(null); setShowStoriesPage(false); setShowCollectionPage(false); setShowContactPage(false); setShowRefundsPage(false); setShowShippingPage(false); setShowTermsPage(true); window.scrollTo({ top: 0, behavior: "smooth" }); }}>Terms and Condition</a></li>
+                  <li><a href="#" onClick={(e) => { e.preventDefault(); setSelectedProduct(null); setShowStoriesPage(false); setShowCollectionPage(false); setShowContactPage(false); setShowRefundsPage(false); setShowShippingPage(true); window.scrollTo({ top: 0, behavior: "smooth" }); }}>Shipping Policy</a></li>
+                <li><a href="#" onClick={(e) => { e.preventDefault(); setSelectedProduct(null); setShowStoriesPage(false); setShowCollectionPage(false); setShowContactPage(false); setShowShippingPage(false); setShowTermsPage(false); setShowRefundsPage(true); window.scrollTo({ top: 0, behavior: "smooth" }); }}>Refund & Returns Policy</a></li>
               </ul>
             </div>
           </div>
@@ -555,7 +563,7 @@ function StorefrontContent() {
       </footer>
 
       {/* Slide-over Cart Drawer */}
-      <AuthModal onSuccess={() => setShowProfilePage(true)} />
+      
       <CartDrawer />
 
       {/* Interactive Live Search & Filter Modal */}
@@ -585,11 +593,9 @@ function App() {
   }
 
   return (
-    <CustomerProvider>
-      <CartProvider>
+    <CartProvider>
         <StorefrontContent />
       </CartProvider>
-    </CustomerProvider>
   );
 }
 

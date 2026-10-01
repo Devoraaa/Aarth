@@ -25,7 +25,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   const { cart } = useCart();
 
   const price = product.priceRange.minVariantPrice;
-  const formattedPrice = `${price.currencyCode === "GBP" ? "£" : price.currencyCode === "INR" ? "₹" : price.currencyCode + " "}${parseFloat(price.amount).toFixed(2)}`;
+  const formattedPrice = new Intl.NumberFormat('en-GB', { style: 'currency', currency: price.currencyCode }).format(parseFloat(price.amount));
 
   
   const variantId = product.variants?.[0]?.id || product.id;
@@ -105,9 +105,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       <div className="product-meta-content new-meta-layout">
         <div className="product-meta-left">
           <h3 className="product-title">{product.title}</h3>
-          <span className="product-price-val">{formattedPrice}</span>
         </div>
-        <div className="product-meta-right">
+        <div className="product-meta-right" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <span className="product-price-val" style={{ margin: 0, fontWeight: 700, fontFamily: 'var(--font-sans)', letterSpacing: '0.02em', fontSize: '13px', color: '#111' }}>{formattedPrice}</span>
           <button 
              className="btn-card-quick-add-icon"
              disabled={loading}
