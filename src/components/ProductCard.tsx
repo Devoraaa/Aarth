@@ -32,7 +32,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   const cartItem = cart?.lines?.find((item: any) => item.merchandise.id === variantId);
   const quantityInCart = cartItem ? cartItem.quantity : 0;
 
-  const frontImg = product.images[0]?.url || "/assets/product-1.jpg";
+  const frontImg = product.images[0]?.url || "";
   const backImg = product.images[1]?.url || null;
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -82,12 +82,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       <div className="product-image-box">
 
         {/* Primary Front Plate Image */}
-        <img
-          src={frontImg}
-          alt={product.title}
-          loading="lazy"
-          className={`product-primary-img ${backImg && isHovered ? "has-flip" : ""}`}
-        />
+        {frontImg && (
+          <img
+            src={frontImg}
+            alt={product.title}
+            loading="lazy"
+            className={`product-primary-img ${backImg && isHovered ? "has-flip" : ""}`}
+          />
+        )}
 
         {/* Secondary Editorial Back Plate Image on Hover */}
         {backImg && (

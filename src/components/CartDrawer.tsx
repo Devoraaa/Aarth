@@ -1,7 +1,11 @@
 import React from "react";
 import { useCart } from "../context/CartContext";
 
-export const CartDrawer: React.FC = () => {
+interface CartDrawerProps {
+  onNavigateToCollection?: () => void;
+}
+
+export const CartDrawer: React.FC<CartDrawerProps> = ({ onNavigateToCollection }) => {
   const { cart, isOpen, closeCart, updateItem, removeItem, loading } = useCart();
 
   if (!isOpen) return null;
@@ -57,11 +61,15 @@ export const CartDrawer: React.FC = () => {
               className="cart-btn-explore"
               onClick={() => {
                 closeCart();
-                const el = document.getElementById("collection");
-                if (el) el.scrollIntoView({ behavior: "smooth" });
+                if (onNavigateToCollection) {
+                  onNavigateToCollection();
+                } else {
+                  const el = document.getElementById("collection");
+                  if (el) el.scrollIntoView({ behavior: "smooth" });
+                }
               }}
             >
-              EXPLORE ARCHIVE
+              EXPLORE GARVI
             </button>
           </div>
         ) : (

@@ -197,7 +197,9 @@ function StorefrontContent() {
                           window.scrollTo({ top: 0, behavior: "smooth" });
                         }}
                       >
-                        <img src={prod.images[0]?.url || "/assets/fallback-image.jpg"} alt={prod.title} />
+                        {prod.images[0]?.url && (
+                          <img src={prod.images[0].url} alt={prod.title} />
+                        )}
                         <div className="story-dropdown-card-overlay">
                           <h3 className="story-dropdown-card-title">{prod.title}</h3>
                         </div>
@@ -528,6 +530,9 @@ function StorefrontContent() {
           <div className="footer-grid">
             <div className="footer-col">
               <img src="/assets/aarth-logo-white.png" alt="AARTH Logo" className="footer-logo" style={{ marginTop: '0' }} />
+              <div className='footer-col footer-nav'>Move With Meaning <br />
+GARVI • DROP 001 <br />
+Culture x Streetwear</div>
             </div>
             <div className="footer-col">
               <h4>Pages</h4>
@@ -598,7 +603,18 @@ function StorefrontContent() {
 
       {/* Slide-over Cart Drawer */}
       
-      <CartDrawer />
+      <CartDrawer 
+        onNavigateToCollection={() => {
+          setSelectedProduct(null);
+          setShowContactPage(false);
+          setShowStoriesPage(false);
+          setShowTermsPage(false);
+          setShowShippingPage(false);
+          setShowRefundsPage(false);
+          setShowCollectionPage(true);
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }}
+      />
 
       {/* Interactive Live Search & Filter Modal */}
       <SearchModal

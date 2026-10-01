@@ -88,10 +88,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
   const formattedPrice = new Intl.NumberFormat('en-GB', { style: 'currency', currency: price.currencyCode }).format(parseFloat(price.amount));
 
   // Product images list
-  const baseImages =
-    product.images.length > 0
-      ? product.images
-      : [{ url: "/assets/product-1.jpg", altText: product.title }];
+  const baseImages = product.images;
 
   // If product has 2 images, create a curated 4-angle gallery so middle column has rich scrolling
   const images =
@@ -187,10 +184,12 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
               onTouchMove={onTouchMove}
               onTouchEnd={onTouchEnd}
             >
-              <img
-                src={mainImage.url}
-                alt={mainImage.altText || product.title}
-                className="pdp-large-main-img" />
+              {mainImage?.url && (
+                <img
+                  src={mainImage.url}
+                  alt={mainImage.altText || product.title}
+                  className="pdp-large-main-img" />
+              )}
             </div>
           </div>
 

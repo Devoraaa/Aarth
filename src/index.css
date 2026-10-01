@@ -1427,6 +1427,9 @@ button {
   .desktop-account-link {
     display: none;
   }
+  .search-toggle-btn {
+    display: none !important;
+  }
   .brand-logo-img {
     height: 42px;
     width: auto;
@@ -1772,9 +1775,9 @@ button {
 }
 
 .cart-btn-explore:hover {
-  background-color: var(--color-cacao);
-  border-color: var(--color-cacao);
-  color: #111111;
+  background-color: #242220;
+  border-color: #242220;
+  color: #ffffff !important;
 }
 
 /* Cart Items List */
@@ -8049,7 +8052,7 @@ button {
     display: none !important;
   }
   .search-toggle-btn {
-    display: flex !important;
+    display: none !important;
   }
   .moving-design-section {
     height: auto !important;

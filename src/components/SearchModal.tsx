@@ -173,7 +173,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
               {filteredProducts.map((product) => {
                 const price = product.priceRange.minVariantPrice;
                 const formattedPrice = new Intl.NumberFormat('en-GB', { style: 'currency', currency: price.currencyCode }).format(parseFloat(price.amount));
-                const img = product.images[0]?.url || "/assets/product-1.jpg";
+                const img = product.images[0]?.url || "";
 
                 return (
                   <div
@@ -185,7 +185,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
                     }}
                   >
                     <div className="search-result-img-box">
-                      <img src={img} alt={product.title} loading="lazy" />
+                      {img && <img src={img} alt={product.title} loading="lazy" />}
                     </div>
 
                     <div className="search-result-details">
