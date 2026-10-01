@@ -538,9 +538,9 @@ function StorefrontContent() {
             <div className="footer-col">
               <h4>Contact</h4>
               <ul className="footer-nav">
-                <li><a href="#">Number</a></li>
-                <li><a href="#">Instagram</a></li>
-                <li><a href="#">Email</a></li>
+                {/* <li><a href="#">Number</a></li> */}
+                <li><a href="https://www.instagram.com/aarth.uk?stkn=MTVsc3VweGczN2ptNQ==">Instagram</a></li>
+                <li><a href="#">Email: Hello@aarth.uk</a></li>
               </ul>
             </div>
             <div className="footer-col">
@@ -554,7 +554,7 @@ function StorefrontContent() {
           </div>
           <div className="footer-bottom" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', paddingTop: '24px', marginTop: '24px', borderTop: '1px solid rgba(255, 255, 255, 0.1)' }}>
             <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              © 2026 AARTH UK Ltd. — Designed by 
+              Arth Studio Limited — Designed by 
               <img src="/assets/devoraaa-logo.jpg" alt="Devoraaa Logo" style={{ width: '20px', height: '20px', borderRadius: '50%', objectFit: 'cover' }} /> 
               <a href="https://www.devora.page/" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'underline' }}>Devoraaa</a>
             </span>

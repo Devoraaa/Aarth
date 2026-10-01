@@ -185,6 +185,7 @@ button {
 .navbar.scrolled .nav-link,
 .navbar.scrolled .search-toggle-btn,
 .navbar.scrolled .cart-toggle-btn,
+.navbar.scrolled .country-toggle-btn,
 .navbar.scrolled .nav-icon {
   color: #f7f2e9;
 }
@@ -395,6 +396,10 @@ button {
 .nav-link:hover {
   color: var(--color-cacao);
 }
+.navbar.scrolled .nav-link:hover,
+.navbar.pdp-navbar-mode.scrolled .nav-link:hover {
+  color: #ffffff !important;
+}
 .nav-link:hover .nav-link-num {
   opacity: 1;
   transform: translateY(-1px);
@@ -554,9 +559,136 @@ button {
   transform: rotate(-14deg) scale(1.15);
   stroke: var(--color-cacao);
 }
+.navbar.scrolled .search-toggle-btn.nav-action-btn:hover .nav-svg-icon,
+.navbar.pdp-navbar-mode.scrolled .search-toggle-btn.nav-action-btn:hover .nav-svg-icon {
+  stroke: #ffffff !important;
+}
 .desktop-account-link.nav-action-btn:hover .nav-svg-icon {
   transform: translateY(-2px) scale(1.12);
   stroke: var(--color-cacao);
+}
+
+/* Country Selector Styling & Hover States */
+.country-toggle-btn {
+  background: none;
+  border: none;
+  color: #111111;
+  cursor: pointer;
+  padding: 6px 8px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  transition: color 0.3s ease, opacity 0.3s ease, transform 0.2s ease;
+}
+
+.country-toggle-btn .country-name-text {
+  font-size: 14px;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: inherit;
+  transition: color 0.3s ease;
+}
+
+.country-toggle-btn .country-chevron {
+  transition: transform 0.25s ease, stroke 0.3s ease;
+  stroke: currentColor;
+}
+
+/* Hover at top of page (parchment/light background) */
+.country-toggle-btn:hover,
+.country-toggle-btn:hover .country-name-text {
+  color: var(--color-cacao) !important;
+}
+
+.country-toggle-btn:hover .country-chevron {
+  stroke: var(--color-cacao) !important;
+}
+
+.country-toggle-btn:hover img {
+  opacity: 0.85;
+  transform: scale(1.04);
+}
+
+/* Scrolled State: Dark leather navbar */
+.navbar.scrolled .country-toggle-btn,
+.navbar.pdp-navbar-mode.scrolled .country-toggle-btn {
+  color: #f7f2e9 !important;
+}
+
+.navbar.scrolled .country-toggle-btn .country-name-text,
+.navbar.pdp-navbar-mode.scrolled .country-toggle-btn .country-name-text {
+  color: #f7f2e9 !important;
+}
+
+.navbar.scrolled .country-toggle-btn .country-chevron,
+.navbar.pdp-navbar-mode.scrolled .country-toggle-btn .country-chevron {
+  stroke: #f7f2e9 !important;
+}
+
+/* On hover when scrolled: pure white like the rest of the text */
+.navbar.scrolled .country-toggle-btn:hover,
+.navbar.scrolled .country-toggle-btn:hover .country-name-text,
+.navbar.pdp-navbar-mode.scrolled .country-toggle-btn:hover,
+.navbar.pdp-navbar-mode.scrolled .country-toggle-btn:hover .country-name-text {
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+
+.navbar.scrolled .country-toggle-btn:hover .country-chevron,
+.navbar.pdp-navbar-mode.scrolled .country-toggle-btn:hover .country-chevron {
+  stroke: #ffffff !important;
+}
+
+/* Dropdown Menu */
+.country-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  background-color: #f7f2e9;
+  border: 1px solid #362d24;
+  min-width: 145px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+}
+
+.country-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: none;
+  border: none;
+  border-bottom: 1px solid rgba(54, 45, 36, 0.1);
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  color: #242220 !important;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.country-dropdown-item:last-child {
+  border-bottom: none;
+}
+
+.country-dropdown-item:hover {
+  background-color: rgba(54, 45, 36, 0.08) !important;
+  color: #111111 !important;
+}
+
+.country-dropdown-item.active {
+  background-color: rgba(54, 45, 36, 0.12) !important;
+}
+
+.country-dropdown-item span {
+  font-size: 12px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #242220 !important;
 }
 
 /* Cart / Bag Button as Vintage Brass Tag */
@@ -611,15 +743,25 @@ button {
 .cart-toggle-btn.nav-link-cart:hover .cart-btn-inner {
   color: #f7f2e9;
 }
-.navbar.scrolled .cart-toggle-btn.nav-link-cart:hover .cart-btn-inner {
-  color: #242220;
+.navbar.scrolled .cart-toggle-btn.nav-link-cart:hover .cart-btn-inner,
+.navbar.pdp-navbar-mode.scrolled .cart-toggle-btn.nav-link-cart:hover .cart-btn-inner {
+  color: #ffffff !important;
 }
 .cart-toggle-btn.nav-link-cart:hover .cart-svg-tote {
   animation: toteSway 0.6s ease-in-out;
   stroke: var(--color-cacao);
 }
-.navbar.scrolled .cart-toggle-btn.nav-link-cart:hover .cart-svg-tote {
-  stroke: #242220;
+.navbar.scrolled .cart-toggle-btn.nav-link-cart:hover .cart-svg-tote,
+.navbar.pdp-navbar-mode.scrolled .cart-toggle-btn.nav-link-cart:hover .cart-svg-tote {
+  stroke: #ffffff !important;
+}
+.navbar.scrolled .cart-toggle-btn.nav-link-cart:hover,
+.navbar.pdp-navbar-mode.scrolled .cart-toggle-btn.nav-link-cart:hover {
+  border-color: #ffffff !important;
+}
+.navbar.scrolled .cart-toggle-btn.nav-link-cart:hover .cart-count-badge,
+.navbar.pdp-navbar-mode.scrolled .cart-toggle-btn.nav-link-cart:hover .cart-count-badge {
+  color: #ffffff !important;
 }
 @keyframes toteSway {
   0% { transform: rotate(0deg); }

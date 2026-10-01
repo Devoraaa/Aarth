@@ -666,3 +666,26 @@ export async function getHeroSettings() {
 
 
 
+
+export async function updateCartCountry(cartId: string, countryCode: string): Promise<ShopifyCart | null> {
+  const mutation = `
+    ${CART_FRAGMENT}
+    mutation cartBuyerIdentityUpdate($cartId: ID!, $buyerIdentity: CartBuyerIdentityInput!) {
+      cartBuyerIdentityUpdate(cartId: $cartId, buyerIdentity: $buyerIdentity) {
+        cart {
+          ...CartFields
+        }
+      }
+    }
+  `;
+  try {
+    const data = await shopifyFetch<any>(mutation, {
+      cartId,
+      buyerIdentity: { countryCode }
+    });
+    if (data.cartBuyerIdentityUpdate.cart) {
+      return normalizeCart(data.cartBuyerIdentityUpdate.cart);
+    }
+  } catch(e) {}
+  return null;
+}

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { getStoredCartId, clearStoredCartId } from '../lib/shopify';
 
 const REGIONS = [
   { code: 'GB', flag: 'gb', name: 'UK' },
@@ -26,73 +27,58 @@ export const CountrySelector: React.FC = () => {
 
   const handleSelect = (code: string) => {
     localStorage.setItem('aarth_country', code);
+    // Clear old cart so a fresh one is created in the correct market/currency
+    clearStoredCartId();
     setIsOpen(false);
     window.location.reload();
   };
 
   return (
-    <div ref={wrapperRef} className="country-selector-wrapper" style={{ position: 'relative', display: 'flex', alignItems: 'center', marginRight: '8px' }}>
+    <div ref={wrapperRef} className="country-selector-wrapper" style={{ position: 'relative', display: 'flex', alignItems: 'center', marginRight: '4px' }}>
       <button 
-        className="nav-action-btn"
+        className="country-toggle-btn nav-icon nav-action-btn"
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Select Country"
         title="Select Country"
-        style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', background: 'none', border: 'none', padding: '0 8px' }}
       >
         <img 
           src={`https://flagcdn.com/w40/${currentRegion.flag}.png`} 
           alt={currentRegion.name} 
           style={{ width: '24px', height: '18px', objectFit: 'cover', borderRadius: '2px', border: '1px solid rgba(0,0,0,0.2)' }}
         />
-        <span style={{ fontSize: '14px', fontWeight: 600, fontFamily: 'var(--font-mono)', letterSpacing: '0.08em', textTransform: 'uppercase', color: 'inherit' }}>
+        <span className="country-name-text">
           {currentRegion.name}
         </span>
+        <svg 
+          className="country-chevron"
+          width="10" 
+          height="10" 
+          viewBox="0 0 24 24" 
+          fill="none" 
+          stroke="currentColor" 
+          strokeWidth="2.5" 
+          strokeLinecap="round" 
+          strokeLinejoin="round" 
+          style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
+        >
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
       </button>
 
       {isOpen && (
-        <div style={{
-          position: 'absolute',
-          top: '100%',
-          right: 0,
-          marginTop: '12px',
-          backgroundColor: '#f7f2e9',
-          border: '1px solid #362d24',
-          minWidth: '140px',
-          zIndex: 100,
-          display: 'flex',
-          flexDirection: 'column'
-        }}>
+        <div className="country-dropdown-menu">
           {REGIONS.map(r => (
             <button
               key={r.code}
               onClick={() => handleSelect(r.code)}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px',
-                padding: '10px 16px',
-                background: currentCode === r.code ? 'rgba(54, 45, 36, 0.05)' : 'none',
-                border: 'none',
-                borderBottom: '1px solid rgba(54, 45, 36, 0.1)',
-                cursor: 'pointer',
-                textAlign: 'left',
-                width: '100%'
-              }}
-              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(54, 45, 36, 0.05)'}
-              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = currentCode === r.code ? 'rgba(54, 45, 36, 0.05)' : 'transparent'}
+              className={`country-dropdown-item ${currentCode === r.code ? 'active' : ''}`}
             >
               <img 
                 src={`https://flagcdn.com/w40/${r.flag}.png`} 
                 alt={r.name} 
-                style={{ width: '20px', height: '15px', objectFit: 'cover', borderRadius: '2px', border: '1px solid rgba(0,0,0,0.1)' }}
+                style={{ width: '20px', height: '15px', objectFit: 'cover', borderRadius: '2px', border: '1px solid rgba(0,0,0,0.15)' }}
               />
-              <span style={{ 
-                fontSize: '12px', 
-                fontFamily: 'var(--font-mono)', 
-                letterSpacing: '0.05em', 
-                textTransform: 'uppercase',
-                fontWeight: currentCode === r.code ? 600 : 400
-              }}>
+              <span style={{ fontWeight: currentCode === r.code ? 700 : 500 }}>
                 {r.name}
               </span>
             </button>
