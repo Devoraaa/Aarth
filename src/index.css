@@ -1530,7 +1530,7 @@ button {
   .section-divider-line i {
     font-size: 11px;
   }
-  .products-grid-4 { grid-template-columns: 1fr; gap: 24px; }
+  .products-grid-4 { grid-template-columns: 1fr; gap: 48px; }
   .product-image-box {
     margin-bottom: 10px;
   }
@@ -1622,7 +1622,7 @@ button {
 @media (max-width: 380px) {
   .products-grid-4 {
     grid-template-columns: 1fr;
-    gap: 28px;
+    gap: 48px;
   }
 }
 
@@ -8457,12 +8457,11 @@ button {
     display: flex !important;
     flex-direction: row !important;
     justify-content: space-between !important;
-    align-items: flex-start !important;
+    align-items: center !important;
     text-align: left !important;
-    margin-top: 4px !important;
     width: 86% !important;
-    margin: 0 auto !important;
-    padding: 10px 4px 4px 4px !important;
+    margin: 12px auto 0 auto !important;
+    padding: 8px 4px 4px 4px !important;
 }
 .luxury-atelier-card .product-meta-left {
     display: flex !important;
@@ -8472,8 +8471,8 @@ button {
 }
 .luxury-atelier-card .product-title {
     margin: 0 !important;
-    margin-bottom: 2px !important;
     font-size: 20px !important;
+    font-weight: 700 !important;
     text-align: left !important;
 }
 .luxury-atelier-card .product-price-val {
@@ -8482,7 +8481,7 @@ button {
 }
 .luxury-atelier-card .product-meta-right {
     display: flex !important;
-    align-items: flex-start !important;
+    align-items: center !important;
 }
 .luxury-atelier-card button.btn-card-quick-add-icon {
     background: none !important;

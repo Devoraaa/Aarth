@@ -5,7 +5,7 @@ import { CartDrawer } from './components/CartDrawer';
 import { ProductDetailPage } from './components/ProductDetailPage';
 import { SearchModal } from './components/SearchModal';
 import { CountrySelector } from './components/CountrySelector';
-import { ProductCard } from './components/ProductCard';
+import { ProductCard, ProductSkeleton } from './components/ProductCard';
 import { CustomCursor } from './components/CustomCursor';
 import { VintagePocketChronometer } from './components/VintagePocketChronometer';
 import { VintageAtmosphere } from './components/VintageAtmosphere';
@@ -40,7 +40,7 @@ function StorefrontContent() {
   const [showRefundsPage, setShowRefundsPage] = useState(false);
   const [showShippingPage, setShowShippingPage] = useState(false);
   const [showTermsPage, setShowTermsPage] = useState(false);
-  const [heroImages, setHeroImages] = useState({ desktop: '/assets/hero-banner-transparent.png', mobile: '/assets/hero-banner-mobile-transparent.png' });
+  const [heroImages, setHeroImages] = useState<{ desktop: string | null; mobile: string | null }>({ desktop: null, mobile: null });
   const [contactVideoUrl, setContactVideoUrl] = useState<string | null>(null);
 
   // Video Reel Interactive Play/Pause
@@ -448,10 +448,14 @@ function StorefrontContent() {
                 transition: 'transform 0.18s cubic-bezier(0.16, 1, 0.3, 1)'
               }}
             >
-              <picture className="hero-picture">
-                <source media="(max-width: 768px)" srcSet={heroImages.mobile} />
-                <img src={heroImages.desktop} alt="AARTH Heritage Handloom Silhouettes" className="hero-image" />
-              </picture>
+              {(!heroImages.desktop && !heroImages.mobile) ? (
+                <div style={{ width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.05)', animation: 'pulse 1.5s infinite', borderRadius: '4px' }} />
+              ) : (
+                <picture className="hero-picture">
+                  {heroImages.mobile && <source media="(max-width: 768px)" srcSet={heroImages.mobile} />}
+                  {heroImages.desktop && <img src={heroImages.desktop} alt="AARTH Heritage Handloom Silhouettes" className="hero-image" />}
+                </picture>
+              )}
             </div>
 
             <div className="hero-bottom-mark">
@@ -480,16 +484,22 @@ function StorefrontContent() {
               </header>
 
               <div className="products-grid-4">
-                {displayProducts.map((product, idx) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    index={idx}
-                    onSelect={(p) => setSelectedProduct(p)}
-                    onQuickAdd={handleQuickAdd}
-                    loading={cartLoading}
-                  />
-                ))}
+                {loadingProducts ? (
+                  Array.from({ length: 4 }).map((_, idx) => (
+                    <ProductSkeleton key={`skeleton-${idx}`} />
+                  ))
+                ) : (
+                  displayProducts.map((product, idx) => (
+                    <ProductCard
+                      key={product.id}
+                      product={product}
+                      index={idx}
+                      onSelect={(p) => setSelectedProduct(p)}
+                      onQuickAdd={handleQuickAdd}
+                      loading={cartLoading}
+                    />
+                  ))
+                )}
               </div>
             </div>
           </section>
@@ -629,16 +639,34 @@ Culture x Streetwear</div>
 }
 
 function App() {
-  const [hasAccess, setHasAccess] = useState(false);
+  const [hasAccess, setHasAccess] = useState<boolean | null>(null);
 
   useEffect(() => {
-    // Check if the user unlocked the storefront
-    if (localStorage.getItem("aarth_access") === "true") {
+    // Check if the user unlocked the storefront with password
+    const hasLocalAccess = localStorage.getItem("aarth_access") === "true";
+    if (hasLocalAccess) {
       setHasAccess(true);
+      return;
     }
+
+    // Otherwise fetch the store config from Shopify
+    import('./lib/shopify').then(({ getStoreConfig }) => {
+      getStoreConfig().then((config) => {
+        // If config.isLocked is false, it means Shopify says it's open for all users
+        if (!config.isLocked) {
+          setHasAccess(true);
+        } else {
+          setHasAccess(false);
+        }
+      });
+    });
   }, []);
 
-  if (!hasAccess) {
+  if (hasAccess === null) {
+    return null; // Return empty or a global spinner while determining access
+  }
+
+  if (hasAccess === false) {
     return <ComingSoon />;
   }
 

@@ -131,3 +131,30 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   );
 };
 
+export const ProductSkeleton: React.FC = () => {
+  return (
+    <article
+      className="product-item luxury-atelier-card"
+      style={{
+        position: "relative",
+        zIndex: 10,
+        backgroundColor: "#f7f2e9",
+        backgroundImage: "url('/assets/new-paper.png')",
+        backgroundRepeat: "repeat",
+      }}
+    >
+      <div className="product-image-box" style={{ backgroundColor: "rgba(0,0,0,0.05)", animation: "pulse 1.5s infinite" }}>
+      </div>
+      <div className="product-meta-content new-meta-layout">
+        <div className="product-meta-left" style={{ width: '100%' }}>
+          <div style={{ height: '16px', width: '70%', backgroundColor: "rgba(0,0,0,0.1)", borderRadius: '2px', animation: "pulse 1.5s infinite" }}></div>
+        </div>
+        <div className="product-meta-right" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <div style={{ height: '16px', width: '40px', backgroundColor: "rgba(0,0,0,0.1)", borderRadius: '2px', animation: "pulse 1.5s infinite" }}></div>
+          <div style={{ height: '24px', width: '24px', backgroundColor: "rgba(0,0,0,0.1)", borderRadius: '50%', animation: "pulse 1.5s infinite" }}></div>
+        </div>
+      </div>
+    </article>
+  );
+};
+

@@ -753,6 +753,36 @@ export async function getContactSettings(): Promise<{ videoUrl: string | null }>
 
 
 
+export async function getStoreConfig(): Promise<{ isLocked: boolean; password?: string }> {
+  const query = `
+    query GetStoreConfig {
+      metaobjects(type: "store_config", first: 1) {
+        edges {
+          node {
+            fields {
+              key
+              value
+            }
+          }
+        }
+      }
+    }
+  `;
+  try {
+    const data = await shopifyFetch<any>(query);
+    const fields = data.metaobjects?.edges?.[0]?.node?.fields || [];
+    const isLockedStr = fields.find((f: any) => f.key === "is_locked")?.value;
+    const passwordVal = fields.find((f: any) => f.key === "password" || f.key === "passphrase")?.value;
+    return { 
+      isLocked: isLockedStr === "true",
+      password: passwordVal || undefined
+    };
+  } catch (err) {
+    // Default to false or whatever logic
+    return { isLocked: true };
+  }
+}
+
 export async function updateCartCountry(cartId: string, countryCode: string): Promise<ShopifyCart | null> {
   const mutation = `
     ${CART_FRAGMENT}
@@ -775,3 +805,4 @@ export async function updateCartCountry(cartId: string, countryCode: string): Pr
   } catch(e) {}
   return null;
 }
+

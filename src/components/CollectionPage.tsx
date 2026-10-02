@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import type { ShopifyProduct } from "../lib/shopify";
-import { ProductCard } from "./ProductCard";
+import { ProductCard, ProductSkeleton } from "./ProductCard";
 
 interface CollectionPageProps {
   products: ShopifyProduct[];
@@ -61,16 +61,22 @@ export const CollectionPage: React.FC<CollectionPageProps> = ({
 
       {/* Grid of Product Cards (Exactly Consistent with Home Page) */}
       <div className="products-grid-4">
-        {filteredProducts.map((product, idx) => (
-          <ProductCard
-            key={product.id}
-            product={product}
-            index={idx}
-            onSelect={onSelectProduct}
-            onQuickAdd={onQuickAdd}
-            loading={loading}
-          />
-        ))}
+        {loading ? (
+          Array.from({ length: 4 }).map((_, idx) => (
+            <ProductSkeleton key={`collection-skeleton-${idx}`} />
+          ))
+        ) : (
+          filteredProducts.map((product, idx) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              index={idx}
+              onSelect={onSelectProduct}
+              onQuickAdd={onQuickAdd}
+              loading={loading}
+            />
+          ))
+        )}
       </div>
     </div>
   );
