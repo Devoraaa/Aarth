@@ -211,6 +211,24 @@ export function StoriesPage({ products, initialProductId, onBack, onSelectProduc
           box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.4);
         }
 
+        .story-img-frame {
+          position: relative;
+          height: 100%;
+          display: inline-flex;
+        }
+
+        .story-img-frame::after {
+          content: '';
+          position: absolute;
+          inset: -9.9% -8.9%;
+          background-image: url('/assets/border-overlay.png');
+          background-size: 100% 100%;
+          background-position: center;
+          background-repeat: no-repeat;
+          pointer-events: none;
+          z-index: 20;
+        }
+
         /* Completely Transparent Editorial Layout (No background box) */
         .story-editorial-column {
           position: absolute;
@@ -583,11 +601,13 @@ export function StoriesPage({ products, initialProductId, onBack, onSelectProduc
       {/* Staged Story Showcase: Hero Image with perfectly docked Archival Card */}
       <div className="story-stage-viewport">
         <div className="story-hero-wrapper">
-          <img 
-            src={currentImage} 
-            alt={product.title}
-            className="story-hero-img"
-          />
+          <div className="story-img-frame">
+            <img 
+              src={currentImage} 
+              alt={product.title}
+              className="story-hero-img"
+            />
+          </div>
 
           {/* Background-Free Editorial Column in 4 Corners (Top-Left, Bottom-Left, Bottom-Right, Top-Right) */}
           {currentText && (
