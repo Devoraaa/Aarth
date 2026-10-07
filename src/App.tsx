@@ -16,6 +16,7 @@ import { ShippingPage } from './components/ShippingPage';
 import { TermsPage } from './components/TermsPage';
 import { CollectionPage } from './components/CollectionPage';
 import { StoriesPage } from './components/StoriesPage';
+import { NewsletterPopup } from './components/NewsletterPopup';
 
 function StorefrontContent() {
   const [scrolled, setScrolled] = useState(false);
@@ -634,6 +635,9 @@ Culture x Streetwear</div>
         onSelectProduct={(p) => setSelectedProduct(p)}
         onQuickAdd={handleQuickAdd}
       />
+
+      {/* Global Newsletter Popup */}
+      <NewsletterPopup />
     </>
   );
 }
